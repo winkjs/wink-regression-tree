@@ -243,24 +243,11 @@ data ingestion, learning, and prediction etc.
   </div>
   
 
-  <p>Defines the configuration from the <code>configuration</code> object. The object defines
-the following properties:<ol></p>
-<li><code>maxDepth (default = 20)</code> defines the maximum depth of the tree after which
-learning stops.</li>
-<li><code>minPercentVarianceReduction (default = 10)</code> is the minmum variance reduction
-required for a split to occur.</li>
-<li><code>minSplitCandidateItems (default = 50)</code> defines the minimum items that must be present
-at a node for it to be split further, even after the <code>minPercentVarianceReduction</code>
-target has been achieved.</li>
-<li><code>minLeafNodeItems (default = 10)</code> is the minimum number of items that must be present at the
-node after a split.</li>
-<li><code>columnsConfig</code> should be an array of objects, where every object defines a column
-in terms of <code>name</code>, <code>categorical (default = false)</code>, <code>exclude (default = false)</code>, and
-<code>target (default = false)</code>. Their sequence should be the same in which input data
-will be supplied.</li></ol>
+  <p>Defines the configuration required to read the input data and to generates
+the regression tree.</p>
 
 
-  <div class='pre p1 fill-light mt0'>defineConfig(configuration: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  <div class='pre p1 fill-light mt0'>defineConfig(inputDataCols: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>, tree: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
   
   
 
@@ -277,10 +264,91 @@ will be supplied.</li></ol>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>configuration</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    — as outlined above.
+            <span class='code bold'>inputDataCols</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
+	    — each object in this array defines a column of input
+data in the same sequence in which data will be supplied to 
+<code>ingest().</code>
+ It is
+defined in terms of column's 
+<code>name,</code>
+ 
+<code>dataType (default = 'categorical'),</code>
+
+
+<code>exclude (default = false),</code>
+ and 
+<code>target (default = false).</code>
 
           </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>tree</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    — contains key value pairs of the following regression
+tree's parameters:
+
+          </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>tree.maxDepth</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+                  
+                    (default <code>20</code>)
+                  </td>
+                  <td class='break-word'><span>is the maximum depth of the tree after which
+learning stops.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>tree.minPercentVarianceReduction</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+                  
+                    (default <code>10</code>)
+                  </td>
+                  <td class='break-word'><span>is the minmum variance reduction
+required for a split to occur.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>tree.minSplitCandidateItems</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+                  
+                    (default <code>50</code>)
+                  </td>
+                  <td class='break-word'><span>the minimum items that must be present
+at a node for it to be split further, even after the 
+<code>minPercentVarianceReduction</code>
+
+target has been achieved.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>tree.minLeafNodeItems</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+                  
+                    (default <code>10</code>)
+                  </td>
+                  <td class='break-word'><span>s the minimum number of items that
+must be present at the node after a split.
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
           
         </div>
       

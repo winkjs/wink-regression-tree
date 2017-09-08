@@ -428,31 +428,32 @@ var regressionTree = function () {
   // ### defineConfig
   /**
    *
-   * Defines the configuration from the `configuration` object. The object defines
-   * the following properties:<ol>
-   * <li><code>maxDepth (default = 20)</code> defines the maximum depth of the tree after which
-   * learning stops.</li>
-   * <li><code>minPercentVarianceReduction (default = 10)</code> is the minmum variance reduction
-   * required for a split to occur.</li>
-   * <li><code>minSplitCandidateItems (default = 50)</code> defines the minimum items that must be present
-   * at a node for it to be split further, even after the <code>minPercentVarianceReduction</code>
-   * target has been achieved.</li>
-   * <li><code>minLeafNodeItems (default = 10)</code> is the minimum number of items that must be present at the
-   * node after a split.</li>
-   * <li><code>columnsConfig</code> should be an array of objects, where every object defines a column
-   * in terms of <code>name</code>, <code>categorical (default = false)</code>, <code>exclude (default = false)</code>, and
-   * <code>target (default = false)</code>. Their sequence should be the same in which input data
-   * will be supplied.</li></ol>
+   * Defines the configuration required to read the input data and to generates
+   * the regression tree.
    *
-   * @param {object} configuration — as outlined above.
+   * @param {object[]} inputDataCols — each object in this array defines a column of input
+   * data in the same sequence in which data will be supplied to `ingest().` It is
+   * defined in terms of column's `name,` `dataType (default = 'categorical'),`
+   * `exclude (default = false),` and `target (default = false).`
+   * @param {object} tree — contains key value pairs of the following regression
+   * tree's parameters:
+   * @param {number} [tree.maxDepth=20] is the maximum depth of the tree after which
+   * learning stops.
+   * @param {number} [tree.minPercentVarianceReduction=10] is the minmum variance reduction
+   * required for a split to occur.
+   * @param {number} [tree.minSplitCandidateItems=50] the minimum items that must be present
+   * at a node for it to be split further, even after the `minPercentVarianceReduction`
+   * target has been achieved.
+   * @param {number} [tree.minLeafNodeItems=10] s the minimum number of items that
+   * must be present at the node after a split.
    * @return {boolean} always `true`.
   */
-  var defineConfig = function ( configuration ) {
-    config.maxDepth = configuration.maxDepth || config.maxDepth;
-    config.minPercentVarianceReduction = configuration.minPercentVarianceReduction || config.minPercentVarianceReduction;
-    config.minSplitCandidateItems = configuration.minSplitCandidateItems || config.minSplitCandidateItems;
-    config.minLeafNodeItems = configuration.minLeafNodeItems || config.minLeafNodeItems;
-    columnsConfig = configuration.columns;
+  var defineConfig = function ( inputDataCols, tree ) {
+    config.maxDepth = tree.maxDepth || config.maxDepth;
+    config.minPercentVarianceReduction = tree.minPercentVarianceReduction || config.minPercentVarianceReduction;
+    config.minSplitCandidateItems = tree.minSplitCandidateItems || config.minSplitCandidateItems;
+    config.minLeafNodeItems = tree.minLeafNodeItems || config.minLeafNodeItems;
+    columnsConfig = inputDataCols;
     columnsDefn = initColsDefn( columnsConfig );
   }; // defineConfig();
 
