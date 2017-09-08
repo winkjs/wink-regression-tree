@@ -1,0 +1,663 @@
+//     wink-regression-tree
+//     Decision Tree to predict the value of a continuous
+//     target variable
+//
+//     Copyright (C) 2017  GRAYPE Systems Private Limited
+//
+//     This file is part of “wink-regression-tree”.
+//
+//     “wink-regression-tree” is free software: you can redistribute it
+//     and/or modify it under the terms of the GNU Affero
+//     General Public License as published by the Free
+//     Software Foundation, version 3 of the License.
+//
+//     “wink-regression-tree” is distributed in the hope that it will
+//     be useful, but WITHOUT ANY WARRANTY; without even
+//     the implied warranty of MERCHANTABILITY or FITNESS
+//     FOR A PARTICULAR PURPOSE.  See the GNU Affero General
+//     Public License for more details.
+//
+//     You should have received a copy of the GNU Affero
+//     General Public License along with “wink-regression-tree”.
+//     If not, see <http://www.gnu.org/licenses/>.
+
+/* eslint no-continue: 0 */
+
+var helpers = require( 'wink-helpers' );
+var regressionTree = function () {
+  // Columns configuration supplied to the `defineConfig()` function.
+  var columnsConfig;
+  // Columns definition created from the `columnsConfig` supplied to the `defineConfig()`
+  // method.
+  var columnsDefn;
+  // Create configuration object.
+  var config = Object.create( null );
+  // Returned!
+  var methods = Object.create( null );
+  // The regression tree.
+  var tree = Object.create( null );
+  // Xformed Column id to input column id map.
+  var xc2cMap = [];
+  // Xformed data, where categorical variables are encoded by a numeric code. Useful
+  // in reduction of memory load.
+  var xdata = [];
+  // Parameters used for evaluation.
+  var evalParams = Object.create( null );
+  // Remember the target column name in this.
+  var target;
+
+  // ### initColsDefn
+  /**
+   *
+   * Initializes the columns' definition by cloning the input `cols` and by adding
+   * a struncture containing `map` and `nextCode` (next unique value's code)
+   * for every categorical column that is not excluded fom processing.
+   *
+   * @param {object[]} cols — each object specifies 4 properties viz. (a) `name`;
+   * (b) type in terms of `categorical` as `true or false`, where `false` indicates a
+   * continuous variable; (c) `exclude`, which is set to true if the column
+   * has to be excluded from training; and (d) `target`, which is set to true for
+   * the column whose value is to be predicted.
+   * @return {object[]} cloned `cols`, where each element gets 2 addtitional
+   * properties viz. `map` and the `nextCode` that is initialized to **0**.
+   * @private
+  */
+  var initColsDefn = function ( cols ) {
+    // Clone the incoming `cols`
+    var cc = JSON.parse( JSON.stringify( cols ) );
+    // Intialize the included categorical columns with empty `map` object
+    // and `nextCode` that will be assigned to the next unique value encountered.
+    for ( var i = 0, imax = cc.length; i < imax; i += 1 ) {
+      if ( cc[ i ].categorical && !cc[ i ].exclude ) {
+        cc[ i ].nextCode = 0;
+        cc[ i ].map = Object.create( null );
+        cc[ i ].invertedMap = [];
+      }
+      // Remember the target column name.
+      if ( cc[ i ].target ) {
+        target = cc[ i ].name;
+      }
+    }
+    // Return the cloned & initialized collumns — `cc`.
+    return cc;
+  }; // initColsDefn()
+
+  // ### transformRow
+  /**
+   *
+   * It transforms the **included categorical** column's data of `row` into coded
+   * values using `colsDefn`. This encoding reduces the memory space requirements.
+   * If a new unique value is encountered, the `colsDefn.map` & `colsDefn.nextCode`
+   *  values are accordingly updated.
+   *
+   * @param {array} row — contains data i.e. column values for a single row.
+   * @param {object} colsDefn — columns' definition data structure.
+   * @return {array} transformed row with encoded categorical column values.
+   * @private
+  */
+  var transformRow = function ( row, colsDefn ) {
+    // Transformed row builds up in this variable.
+    var xRow = [ ];
+    // Map, inverted Map and target value.
+    var invertedMap, map, tv;
+    for ( var i = 0, imax = row.length; i < imax; i += 1 ) {
+      // Categorical and Included?
+      if ( colsDefn[ i ].categorical && !colsDefn[ i ].exclude ) {
+        map = colsDefn[ i ].map;
+        invertedMap = colsDefn[ i ].invertedMap;
+        // Map defined for row's element in question?
+        if ( map[ row[ i ] ] === undefined ) {
+          // Not! Update the `map` & the `invertedMap`.
+          map[ row[ i ] ] = colsDefn[ i ].nextCode;
+          invertedMap.push( row[ i ] );
+          colsDefn[ i ].nextCode += 1;
+        }
+      }
+      // Transform value.
+      if ( colsDefn[ i ].target ) {
+        // Remember target's transformed value, it will be pushed as the last
+        // element in the `xRow`.
+        tv = ( colsDefn[ i ].categorical ) ? map[ row[ i ] ] : row[ i ];
+      } else if ( !colsDefn[ i ].exclude ) {
+        // Ensure exclusion.
+        xRow.push( map[ row[ i ] ] );
+      }
+    }
+    // Target's value is always the last element in `xRow`.
+    xRow.push( tv );
+    return xRow;
+  }; // transformRow()
+
+  // ### createCandidates
+  /**
+   *
+   * It creates empty data structure for each potential candidate column.
+   *
+   * @param {array} cols2p — array of indexes of columns to be processed.
+   * @return {object} containing further empty objects indexed by each columns
+   * specified in the `cols2p` array.
+   * @private
+  */
+  var createCandidates = function ( cols2p ) {
+    // Create `candidates` object.
+    var candidates = Object.create( null );
+    var ci;
+    // Each Column specific data structure pertaining to every unique value goes here.
+    candidates.columns = Object.create( null );
+    // List of indexes of columns, to avoid calls to `Object.keys()` on candidate columns.
+    candidates.list = [];
+    for ( var i = 0, imax = cols2p.length; i < imax; i += 1 ) {
+      ci = cols2p[ i ];
+      // Push this index in to the list.
+      candidates.list.push( ci );
+      // Create an empty structure for this column by its index.
+      candidates.columns[ ci ] = Object.create( null );
+    }
+    return candidates;
+  }; // createCandidates()
+
+  // ### computeMeanDelta
+  /**
+   *
+   * Computes the delta mean value from the next `data`; this delta may be used to
+   * update mean by additing it to the current mean.
+   *
+   * @param {number} data — data used to compute the delta.
+   * @param {number} currMean — current value of mean from which delta is computed
+   * using the `data`.
+   * @param {number} size — the number of `data` items encountered so far.
+   * @return {number} the delta mean.
+   * @private
+  */
+  var computeMeanDelta = function ( data, currMean, size ) {
+    return ( data - currMean ) / ( size );
+  }; // computeMeanDelta()
+
+  // ### computeVarianceXnDelta
+  /**
+   *
+   * Computes the delta varianceXn value from the next `data`; this delta may be
+   * used to update varianceXn by additing it to the current varianceXn. Note,
+   * varianceXn is nothing but *sum of squared devaitions from the mean*.
+   *
+   * @param {number} data — data used to compute the delta.
+   * @param {number} currMean — current value of mean and
+   * @param {number} prevMean — the previous value of mean; using these delta is
+   * computed using the `data`.
+   * @return {number} the delta varianceXn.
+   * @private
+  */
+  var computeVarianceXnDelta = function ( data, currMean, prevMean ) {
+    return ( data - prevMean ) * ( data - currMean );
+  }; // computeVarianceXnDelta()
+
+  // ### computeStdev
+  /**
+   *
+   * Computes the standard deviation from `varianceXn` and `size` after applying
+   * Bessel's correction.
+   *
+   * @param {number} varianceXn — the sum of squared devaitions from the mean.
+   * @param {number} size — the number of items.
+   * @return {number} the standard deviation.
+   * @private
+  */
+  var computeStdev = function ( varianceXn, size ) {
+    // Apply Bessel's correction for a better estimate of population standard
+    // deviation.
+    return ( size > 1 ) ? Math.sqrt( varianceXn / ( size - 1 ) ) : 0;
+  }; // computeStdev()
+
+  // ### computePercentageVarianceReduction
+  /**
+   *
+   * Computes percentage reduction in variance in split children from the parent.
+   *
+   * @param {number} varianceXn — the sum of squared devaitions from the mean.
+   * @param {number} size — the number of items.
+   * @param {number} weightedSumOfVar — weighted sum of variance of every child node.
+   * @return {number} the percentage reduction in variance.
+   * @private
+  */
+  var computePercentageVarianceReduction = function ( varianceXn, size, weightedSumOfVar ) {
+    return ( ( ( varianceXn / size ) - weightedSumOfVar ) * 100 / ( varianceXn / size ) );
+  }; // computePercentageVarianceReduction()
+
+  // ### updateVarianceXn
+  /**
+   *
+   * Incrementally updates the varianceXn of `targetsValue`  for the `c2psValue` of column to
+   * process — `c2p` in `candidates` for the row pointed by `rowsIndex`.
+   *
+   * @param {object} candidates — data structure containing varianceXn for every
+   * column's applicable unique values.
+   * @param {number} c2p — the column to be processed.
+   * @param {string} c2psValue — the column to be processed's value.
+   * @param {number} rowsIndex — index of the data row to be used.
+   * @param {number} targetsValue — target's value to be used for updating varianceXn.
+   * @return {boolean} always true.
+   * @private
+  */
+  var updateVarianceXn = function ( candidates, c2p, c2psValue, rowsIndex, targetsValue ) {
+    // The candidates' colums where varianceXn will be updated.
+    var cc2p = candidates.columns[ c2p ];
+    // Create a place holder for `c2psValue`, provided it is being encountered
+    // for the first time.
+    if ( cc2p[ c2psValue ] === undefined ) {
+      cc2p[ c2psValue ] = Object.create( null );
+      // Mean of `targetsValue` encountered so far.
+      cc2p[ c2psValue ].mean = 0;
+      // The variance multiplied by `n or size`.
+      cc2p[ c2psValue ].varianceXn = 0;
+      // The count or size of values processed so far; will match with `index`
+      // array size.
+      cc2p[ c2psValue ].size = 0;
+      // INdex of rows containing this specific value i.e. `c2psValue`.
+      cc2p[ c2psValue ].index = [];
+    }
+    // Update varianceXn, etc.
+    var prevMean = cc2p[ c2psValue ].mean;
+    cc2p[ c2psValue ].size += 1;
+    cc2p[ c2psValue ].mean += computeMeanDelta( targetsValue, cc2p[ c2psValue ].mean, cc2p[ c2psValue ].size );
+    // ( targetsValue - cc2p[ c2psValue ].mean ) / ( cc2p[ c2psValue ].size );
+    cc2p[ c2psValue ].varianceXn += computeVarianceXnDelta( targetsValue, cc2p[ c2psValue ].mean, prevMean );
+    // ( targetsValue - prevMean ) * ( targetsValue - cc2p[ c2psValue ].mean );
+    cc2p[ c2psValue ].index.push( rowsIndex );
+    return true;
+  }; // updateVarianceXn()
+
+  // ### processRow
+  /**
+   *
+   * It requires a `row` of data, columns to be processed —`c2p`, the `colsDefn`,
+   * and a `node` that captures the column-wise varianceXn & mean for every unique
+   * of the a column.
+   *
+   * @param {array} row — single row of transformed data that needs to be processed.
+   * @param {number} rowsIndex — index of the row being passed.
+   * @param {object} candidates — for split, contains all the statistic.
+   * @param {function} updateFn — updates the statistic in `candidates`.
+   * @return {object[]} ???
+   * @private
+  */
+  var processRow = function ( row, rowsIndex, candidates, updateFn ) {
+    // Single column to process from the array `cols2p`.
+    var c2p;
+    var indexOfTarget = row.length - 1;
+    for ( var i = 0, imax = candidates.list.length; i < imax; i += 1 ) {
+      c2p = candidates.list[ i ];
+      updateFn( candidates, c2p, row[ c2p ], rowsIndex, row[ indexOfTarget ] );
+    }
+  }; // processRow()
+
+  // ### selectBestSplit
+  /**
+   *
+   * Finds the best candidate column for split on the basis of maximum reduction
+   * in variance (impurity or maximum gain).
+   *
+   * @param {object} candidates — columns from where the best candidate for split
+   * is selected.
+   * @return {object} containing the best `col` and the corresponding wieghted
+   * `sum` of squared deviation from mean for each unique value.
+   * @private
+  */
+  var selectBestSplit = function ( candidates ) {
+    // Used in for-in loop: unique values (`uvs`) in a `col`.
+    var col, uvs;
+    // Sum of `varianceXn * size` for each `uvs` in a `col`; and its size.
+    var size, sum;
+    // Minimum Sum and the Best Column.
+    var bestCol, minSum;
+
+    minSum = Infinity;
+    for ( col in candidates.columns ) { // eslint-disable-line guard-for-in
+      // Initialize `sum` and `size` for this `col`.
+      sum = 0;
+      size = 0;
+      for ( uvs in candidates.columns[ col ] ) { // eslint-disable-line guard-for-in
+        size += candidates.columns[ col ][ uvs ].size;
+        // Compute weighted sum; will divide by sum after the loop finishes to normalize.
+        // Recall, `varianceXn` is variance multiplied by items.
+        sum += ( candidates.columns[ col ][ uvs ].varianceXn /* candidates.columns[ col ][ uvs ].size */ );
+      }
+      // Normalize - this will yield weighted sum of variances.
+      sum /= size;
+      // Update minumum.
+      if ( sum < minSum ) {
+        minSum = sum;
+        bestCol = col;
+      }
+    }
+
+    return { col: +bestCol, sum: minSum };
+  }; // selectBestSplit()
+
+  // ### growTree
+  /**
+   *
+   * Builds the tree recursively by maximaizing the variance reduction on each
+   * split.
+   *
+   * @param {object} cc — candidate columns to consider for further growing the
+   * tree.
+   * @param {number} splitData — columns on which split occurred.
+   * @param {number} colUsed4Split — column used for creating the `splitData`.
+   * @param {object} node — node of the tree, from where tree may be grown further.
+   * @param {number} depth — of the tree so far.
+   * @return {object} the tree!
+   * @private
+  */
+  var growTree = function ( cc, splitData, colUsed4Split, node, depth ) {
+    // Maximum defined depth reached?
+    if ( depth > config.maxDepth ) {
+      // Yes, Incrment rules learned & return.
+      tree.rulesLearned += 1;
+      return;
+    }
+
+    var cCols;
+    var colsLeft;
+    var bs, uniqVal;
+    var varianceReduction;
+    var child;
+    // Helper variables
+    var index, j, k, kmax;
+    node.branches = Object.create( null );
+    for ( uniqVal in splitData ) {
+      // Node contains enough items to be retained in the tree?
+      if ( splitData[ uniqVal ].size < config.minLeafNodeItems ) {
+        // Don't increment rules learned as you are pruning tree; just skip this iteration.
+        continue;
+      }
+      // Node has enough items! Setup the child node.
+      child = node.branches[ columnsDefn[xc2cMap[ colUsed4Split ]].invertedMap[ +uniqVal ] ] = Object.create( null );
+      child.size = splitData[ uniqVal ].size;
+      child.mean = splitData[ uniqVal ].mean;
+      child.stdev = computeStdev( splitData[ uniqVal ].varianceXn, splitData[ uniqVal ].size );
+      // Create candidate colums for this node. These will be used to obtain bestCol
+      // split as per the `config`.
+      cCols = createCandidates( cc );
+      index = splitData[ uniqVal ].index;
+      // Does it have enough items to proceed with split?
+      if ( index.length <= config.minSplitCandidateItems ) {
+        // No! continue with the iteration with the next `uniqVal`.
+        tree.rulesLearned += 1;
+        continue;
+      }
+      // Attempt split.
+      for ( k = 0, kmax = index.length; k < kmax; k += 1 ) {
+        processRow( xdata[ index[ k ] ], index[ k ], cCols, updateVarianceXn );
+      }
+      bs = selectBestSplit( cCols );
+      varianceReduction = computePercentageVarianceReduction( splitData[ uniqVal ].varianceXn, splitData[ uniqVal ].size, bs.sum );
+      // Reasonable variance reduction?
+      if ( varianceReduction < config.minPercentVarianceReduction ) {
+        // No! continue with the iteration with the next `uniqVal`.
+        tree.rulesLearned += 1;
+        continue;
+      }
+      // Yes, split possible! Make a list of left columns by removing the columns
+      // found for splitting.
+      colsLeft = [];
+      for ( j = 0; j < cc.length; j += 1 ) {
+        if ( cc[ j ] !== bs.col ) colsLeft.push( cc[ j ] );
+      }
+      // No further columns to process?
+      if ( ( colsLeft.length === 0 ) ) {
+        // Yes, return immediately.
+        tree.rulesLearned += 1;
+        return;
+      }
+      // Still have columns for splitting, recurse!
+      child.colUsed4Split = columnsDefn[xc2cMap[bs.col]].name;
+      child.varianceReduction = varianceReduction;
+      growTree( colsLeft, cCols.columns[ bs.col ], bs.col, child, ( depth + 1 ) );
+    }
+  }; // growTree()
+
+  // ### defineConfig
+  /**
+   *
+   * Defines the configuration from the `configuration` object. The object defines
+   * the following properties:<ol>
+   * <li><code>maxDepth (default = 20)</code> defines the maximum depth of the tree after which
+   * learning stops.</li>
+   * <li><code>minPercentVarianceReduction (default = 10)</code> is the minmum variance reduction
+   * required for a split to occur.</li>
+   * <li><code>minSplitCandidateItems (default = 50)</code> defines the minimum items that must be present
+   * at a node for it to be split further, even after the <code>minPercentVarianceReduction</code>
+   * target has been achieved.</li>
+   * <li><code>minLeafNodeItems (default = 10)</code> is the minimum number of items that must be present at the
+   * node after a split.</li>
+   * <li><code>columnsConfig</code> should be an array of objects, where every object defines a column
+   * in terms of <code>name</code>, <code>categorical (default = false)</code>, <code>exclude (default = false)</code>, and
+   * <code>target (default = false)</code>. Their sequence should be the same in which input data
+   * will be supplied.</li></ol>
+   *
+   * @param {object} configuration — as outlined above.
+   * @return {boolean} always `true`.
+  */
+  var defineConfig = function ( configuration ) {
+    config.maxDepth = configuration.maxDepth || config.maxDepth;
+    config.minPercentVarianceReduction = configuration.minPercentVarianceReduction || config.minPercentVarianceReduction;
+    config.minSplitCandidateItems = configuration.minSplitCandidateItems || config.minSplitCandidateItems;
+    config.minLeafNodeItems = configuration.minLeafNodeItems || config.minLeafNodeItems;
+    columnsConfig = configuration.columns;
+    columnsDefn = initColsDefn( columnsConfig );
+  }; // defineConfig();
+
+  // ### ingest
+  /**
+   *
+   * Ingests one row of the data at a time. It is specially useful for reading
+   * data in an asynchronus manner, where this may be used as a call back function
+   * on every row read event.
+   *
+   * @param {array} row — one row of the data to be ingested; column values
+   * should be in the same sequence in which they are defined in data configuration
+   * via `defineConfig()`.
+   * @return {boolean} always `true`.
+  */
+  var ingest = function ( row ) {
+    if ( row.length === columnsConfig.length ) {
+      xdata.push( transformRow( row, columnsDefn ) );
+    } else {
+      throw Error( 'winkRT: expecting ' + columnsConfig.length + ' elements instead found: ' + row.length );
+    }
+  }; // ingest()
+
+  // ### learn
+  /**
+   *
+   * Learns from the ingested data and generates the rule tree that is used to
+   * `predict()` the value of target variable from the input.
+   *
+   * @return {boolean} always `true`.
+  */
+  var learn = function ( ) {
+    // Candidate columns list
+    var candidateCols = [];
+    // Candidate columns created using above list.
+    var cndts;
+    // Required for the root node.
+    var rootsMean = 0;
+    var rootsVarianceXn = 0;
+    var prevRootsMean;
+    // Index of the target variable (Y).
+    var indexOfTarget;
+    // Object containing best split info in terms of the column and the
+    // weighted `sum` of variance.
+    var bestSplit;
+    // Updated candidate columns list after split.
+    var updatedCandidateCols = [];
+    // Helper variables
+    var i, imax;
+    var k = 0;
+
+    // Create candidate columns list & `xc2cMap`.
+    for ( i = 0, imax = columnsConfig.length; i < imax; i += 1 ) {
+      if ( !columnsConfig[ i ].exclude ) {
+        if ( !columnsConfig[ i ].target ) {
+          xc2cMap.push( i );
+          candidateCols.push( k );
+          k += 1;
+        }
+      }
+    }
+
+    cndts = createCandidates( candidateCols );
+
+    indexOfTarget = xdata[ 0 ].length - 1;
+    // Process every row as this is the root level.
+    for ( i = 0; i < xdata.length; i += 1 ) {
+      processRow( xdata[ i ], i, cndts, updateVarianceXn );
+      prevRootsMean = rootsMean;
+      rootsMean += computeMeanDelta( xdata[ i ][ indexOfTarget ], rootsMean, ( i + 1 ) );
+      rootsVarianceXn += computeVarianceXnDelta( xdata[ i ][ indexOfTarget ], rootsMean, prevRootsMean );
+    }
+    bestSplit = selectBestSplit( cndts );
+    // Find the updated list of candidate columsn after the split.
+    for ( i = 0; i < candidateCols.length; i += 1 ) {
+      if ( candidateCols[ i ] !== bestSplit.col ) updatedCandidateCols.push( candidateCols[ i ] );
+    }
+    // Define root node stuff.
+    tree.size = xdata.length;
+    tree.mean = rootsMean;
+    tree.stdev = computeStdev( rootsVarianceXn, tree.size );
+    tree.colUsed4Split = columnsDefn[xc2cMap[bestSplit.col]].name;
+    tree.varianceReduction = computePercentageVarianceReduction( rootsVarianceXn, tree.size, bestSplit.sum );
+    // Call recursive function, `growTree()`.
+    growTree( updatedCandidateCols, cndts.columns[ bestSplit.col ], bestSplit.col, tree, 1 );
+    return true;
+  }; // learn()
+
+  var recursivelyPredict = function ( input, rules, f, colsUsed4Prediction ) {
+    if (
+          helpers.object.isObject( rules.branches ) &&
+          ( ( input[ rules.colUsed4Split ] !== undefined ) || ( input[ rules.colUsed4Split ] !== null ) ) &&
+          helpers.object.isObject( rules.branches[ input[ rules.colUsed4Split ] ] )
+       ) {
+      colsUsed4Prediction.push( rules.colUsed4Split );
+      return recursivelyPredict( input, rules.branches[ input[ rules.colUsed4Split ] ], f, colsUsed4Prediction );
+    }
+    return (
+      ( typeof f === 'function' ) ?
+        f( rules.size, rules.mean, rules.stdev, colsUsed4Prediction ) :
+        rules.mean
+    );
+  }; // recursivelyPredict()
+
+  // ### predict
+  /**
+   *
+   * Predicts the value of target variable from the `input` using the rules tree generated by
+   * `learn()`.
+   *
+   * @param {object} input — data containing column name/value pairs; the column
+   * names must the same as defined via `defineConfig()`.
+   * @param {function} [fn=undefined] — is called once
+   * a leaf node is reached during prediction with the following 4 parameters: **size,**
+   * **mean** and **stdev** values at the node; and an **array** of column names
+   * navigated to reach the leaf. The value returned from this function becomes  the prediction.
+   * @return {number} `mean` value or whatever is returned by the `fn` function, if defined.
+  */
+  var predict = function ( input, fn ) {
+    if ( !helpers.object.isObject( input ) ) {
+      throw Error( 'winkRT: input must be an object, instead found: ' + ( typeof input ) );
+    }
+    var colsUsed4Prediction = [];
+    return recursivelyPredict( input, tree, fn, colsUsed4Prediction );
+  }; // predict()
+
+  // ### evaluate
+  /**
+   *
+   * Incrementally evalutes variance reduction for one data row at a time.
+   *
+   * @param {object} rowObject — contains column name/value pairs including the target column
+   * name/value pair as well, which is used in evaluating the variance reduction.
+   * @return {boolean} always `true`.
+  */
+  var evaluate = function ( rowObject ) {
+    var pv = predict( rowObject );
+    evalParams.prevMean = evalParams.mean;
+    evalParams.size += 1;
+    evalParams.mean += computeMeanDelta( rowObject[ target ], evalParams.mean, evalParams.size );
+    evalParams.gssdm += computeVarianceXnDelta( rowObject[ target ], evalParams.mean, evalParams.prevMean );
+    evalParams.ssdm += ( ( rowObject[ target ] - pv ) * ( rowObject[ target ] - pv ) );
+    return true;
+  }; // evaluate()
+
+  // ### metrics
+  /**
+   *
+   * Computes the variance reduction observed in the validation data passed to
+   * `evaluate()`.
+   *
+   * @return {object} containing the `varianceReduction` in percentage and data `size`.
+  */
+  var metrics = function ( ) {
+    return (
+      {
+        size: evalParams.size,
+        varianceReduction: +( ( evalParams.gssdm - evalParams.ssdm ) * 100 / evalParams.gssdm ).toFixed( 4 ),
+      }
+    );
+  }; // metrics()
+
+  // ### exportJSON
+  /**
+   *
+   * Exports the JSON of the rule tree generated by `learn()`, which may be
+   * saved in a file for later predictions.
+   *
+   * @return {json} of the rule tree.
+  */
+  var exportJSON = function () {
+    return JSON.stringify( tree, null, 2 );
+  }; // exportJSON()
+
+  // ### importJSON
+  /**
+   *
+   * Imports the rule tree from the input `rulesTree` for subsequent use by `predict()`.
+   * @param {json} rulesTree — containg an earlier exported rule tree in JSON format.
+   * @return {boolean} always `true`.
+  */
+  var importJSON = function ( rulesTree ) {
+    tree = JSON.parse( rulesTree );
+    return true;
+  }; // importJSON()
+
+  // Set default configuration;
+  config.maxDepth = 20;
+  config.minPercentVarianceReduction = 10;
+  config.minSplitCandidateItems = 50;
+  config.minLeafNodeItems = 10;
+  // Initialize the number of rules learned.
+  tree.rulesLearned = 0;
+
+  // Setup evaluation parameters.
+  evalParams.size = 0;
+  evalParams.mean = 0;
+  evalParams.prevMean = 0;
+  // Grand Sum of Squared Deviations from the Mean, prior to prediction.
+  evalParams.gssdm = 0;
+  // Sum of Squared Deviations from the Mean, post prediction
+  evalParams.ssdm = 0;
+
+  methods.defineConfig = defineConfig;
+  methods.ingest = ingest;
+  methods.learn = learn;
+  methods.predict = predict;
+  methods.evaluate = evaluate;
+  methods.metrics = metrics;
+  methods.exportJSON = exportJSON;
+  methods.importJSON = importJSON;
+
+  return methods;
+}; // regressionTree()
+
+// Export
+module.exports = regressionTree;

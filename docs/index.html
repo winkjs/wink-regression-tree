@@ -1,0 +1,758 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8' />
+  <title>wink-regression-tree 0.0.0 | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
+  <link href='assets/style.css' type='text/css' rel='stylesheet' />
+  <link href='assets/github.css' type='text/css' rel='stylesheet' />
+</head>
+<body class='documentation'>
+  <div class='max-width-4 mx-auto'>
+    <div class='clearfix md-mxn2'>
+      <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>wink-regression-tree</h3>
+          <div class='mb1'><code>0.0.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#introduction'
+                  class="h5 bold black caps">
+                  Introduction
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#api'
+                  class="h5 bold black caps">
+                  API
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#defineconfig'
+                  class="">
+                  defineConfig
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#ingest'
+                  class="">
+                  ingest
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#learn'
+                  class="">
+                  learn
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#predict'
+                  class="">
+                  predict
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#evaluate'
+                  class="">
+                  evaluate
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#metrics'
+                  class="">
+                  metrics
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#exportjson'
+                  class="">
+                  exportJSON
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#importjson'
+                  class="">
+                  importJSON
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='http://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div class='fix-margin-3'>
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='introduction' class='mt0'>
+    Introduction
+  </h2>
+
+  
+    <h1>wink-regression-tree</h1>
+<p>Decision Tree to predict the value of a continuous target variable</p>
+<h3><a href="https://travis-ci.org/decisively/wink-regression-tree"><img src="https://api.travis-ci.org/decisively/wink-regression-tree.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/decisively/wink-regression-tree?branch=master"><img src="https://coveralls.io/repos/github/decisively/wink-regression-tree/badge.svg?branch=master" alt="Coverage Status"></a> <a href="http://inch-ci.org/github/decisively/wink-regression-tree"><img src="http://inch-ci.org/github/decisively/wink-regression-tree.svg?branch=master" alt="Inline docs"></a> <a href="https://david-dm.org/decisively/wink-regression-tree?type=dev"><img src="https://david-dm.org/decisively/wink-regression-tree/dev-status.svg" alt="devDependencies Status"></a></h3>
+<img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
+<p>Predict the value of a continuous variable such as price, turn around time, or mileage using <strong><code>wink-regression-tree</code></strong>. It is a part of <em><a href="https://www.npmjs.com/~sanjaya">wink</a></em> — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.</p>
+<h3>Installation</h3>
+<p>Use <a href="https://www.npmjs.com/package/wink-regression-tree">npm</a> to install:</p>
+<pre><code>npm install wink-regression-tree --save
+</code></pre>
+<h3>Need Help?</h3>
+<p>If you spot a bug and the same has not yet been reported, raise a new <a href="https://github.com/decisively/wink-regression-tree/issues">issue</a> or consider fixing it and sending a pull request.</p>
+<h3>Copyright &#x26; License</h3>
+<p><strong>wink-regression-tree</strong> is copyright 2017 GRAYPE Systems Private Limited.</p>
+<p>It is licensed under the under the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, version 3 of the License.</p>
+
+  
+</section>
+</div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='api' class='mt0'>
+    API
+  </h2>
+
+  
+</section>
+</div>
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='defineconfig'>
+      defineConfig
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Defines the configuration from the <code>configuration</code> object. The object defines
+the following properties:<ol></p>
+<li><code>maxDepth (default = 20)</code> defines the maximum depth of the tree after which
+learning stops.</li>
+<li><code>minPercentVarianceReduction (default = 10)</code> is the minmum variance reduction
+required for a split to occur.</li>
+<li><code>minSplitCandidateItems (default = 50)</code> defines the minimum items that must be present
+at a node for it to be split further, even after the <code>minPercentVarianceReduction</code>
+target has been achieved.</li>
+<li><code>minLeafNodeItems (default = 10)</code> is the minimum number of items that must be present at the
+node after a split.</li>
+<li><code>columnsConfig</code> should be an array of objects, where every object defines a column
+in terms of <code>name</code>, <code>categorical (default = false)</code>, <code>exclude (default = false)</code>, and
+<code>target (default = false)</code>. Their sequence should be the same in which input data
+will be supplied.</li></ol>
+
+
+  <div class='pre p1 fill-light mt0'>defineConfig(configuration: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>configuration</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    — as outlined above.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        always 
+<code>true</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='ingest'>
+      ingest
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Ingests one row of the data at a time. It is specially useful for reading
+data in an asynchronus manner, where this may be used as a call back function
+on every row read event.</p>
+
+
+  <div class='pre p1 fill-light mt0'>ingest(row: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>row</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    — one row of the data to be ingested; column values
+should be in the same sequence in which they are defined in data configuration
+via 
+<code>defineConfig()</code>
+.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        always 
+<code>true</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='learn'>
+      learn
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Learns from the ingested data and generates the rule tree that is used to
+<code>predict()</code> the value of target variable from the input.</p>
+
+
+  <div class='pre p1 fill-light mt0'>learn(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        always 
+<code>true</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='predict'>
+      predict
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Predicts the value of target variable from the <code>input</code> using the rules tree generated by
+<code>learn()</code>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>predict(input: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, fn: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>input</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    — data containing column name/value pairs; the column
+names must the same as defined via 
+<code>defineConfig()</code>
+.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>fn</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>
+            = <code>undefined</code>)</code>
+	    — is called once
+a leaf node is reached during prediction with the following 4 parameters: 
+<strong>size,</strong>
+
+
+<strong>mean</strong>
+ and 
+<strong>stdev</strong>
+ values at the node; and an 
+<strong>array</strong>
+ of column names
+navigated to reach the leaf. The value returned from this function becomes  the prediction.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        <code>mean</code>
+ value or whatever is returned by the 
+<code>fn</code>
+ function, if defined.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='evaluate'>
+      evaluate
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Incrementally evalutes variance reduction for one data row at a time.</p>
+
+
+  <div class='pre p1 fill-light mt0'>evaluate(rowObject: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rowObject</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    — contains column name/value pairs including the target column
+name/value pair as well, which is used in evaluating the variance reduction.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        always 
+<code>true</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='metrics'>
+      metrics
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Computes the variance reduction observed in the validation data passed to
+<code>evaluate()</code>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>metrics(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
+        containing the 
+<code>varianceReduction</code>
+ in percentage and data 
+<code>size</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='exportjson'>
+      exportJSON
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Exports the JSON of the rule tree generated by <code>learn()</code>, which may be
+saved in a file for later predictions.</p>
+
+
+  <div class='pre p1 fill-light mt0'>exportJSON(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">json</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">json</a></code>:
+        of the rule tree.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='importjson'>
+      importJSON
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Imports the rule tree from the input <code>rulesTree</code> for subsequent use by <code>predict()</code>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>importJSON(rulesTree: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">json</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rulesTree</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">json</a>)</code>
+	    — containg an earlier exported rule tree in JSON format.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
+        always 
+<code>true</code>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+  </div>
+  <script src='assets/anchor.js'></script>
+  <script src='assets/site.js'></script>
+</body>
+</html>
