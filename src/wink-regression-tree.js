@@ -24,6 +24,15 @@
 /* eslint no-continue: 0 */
 
 var helpers = require( 'wink-helpers' );
+
+// ### regressionTree
+/**
+ *
+ * Creates an instance of **`wink-regression-tree`**.
+ *
+ * @return {methods} object conatining set of API methods for tasks like configuration,
+ * data ingestion, learning, and prediction etc.
+*/
 var regressionTree = function () {
   // Columns configuration supplied to the `defineConfig()` function.
   var columnsConfig;

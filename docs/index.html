@@ -25,9 +25,9 @@
               
                 
                 <li><a
-                  href='#introduction'
+                  href='#creating-an-instance'
                   class="h5 bold black caps">
-                  Introduction
+                  Creating an Instance
                   
                 </a>
                 
@@ -35,9 +35,19 @@
               
                 
                 <li><a
-                  href='#api'
+                  href='#regressiontree'
+                  class="">
+                  regressionTree
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#api-methods'
                   class="h5 bold black caps">
-                  API
+                  API Methods
                   
                 </a>
                 
@@ -135,26 +145,13 @@
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='introduction' class='mt0'>
-    Introduction
+  <h2 id='creating-an-instance' class='mt0'>
+    Creating an Instance
   </h2>
 
   
-    <h1>wink-regression-tree</h1>
-<p>Decision Tree to predict the value of a continuous target variable</p>
-<h3><a href="https://travis-ci.org/decisively/wink-regression-tree"><img src="https://api.travis-ci.org/decisively/wink-regression-tree.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/decisively/wink-regression-tree?branch=master"><img src="https://coveralls.io/repos/github/decisively/wink-regression-tree/badge.svg?branch=master" alt="Coverage Status"></a> <a href="http://inch-ci.org/github/decisively/wink-regression-tree"><img src="http://inch-ci.org/github/decisively/wink-regression-tree.svg?branch=master" alt="Inline docs"></a> <a href="https://david-dm.org/decisively/wink-regression-tree?type=dev"><img src="https://david-dm.org/decisively/wink-regression-tree/dev-status.svg" alt="devDependencies Status"></a></h3>
-<img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
-<p>Predict the value of a continuous variable such as price, turn around time, or mileage using <strong><code>wink-regression-tree</code></strong>. It is a part of <em><a href="https://www.npmjs.com/~sanjaya">wink</a></em> — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.</p>
-<h3>Installation</h3>
-<p>Use <a href="https://www.npmjs.com/package/wink-regression-tree">npm</a> to install:</p>
-<pre><code>npm install wink-regression-tree --save
-</code></pre>
-<h3>Need Help?</h3>
-<p>If you spot a bug and the same has not yet been reported, raise a new <a href="https://github.com/decisively/wink-regression-tree/issues">issue</a> or consider fixing it and sending a pull request.</p>
-<h3>Copyright &#x26; License</h3>
-<p><strong>wink-regression-tree</strong> is copyright 2017 GRAYPE Systems Private Limited.</p>
-<p>It is licensed under the under the terms of the GNU Affero General Public License as published by the Free
-Software Foundation, version 3 of the License.</p>
+    <p>Load the <strong><code>wink-regression-tree</code></strong> module:</p>
+<p><code>var regressionTree = require( 'wink-regression-tree' );</code></p>
 
   
 </section>
@@ -162,10 +159,66 @@ Software Foundation, version 3 of the License.</p>
           
         
           
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='regressiontree'>
+      regressionTree
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Creates an instance of <strong><code>wink-regression-tree</code></strong>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>regressionTree(): methods</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code>methods</code>:
+        object conatining set of API methods for tasks like configuration,
+data ingestion, learning, and prediction etc.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='api' class='mt0'>
-    API
+  <h2 id='api-methods' class='mt0'>
+    API Methods
   </h2>
 
   
