@@ -475,6 +475,7 @@ var regressionTree = function () {
     } else {
       throw Error( 'winkRT: expecting ' + columnsConfig.length + ' elements instead found: ' + row.length );
     }
+    return true;
   }; // ingest()
 
   // ### learn
