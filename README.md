@@ -2,7 +2,7 @@
 
 Decision Tree to predict the value of a continuous target variable
 
-### [![Build Status](https://api.travis-ci.org/decisively/wink-regression-tree.svg?branch=master)](https://travis-ci.org/decisively/wink-regression-tree) [![Coverage Status](https://coveralls.io/repos/github/decisively/wink-regression-tree/badge.svg?branch=master)](https://coveralls.io/github/decisively/wink-regression-tree?branch=master) [![Inline docs](http://inch-ci.org/github/decisively/wink-regression-tree.svg?branch=master)](http://inch-ci.org/github/decisively/wink-regression-tree) [![devDependencies Status](https://david-dm.org/decisively/wink-regression-tree/dev-status.svg)](https://david-dm.org/decisively/wink-regression-tree?type=dev)
+### [![Build Status](https://api.travis-ci.org/winkjs/wink-regression-tree.svg?branch=master)](https://travis-ci.org/winkjs/wink-regression-tree) [![Coverage Status](https://coveralls.io/repos/github/winkjs/wink-regression-tree/badge.svg?branch=master)](https://coveralls.io/github/winkjs/wink-regression-tree?branch=master) [![Inline docs](http://inch-ci.org/github/winkjs/wink-regression-tree.svg?branch=master)](http://inch-ci.org/github/winkjs/wink-regression-tree) [![devDependencies Status](https://david-dm.org/winkjs/wink-regression-tree/dev-status.svg)](https://david-dm.org/winkjs/wink-regression-tree?type=dev)
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
@@ -17,7 +17,7 @@ Use [npm](https://www.npmjs.com/package/wink-regression-tree) to install:
 
 ### Need Help?
 
-If you spot a bug and the same has not yet been reported, raise a new [issue](https://github.com/decisively/wink-regression-tree/issues) or consider fixing it and sending a pull request.
+If you spot a bug and the same has not yet been reported, raise a new [issue](https://github.com/winkjs/wink-regression-tree/issues) or consider fixing it and sending a pull request.
 
 ### Copyright & License
 
