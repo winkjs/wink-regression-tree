@@ -43,8 +43,8 @@ var regressionTree = function () {
   var config = Object.create( null );
   // Returned!
   var methods = Object.create( null );
-  // The regression tree.
-  var tree = Object.create( null );
+  // The **w**ink **r**egression tree.
+  var wrTree = Object.create( null );
   // Xformed Column id to input column id map.
   var xc2cMap = [];
   // Xformed data, where categorical variables are encoded by a numeric code. Useful
@@ -361,7 +361,7 @@ var regressionTree = function () {
     // Maximum defined depth reached?
     if ( depth > config.maxDepth ) {
       // Yes, Incrment rules learned & return.
-      tree.rulesLearned += 1;
+      wrTree.rulesLearned += 1;
       return;
     }
 
@@ -391,7 +391,7 @@ var regressionTree = function () {
       // Does it have enough items to proceed with split?
       if ( index.length <= config.minSplitCandidateItems ) {
         // No! continue with the iteration with the next `uniqVal`.
-        tree.rulesLearned += 1;
+        wrTree.rulesLearned += 1;
         continue;
       }
       // Attempt split.
@@ -403,7 +403,7 @@ var regressionTree = function () {
       // Reasonable variance reduction?
       if ( varianceReduction < config.minPercentVarianceReduction ) {
         // No! continue with the iteration with the next `uniqVal`.
-        tree.rulesLearned += 1;
+        wrTree.rulesLearned += 1;
         continue;
       }
       // Yes, split possible! Make a list of left columns by removing the columns
@@ -415,7 +415,7 @@ var regressionTree = function () {
       // No further columns to process?
       if ( ( colsLeft.length === 0 ) ) {
         // Yes, return immediately.
-        tree.rulesLearned += 1;
+        wrTree.rulesLearned += 1;
         return;
       }
       // Still have columns for splitting, recurse!
@@ -533,13 +533,13 @@ var regressionTree = function () {
       if ( candidateCols[ i ] !== bestSplit.col ) updatedCandidateCols.push( candidateCols[ i ] );
     }
     // Define root node stuff.
-    tree.size = xdata.length;
-    tree.mean = rootsMean;
-    tree.stdev = computeStdev( rootsVarianceXn, tree.size );
-    tree.colUsed4Split = columnsDefn[xc2cMap[bestSplit.col]].name;
-    tree.varianceReduction = computePercentageVarianceReduction( rootsVarianceXn, tree.size, bestSplit.sum );
+    wrTree.size = xdata.length;
+    wrTree.mean = rootsMean;
+    wrTree.stdev = computeStdev( rootsVarianceXn, wrTree.size );
+    wrTree.colUsed4Split = columnsDefn[xc2cMap[bestSplit.col]].name;
+    wrTree.varianceReduction = computePercentageVarianceReduction( rootsVarianceXn, wrTree.size, bestSplit.sum );
     // Call recursive function, `growTree()`.
-    growTree( updatedCandidateCols, cndts.columns[ bestSplit.col ], bestSplit.col, tree, 1 );
+    growTree( updatedCandidateCols, cndts.columns[ bestSplit.col ], bestSplit.col, wrTree, 1 );
     return true;
   }; // learn()
 
@@ -578,7 +578,7 @@ var regressionTree = function () {
       throw Error( 'winkRT: input must be an object, instead found: ' + ( typeof input ) );
     }
     var colsUsed4Prediction = [];
-    return recursivelyPredict( input, tree, fn, colsUsed4Prediction );
+    return recursivelyPredict( input, wrTree, fn, colsUsed4Prediction );
   }; // predict()
 
   // ### evaluate
@@ -626,7 +626,7 @@ var regressionTree = function () {
    * @return {json} of the rule tree.
   */
   var exportJSON = function () {
-    return JSON.stringify( tree, null, 2 );
+    return JSON.stringify( wrTree, null, 2 );
   }; // exportJSON()
 
   // ### importJSON
@@ -637,7 +637,7 @@ var regressionTree = function () {
    * @return {boolean} always `true`.
   */
   var importJSON = function ( rulesTree ) {
-    tree = JSON.parse( rulesTree );
+    wrTree = JSON.parse( rulesTree );
     return true;
   }; // importJSON()
 
@@ -647,7 +647,7 @@ var regressionTree = function () {
   config.minSplitCandidateItems = 50;
   config.minLeafNodeItems = 10;
   // Initialize the number of rules learned.
-  tree.rulesLearned = 0;
+  wrTree.rulesLearned = 0;
 
   // Setup evaluation parameters.
   evalParams.size = 0;
