@@ -15,6 +15,9 @@ Use [npm](https://www.npmjs.com/package/wink-regression-tree) to install:
 
     npm install wink-regression-tree --save
 
+### Documentation
+For detailed API docs, check out https://winkjs.github.io/wink-regression-tree/ URL!
+
 ### Need Help?
 
 If you spot a bug and the same has not yet been reported, raise a new [issue](https://github.com/winkjs/wink-regression-tree/issues) or consider fixing it and sending a pull request.
