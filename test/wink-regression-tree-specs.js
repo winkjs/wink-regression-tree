@@ -26,6 +26,7 @@
 var chai = require( 'chai' );
 var mocha = require( 'mocha' );
 var wrt = require( '../src/wink-regression-tree.js' );
+var fs = require( 'fs' );
 
 var expect = chai.expect;
 var describe = mocha.describe;
@@ -33,6 +34,37 @@ var it = mocha.it;
 
 describe( 'Instantiating Wink Regression Tree', function () {
   it( 'should return an object', function () {
-    expect( typeof wrt( ) ).to.equal( 'object' );
+    expect( typeof wrt() ).to.equal( 'object' );
+  } );
+} );
+
+
+describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
+  it( 'should return JSON string & metrics with variance reduction of 76.0902%', function () {
+    var rt = wrt();
+    var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
+    cars.pop();
+    var columns = [
+      { name: 'model', categorical: true, exclude: true },
+      { name: 'mpg', categorical: false, target: true },
+      { name: 'cylinders', categorical: true },
+      { name: 'displacement', categorical: true, exclude: false },
+      { name: 'horsepower', categorical: true, exclude: false },
+      { name: 'weight', categorical: true, exclude: false },
+      { name: 'acceleration', categorical: true, exclude: false },
+      { name: 'year', categorical: true, exclude: false },
+      { name: 'origin', categorical: true, exclude: false  }
+    ];
+    rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 10, minSplitCandidateItems: 30 } );
+    cars.forEach( function ( row ) {
+      rt.ingest( row.split( ',' ) );
+    } );
+    rt.learn();
+    cars.forEach( function ( row ) {
+      var r = row.split( ',' );
+      rt.evaluate( { model: r[0], mpg: r[1], cylinders: r[2], displacement: r[3], horsepower: r[4], weight: r[5], acceleration: r[6], year: r[7], origin: r[8] } );
+    } );
+    expect( typeof rt.exportJSON() ).to.equal( 'string' );
+    expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 76.0902 } );
   } );
 } );
