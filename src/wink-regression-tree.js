@@ -316,6 +316,8 @@ var regressionTree = function () {
     var col, uvs;
     // Sum of `varianceXn * size` for each `uvs` in a `col`; and its size.
     var size, sum;
+    // Used to compute average children item for minAvgChildrenItems config.
+    var counter, meanSize;
     // Minimum Sum and the Best Column.
     var bestCol, minSum;
 
@@ -324,16 +326,22 @@ var regressionTree = function () {
       // Initialize `sum` and `size` for this `col`.
       sum = 0;
       size = 0;
+      // And also counter & meanSize.
+      counter = 0;
+      meanSize = 0;
       for ( uvs in candidates.columns[ col ] ) { // eslint-disable-line guard-for-in
         size += candidates.columns[ col ][ uvs ].size;
+        // Compute average (mean) children items.
+        counter += 1;
+        meanSize += computeMeanDelta( candidates.columns[ col ][ uvs ].size, meanSize, counter );
         // Compute weighted sum; will divide by sum after the loop finishes to normalize.
         // Recall, `varianceXn` is variance multiplied by items.
         sum += ( candidates.columns[ col ][ uvs ].varianceXn /* candidates.columns[ col ][ uvs ].size */ );
       }
       // Normalize - this will yield weighted sum of variances.
       sum /= size;
-      // Update minumum.
-      if ( sum < minSum ) {
+      // Update minumum only if `meanSize` is above the defined threshold.
+      if ( ( sum < minSum ) && ( meanSize > config.minAvgChildrenItems ) ) {
         minSum = sum;
         bestCol = col;
       }
@@ -444,8 +452,12 @@ var regressionTree = function () {
    * @param {number} [tree.minSplitCandidateItems=50] the minimum items that must be present
    * at a node for it to be split further, even after the `minPercentVarianceReduction`
    * target has been achieved.
-   * @param {number} [tree.minLeafNodeItems=10] s the minimum number of items that
-   * must be present at the node after a split.
+   * @param {number} [tree.minLeafNodeItems=10] is the minimum number of items that
+   * must be present at a leaf node to be retained as a part of rule tree.
+   * @param {number} [tree.minAvgChildrenItems=2] the average number of items
+   * across children must be greater than this number, for a column to become a candidate
+   * for split. A higher number will discourage splits that creates many branches
+   * with each child node containing fewer items.
    * @return {boolean} always `true`.
   */
   var defineConfig = function ( inputDataCols, tree ) {
@@ -453,6 +465,7 @@ var regressionTree = function () {
     config.minPercentVarianceReduction = tree.minPercentVarianceReduction || config.minPercentVarianceReduction;
     config.minSplitCandidateItems = tree.minSplitCandidateItems || config.minSplitCandidateItems;
     config.minLeafNodeItems = tree.minLeafNodeItems || config.minLeafNodeItems;
+    config.minAvgChildrenItems = tree.minAvgChildrenItems || config.minAvgChildrenItems;
     columnsConfig = inputDataCols;
     columnsDefn = initColsDefn( columnsConfig );
   }; // defineConfig();
@@ -646,6 +659,8 @@ var regressionTree = function () {
   config.minPercentVarianceReduction = 10;
   config.minSplitCandidateItems = 50;
   config.minLeafNodeItems = 10;
+  // This will ensure that split will never occurr on uniq id like columns!
+  config.minAvgChildrenItems = 2;
   // Initialize the number of rules learned.
   wrTree.rulesLearned = 0;
 
