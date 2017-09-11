@@ -322,6 +322,7 @@ var regressionTree = function () {
     var bestCol, minSum;
 
     minSum = Infinity;
+    bestCol = -1;
     for ( col in candidates.columns ) { // eslint-disable-line guard-for-in
       // Initialize `sum` and `size` for this `col`.
       sum = 0;
@@ -346,8 +347,8 @@ var regressionTree = function () {
         bestCol = col;
       }
     }
-
-    return { col: +bestCol, sum: minSum };
+    // If the best column is not found, return `undefined`.
+    return ( bestCol === -1 ) ? undefined : { col: +bestCol, sum: minSum };
   }; // selectBestSplit()
 
   // ### growTree
@@ -388,7 +389,7 @@ var regressionTree = function () {
         continue;
       }
       // Node has enough items! Setup the child node.
-      child = node.branches[ columnsDefn[xc2cMap[ colUsed4Split ]].invertedMap[ +uniqVal ] ] = Object.create( null );
+      child = node.branches[ columnsDefn[ xc2cMap[ colUsed4Split ] ].invertedMap[ +uniqVal ] ] = Object.create( null );
       child.size = splitData[ uniqVal ].size;
       child.mean = splitData[ uniqVal ].mean;
       child.stdev = computeStdev( splitData[ uniqVal ].varianceXn, splitData[ uniqVal ].size );
@@ -407,6 +408,11 @@ var regressionTree = function () {
         processRow( xdata[ index[ k ] ], index[ k ], cCols, updateVarianceXn );
       }
       bs = selectBestSplit( cCols );
+      if ( bs === undefined ) {
+        // No best column found, coninue with the next one!
+        wrTree.rulesLearned += 1;
+        continue;
+      }
       varianceReduction = computePercentageVarianceReduction( splitData[ uniqVal ].varianceXn, splitData[ uniqVal ].size, bs.sum );
       // Reasonable variance reduction?
       if ( varianceReduction < config.minPercentVarianceReduction ) {
@@ -540,15 +546,21 @@ var regressionTree = function () {
       rootsMean += computeMeanDelta( xdata[ i ][ indexOfTarget ], rootsMean, ( i + 1 ) );
       rootsVarianceXn += computeVarianceXnDelta( xdata[ i ][ indexOfTarget ], rootsMean, prevRootsMean );
     }
+    // Define minimal root node stuff here itself.
+    wrTree.size = xdata.length;
+    wrTree.mean = rootsMean;
+    wrTree.stdev = computeStdev( rootsVarianceXn, wrTree.size );
     bestSplit = selectBestSplit( cndts );
+    if ( bestSplit === undefined ) {
+      // Opps, no worthy column available - return the root!
+      wrTree.rulesLearned += 1;
+      return true;
+    }
     // Find the updated list of candidate columsn after the split.
     for ( i = 0; i < candidateCols.length; i += 1 ) {
       if ( candidateCols[ i ] !== bestSplit.col ) updatedCandidateCols.push( candidateCols[ i ] );
     }
-    // Define root node stuff.
-    wrTree.size = xdata.length;
-    wrTree.mean = rootsMean;
-    wrTree.stdev = computeStdev( rootsVarianceXn, wrTree.size );
+    // Define the balance stuff as a split has been found!
     wrTree.colUsed4Split = columnsDefn[xc2cMap[bestSplit.col]].name;
     wrTree.varianceReduction = computePercentageVarianceReduction( rootsVarianceXn, wrTree.size, bestSplit.sum );
     // Call recursive function, `growTree()`.

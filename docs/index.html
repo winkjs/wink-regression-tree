@@ -342,8 +342,20 @@ target has been achieved.
                   
                     (default <code>10</code>)
                   </td>
-                  <td class='break-word'><span>s the minimum number of items that
-must be present at the node after a split.
+                  <td class='break-word'><span>is the minimum number of items that
+must be present at a leaf node to be retained as a part of rule tree.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>tree.minAvgChildrenItems</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
+                  
+                    (default <code>2</code>)
+                  </td>
+                  <td class='break-word'><span>the average number of items
+across children must be greater than this number, for a column to become a candidate
+for split. A higher number will discourage splits that creates many branches
+with each child node containing fewer items.
 </span></td>
                 </tr>
               

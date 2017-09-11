@@ -40,7 +40,7 @@ describe( 'Instantiating Wink Regression Tree', function () {
 
 
 describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
-  it( 'should return JSON string & metrics with variance reduction of 76.0902%', function () {
+  it( 'should return JSON string & metrics with variance reduction of 75.6893%', function () {
     var rt = wrt();
     var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
     cars.pop();
@@ -52,10 +52,10 @@ describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
       { name: 'horsepower', categorical: true, exclude: false },
       { name: 'weight', categorical: true, exclude: false },
       { name: 'acceleration', categorical: true, exclude: false },
-      { name: 'year', categorical: true, exclude: false },
+      { name: 'year', categorical: true, exclude: true },
       { name: 'origin', categorical: true, exclude: false  }
     ];
-    rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 10, minSplitCandidateItems: 30 } );
+    rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 10, minSplitCandidateItems: 30, minAvgChildrenItems: 2 } );
     cars.forEach( function ( row ) {
       rt.ingest( row.split( ',' ) );
     } );
@@ -64,7 +64,8 @@ describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
       var r = row.split( ',' );
       rt.evaluate( { model: r[0], mpg: r[1], cylinders: r[2], displacement: r[3], horsepower: r[4], weight: r[5], acceleration: r[6], year: r[7], origin: r[8] } );
     } );
+    // console.log( rt.exportJSON() ); // eslint-disable-line no-console
     expect( typeof rt.exportJSON() ).to.equal( 'string' );
-    expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 76.0902 } );
+    expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 75.6893 } );
   } );
 } );
