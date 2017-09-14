@@ -673,7 +673,7 @@ var regressionTree = function () {
    * @return {json} of the rule tree.
   */
   var exportJSON = function () {
-    return JSON.stringify( wrTree, null, 2 );
+    return JSON.stringify( wrTree );
   }; // exportJSON()
 
   // ### importJSON
