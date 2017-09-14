@@ -54,6 +54,8 @@ var regressionTree = function () {
   var evalParams = Object.create( null );
   // Remember the target column name in this.
   var target;
+  // Current rules tree object version.
+  var winkRulesTreeVersion = 'WRT 1.0.0';
 
   // ### initColsDefn
   /**
@@ -547,6 +549,7 @@ var regressionTree = function () {
       rootsVarianceXn += computeVarianceXnDelta( xdata[ i ][ indexOfTarget ], rootsMean, prevRootsMean );
     }
     // Define minimal root node stuff here itself.
+    wrTree.version = winkRulesTreeVersion;
     wrTree.size = xdata.length;
     wrTree.mean = rootsMean;
     wrTree.stdev = computeStdev( rootsVarianceXn, wrTree.size );
