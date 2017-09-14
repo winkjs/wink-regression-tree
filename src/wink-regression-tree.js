@@ -665,7 +665,17 @@ var regressionTree = function () {
    * @return {boolean} always `true`.
   */
   var importJSON = function ( rulesTree ) {
-    wrTree = JSON.parse( rulesTree );
+    if ( !rulesTree ) {
+      throw Error( 'winkRT: undefined or null JSON encountered, import failed!' );
+    }
+    try {
+      wrTree = JSON.parse( rulesTree );
+    } catch ( ex ) {
+      throw Error( 'winkRT: JSON parsing error during import:\n\t' + ex.message );
+    }
+    if ( wrTree.version !== winkRulesTreeVersion ) {
+      throw Error( 'winkRT: incorrect json format or tree version, import failed!' );
+    }
     return true;
   }; // importJSON()
 

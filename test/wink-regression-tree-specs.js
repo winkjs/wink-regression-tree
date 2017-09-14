@@ -69,3 +69,30 @@ describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
     expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 75.6893 } );
   } );
 } );
+
+describe( 'Import of incorrect JSON must fail', function () {
+  it( 'if the input is a null json', function () {
+    var rt = wrt();
+    expect( rt.importJSON.bind( null, null ) ).to.throw( 'winkRT: undefined or null JSON encountered, import failed!' );
+  } );
+
+  it( 'if the input is a empty json', function () {
+    var rt = wrt();
+    expect( rt.importJSON.bind( null, '' ) ).to.throw( 'winkRT: undefined or null JSON encountered, import failed!' );
+  } );
+
+  it( 'if the input is an ill-formed json', function () {
+    var rt = wrt();
+    expect( rt.importJSON.bind( null, '{ "junk": 3, }' ) ).to.throw( 'winkRT: JSON parsing error during import:\n\tUnexpected token } in JSON at position 13' );
+  } );
+
+  it( 'if the json version is wrong', function () {
+    var rt = wrt();
+    expect( rt.importJSON.bind( null, '{ "version": "1.3" }' ) ).to.throw( 'winkRT: incorrect json format or tree version, import failed!' );
+  } );
+
+  it( 'if the json version key is missing', function () {
+    var rt = wrt();
+    expect( rt.importJSON.bind( null, '{  }' ) ).to.throw( 'winkRT: incorrect json format or tree version, import failed!' );
+  } );
+} );
