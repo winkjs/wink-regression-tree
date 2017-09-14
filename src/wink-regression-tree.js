@@ -581,10 +581,13 @@ var regressionTree = function () {
    * names must the same as defined via `defineConfig()`.
    * @param {object} rules — the rules tree generated during `learn()`; on every
    * recursion a branch of tree is passed.
-   * @param {function} [fn=undefined] — is called once
+   * @param {function} [f=undefined] — is called once
    * a leaf node is reached during prediction with the following 4 parameters: **size,**
    * **mean** and **stdev** values at the node; and an **array** of column names
    * navigated to reach the leaf. The value returned from this function becomes  the prediction.
+   * @param {array} colsUsed4Prediction — columns used for prediction are pushed into this array; if
+   * this is empty then it means no rules matched and prediction occurred using
+   * the root node.
    * @return {number} `mean` value or whatever is returned by the `fn` function, if defined.
   */
   var navigateRules = function ( input, rules, f, colsUsed4Prediction ) {

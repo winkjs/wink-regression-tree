@@ -85,6 +85,16 @@
               
                 
                 <li><a
+                  href='#navigaterules'
+                  class="">
+                  navigateRules
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#predict'
                   class="">
                   predict
@@ -511,6 +521,126 @@ via
         always 
 <code>true</code>
 .
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='navigaterules'>
+      navigateRules
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Recursively navigaes the rule tree to arrive at a prediction i.e. a leaf node
+of the rule tree.</p>
+
+
+  <div class='pre p1 fill-light mt0'>navigateRules(input: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, rules: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, f: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>, colsUsed4Prediction: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>input</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    — data containing column name/value pairs; the column
+names must the same as defined via 
+<code>defineConfig()</code>
+.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>rules</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
+	    — the rules tree generated during 
+<code>learn()</code>
+; on every
+recursion a branch of tree is passed.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>f</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>
+            = <code>undefined</code>)</code>
+	    — is called once
+a leaf node is reached during prediction with the following 4 parameters: 
+<strong>size,</strong>
+
+
+<strong>mean</strong>
+ and 
+<strong>stdev</strong>
+ values at the node; and an 
+<strong>array</strong>
+ of column names
+navigated to reach the leaf. The value returned from this function becomes  the prediction.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>colsUsed4Prediction</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
+	    — columns used for prediction are pushed into this array; if
+this is empty then it means no rules matched and prediction occurred using
+the root node.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
+        <code>mean</code>
+ value or whatever is returned by the 
+<code>fn</code>
+ function, if defined.
 
       
     
