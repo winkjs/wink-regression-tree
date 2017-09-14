@@ -568,21 +568,21 @@ var regressionTree = function () {
     return true;
   }; // learn()
 
-  var recursivelyPredict = function ( input, rules, f, colsUsed4Prediction ) {
+  var navigateRules = function ( input, rules, f, colsUsed4Prediction ) {
     if (
           helpers.object.isObject( rules.branches ) &&
           ( ( input[ rules.colUsed4Split ] !== undefined ) || ( input[ rules.colUsed4Split ] !== null ) ) &&
           helpers.object.isObject( rules.branches[ input[ rules.colUsed4Split ] ] )
        ) {
       colsUsed4Prediction.push( rules.colUsed4Split );
-      return recursivelyPredict( input, rules.branches[ input[ rules.colUsed4Split ] ], f, colsUsed4Prediction );
+      return navigateRules( input, rules.branches[ input[ rules.colUsed4Split ] ], f, colsUsed4Prediction );
     }
     return (
       ( typeof f === 'function' ) ?
         f( rules.size, rules.mean, rules.stdev, colsUsed4Prediction ) :
         rules.mean
     );
-  }; // recursivelyPredict()
+  }; // navigateRules()
 
   // ### predict
   /**
@@ -603,7 +603,7 @@ var regressionTree = function () {
       throw Error( 'winkRT: input must be an object, instead found: ' + ( typeof input ) );
     }
     var colsUsed4Prediction = [];
-    return recursivelyPredict( input, wrTree, fn, colsUsed4Prediction );
+    return navigateRules( input, wrTree, fn, colsUsed4Prediction );
   }; // predict()
 
   // ### evaluate
