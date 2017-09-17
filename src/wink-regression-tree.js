@@ -589,6 +589,7 @@ var regressionTree = function () {
    * this is empty then it means no rules matched and prediction occurred using
    * the root node.
    * @return {number} `mean` value or whatever is returned by the `fn` function, if defined.
+   * @private
   */
   var navigateRules = function ( input, rules, f, colsUsed4Prediction ) {
     if (
@@ -627,6 +628,125 @@ var regressionTree = function () {
     var colsUsed4Prediction = [];
     return navigateRules( input, wrTree, fn, colsUsed4Prediction );
   }; // predict()
+
+  // ### navigateRules4Stats
+  /**
+   *
+   * Recursively navigaes the rule tree to arrive at a prediction i.e. a leaf node
+   * of the rule tree.
+   *
+   * @param {object} subTree — the rules tree generated during `learn()`; on every
+   * recursion a branch of tree is passed.
+   * @param {object} stats — summary of min/max means and their corresponding stdevs
+   * along with the overall `minSD` — minimum stdev.
+   * @param {stats} colImp — contains depth wise column hierarchy, number of leaves
+   * and the min/max varaiance reduction at that level.
+   * @param {number} depth — the current depth of the tree.
+   * @param {string} ch — column's hierarchy in the unix file/folder naming style.
+   * @return {undefined} nothing!
+   * @private
+  */
+  var navigateRules4Stats = function ( subTree, stats, colImp, depth, ch ) {
+    var chVal = ch;
+    if ( subTree.branches && ( Object.keys( subTree.branches ) ).length > 0 ) {
+      // Update column's hierarchy in unix styled path names.
+      chVal += '/' + subTree.colUsed4Split;
+      // Initialize stats at the current `depth` and `ch` level.
+      colImp[ depth ] = colImp[ depth ] || Object.create( null );
+      if ( colImp[ depth ][ chVal ] === undefined ) {
+        colImp[ depth ][ chVal ] = Object.create( null );
+        colImp[ depth ][ chVal ].leaves = 0;
+        colImp[ depth ][ chVal ].minVR = Infinity;
+        colImp[ depth ][ chVal ].maxVR = -Infinity;
+      }
+      // Update stats.
+      colImp[ depth ][ chVal ].leaves += 1;
+      // Update min/max varaiance reductions.
+      colImp[ depth ][ chVal ].minVR = Math.min( colImp[ depth ][ chVal ].minVR, +subTree.varianceReduction.toFixed( 4 ) );
+      colImp[ depth ][ chVal ].maxVR = Math.max( colImp[ depth ][ chVal ].maxVR, +subTree.varianceReduction.toFixed( 4 ) );
+
+      for ( var key in subTree.branches ) {
+        // Update summary!
+        if ( stats.min.mean > subTree.branches[ key ].mean ) {
+          stats.min.mean = subTree.branches[ key ].mean;
+          stats.min.itsSD = subTree.branches[ key ].stdev;
+        }
+        if ( stats.max.mean < subTree.branches[ key ].mean ) {
+          stats.max.mean = subTree.branches[ key ].mean;
+          stats.max.itsSD = subTree.branches[ key ].stdev;
+        }
+        stats.minSD = Math.min( stats.minSD, subTree.branches[ key ].stdev );
+        // Time to dig deeper!!
+        navigateRules4Stats( subTree.branches[ key ], stats, colImp, ( depth + 1 ), chVal );
+      }
+    }
+  }; // navigateRules4Stats()
+
+  // ### summary
+  /**
+   *
+   * Generates summary of the learnings in terms of the following:<ol>
+   * <li>Relative importance of columns along with the corresponding min/max
+   * variance reductions (VR).</li>
+   * <li>The min/max mean values along with the corresponding standard
+   * deviations (SD).</li>
+   * <li>The minumum standard deviation (SD) discovered during the learning.</li></ol>
+   *
+   * @return {object} containing the following:<ol>
+   * <li><code>table</code> — array of objects, where each object defines <code>level</code>, <code>columnHierarchy</code>,
+   * <code>leaves</code>, <code>minVR</code> and <code>maxVR</code>. A lower value of <code>level</code>
+   * indicates higher importance. It is sorted in ascending order of <code>level</code>
+   * followed by in descending order of <code>leaves</code>.</li>
+   * <li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
+   * and <code>minSD</code>.</li>
+  */
+  var summary = function () {
+    // Column imporatnce is captured first in an object to ease hashing and later
+    // converted to a table.
+    var columnsImportance = Object.create( null );
+    var table = [];
+    // Current depth of the tree.
+    var depth = 1;
+    // In unix style file paths.
+    var columnHierarchy = '';
+    // To capture min/max means and their stdevs, etc.
+    var stats = Object.create( null );
+    // Helper variables.
+    var ch, level;
+
+    // Initialize.
+    stats.min = Object.create( null );
+    stats.max = Object.create( null );
+    stats.minSD = Infinity;
+    stats.min.mean = Infinity;
+    stats.min.itsSD = 0;
+    stats.max.mean = -Infinity;
+    stats.max.itsSD = 0;
+    // Buld summary recursively.
+    navigateRules4Stats( wrTree, stats, columnsImportance, depth, columnHierarchy );
+    // Convert to `table`.
+    for ( level in columnsImportance ) { // eslint-disable-line guard-for-in
+      for ( ch in columnsImportance[ level ] ) { // eslint-disable-line guard-for-in
+        table.push( {
+          level: +level,
+          columnHierarchy: ch,
+          leaves: columnsImportance[ level ][ ch ].leaves,
+          minVR: columnsImportance[ level ][ ch ].minVR,
+          maxVR: columnsImportance[ level ][ ch ].maxVR,
+        } );
+      }
+    }
+    // Sort on level (asc) and then on leaves(dsc).
+    table.sort( function ( a, b ) {
+      return (
+        ( a.level > b.level ) ? 1 :
+          ( a.level < b.level ) ? -1 :
+            ( a.leaves < b.leaves ) ? 1 : -1
+      );
+    } );
+    // Return summary!
+    return { columnsImportance: table, stats: stats };
+  }; // summary()
 
   // ### evaluate
   /**
@@ -723,6 +843,9 @@ var regressionTree = function () {
   methods.predict = predict;
   methods.evaluate = evaluate;
   methods.metrics = metrics;
+  // Setup an alias `stats()` to maintain similarity with other ML packages
+  // such as naive bayes, etc.
+  methods.stats = methods.summary = summary;
   methods.exportJSON = exportJSON;
   methods.importJSON = importJSON;
 

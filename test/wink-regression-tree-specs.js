@@ -28,9 +28,14 @@ var mocha = require( 'mocha' );
 var wrt = require( '../src/wink-regression-tree.js' );
 var fs = require( 'fs' );
 
+var summary = require( '../test/data/summary.json' );
+
 var expect = chai.expect;
 var describe = mocha.describe;
 var it = mocha.it;
+
+var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
+cars.pop();
 
 describe( 'Instantiating Wink Regression Tree', function () {
   it( 'should return an object', function () {
@@ -42,8 +47,8 @@ describe( 'Instantiating Wink Regression Tree', function () {
 describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
   it( 'should return JSON string & metrics with variance reduction of 75.6893%', function () {
     var rt = wrt();
-    var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
-    cars.pop();
+    // var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
+    // cars.pop();
     var columns = [
       { name: 'model', categorical: true, exclude: true },
       { name: 'mpg', categorical: false, target: true },
@@ -94,5 +99,30 @@ describe( 'Import of incorrect JSON must fail', function () {
   it( 'if the json version key is missing', function () {
     var rt = wrt();
     expect( rt.importJSON.bind( null, '{  }' ) ).to.throw( 'winkRT: incorrect json format or tree version, import failed!' );
+  } );
+} );
+
+describe( 'Generate summary of learning', function () {
+  it( 'should return object matching the summary.json', function () {
+    var rt = wrt();
+    var columns = [
+      { name: 'model', categorical: true, exclude: true },
+      { name: 'mpg', categorical: false, target: true },
+      { name: 'cylinders', categorical: true },
+      { name: 'displacement', categorical: true, exclude: false },
+      { name: 'horsepower', categorical: true, exclude: false },
+      { name: 'weight', categorical: true, exclude: false },
+      { name: 'acceleration', categorical: true, exclude: false },
+      { name: 'year', categorical: true, exclude: true },
+      { name: 'origin', categorical: true, exclude: false  }
+    ];
+    rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 10, minSplitCandidateItems: 30, minAvgChildrenItems: 2 } );
+    cars.forEach( function ( row ) {
+      rt.ingest( row.split( ',' ) );
+    } );
+    rt.learn();
+    expect( typeof rt.summary() ).to.equal( 'object' );
+    // console.log( JSON.stringify( rt.summary(), null, 2 ) ); // eslint-disable-line no-console
+    expect( rt.summary() ).to.deep.equal( summary );
   } );
 } );

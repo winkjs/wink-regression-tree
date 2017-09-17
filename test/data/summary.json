@@ -1,0 +1,85 @@
+{
+  "columnsImportance": [
+    {
+      "level": 1,
+      "columnHierarchy": "/weight",
+      "leaves": 1,
+      "minVR": 69.5952,
+      "maxVR": 69.5952
+    },
+    {
+      "level": 2,
+      "columnHierarchy": "/weight/horsepower",
+      "leaves": 3,
+      "minVR": 14.0023,
+      "maxVR": 29.9273
+    },
+    {
+      "level": 2,
+      "columnHierarchy": "/weight/displacement",
+      "leaves": 1,
+      "minVR": 23.4544,
+      "maxVR": 23.4544
+    },
+    {
+      "level": 3,
+      "columnHierarchy": "/weight/horsepower/acceleration",
+      "leaves": 2,
+      "minVR": 8.5003,
+      "maxVR": 17.1921
+    },
+    {
+      "level": 3,
+      "columnHierarchy": "/weight/displacement/horsepower",
+      "leaves": 1,
+      "minVR": 15.3131,
+      "maxVR": 15.3131
+    },
+    {
+      "level": 3,
+      "columnHierarchy": "/weight/horsepower/displacement",
+      "leaves": 1,
+      "minVR": 9.9599,
+      "maxVR": 9.9599
+    },
+    {
+      "level": 3,
+      "columnHierarchy": "/weight/horsepower/origin",
+      "leaves": 1,
+      "minVR": 8.1364,
+      "maxVR": 8.1364
+    },
+    {
+      "level": 4,
+      "columnHierarchy": "/weight/displacement/horsepower/origin",
+      "leaves": 1,
+      "minVR": 8.4703,
+      "maxVR": 8.4703
+    },
+    {
+      "level": 4,
+      "columnHierarchy": "/weight/horsepower/origin/acceleration",
+      "leaves": 1,
+      "minVR": 10.6744,
+      "maxVR": 10.6744
+    },
+    {
+      "level": 5,
+      "columnHierarchy": "/weight/displacement/horsepower/origin/acceleration",
+      "leaves": 1,
+      "minVR": 6.2499,
+      "maxVR": 6.2499
+    }
+  ],
+  "stats": {
+    "min": {
+      "mean": 14.2,
+      "itsSD": 2.0230380438413085
+    },
+    "max": {
+      "mean": 34.888571428571424,
+      "itsSD": 4.01554123731427
+    },
+    "minSD": 1.8920887928424512
+  }
+}
