@@ -471,7 +471,7 @@ var regressionTree = function () {
    * across children must be greater than this number, for a column to become a candidate
    * for split. A higher number will discourage splits that creates many branches
    * with each child node containing fewer items.
-   * @return {boolean} number of columns defined.
+   * @return {number} number of columns defined.
    * @example
    * // Define each column.
    * var columns = [
