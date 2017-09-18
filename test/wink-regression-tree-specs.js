@@ -75,6 +75,40 @@ describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
   } );
 } );
 
+
+describe( 'Run basic edge cases', function () {
+  it( 'should return JSON string, metrics with variance reduction of 0%, predict to throw error on no input', function () {
+    var rt = wrt();
+    // var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
+    // cars.pop();
+    var columns = [
+      { name: 'model', categorical: true, exclude: false },
+      { name: 'mpg', categorical: false, target: true },
+      { name: 'cylinders', categorical: true, exclude: true },
+      { name: 'displacement', categorical: true, exclude: true },
+      { name: 'horsepower', categorical: true, exclude: true },
+      { name: 'weight', categorical: true, exclude: true },
+      { name: 'acceleration', categorical: true, exclude: true },
+      { name: 'year', categorical: true, exclude: true },
+      { name: 'origin', categorical: true, exclude: true  }
+    ];
+    rt.defineConfig( columns, { } );
+    cars.forEach( function ( row ) {
+      rt.ingest( row.split( ',' ) );
+    } );
+    rt.learn();
+    cars.forEach( function ( row ) {
+      var r = row.split( ',' );
+      rt.evaluate( { model: r[0], mpg: r[1], cylinders: r[2], displacement: r[3], horsepower: r[4], weight: r[5], acceleration: r[6], year: r[7], origin: r[8] } );
+    } );
+    console.log( rt.exportJSON() ); // eslint-disable-line no-console
+    expect( typeof rt.exportJSON() ).to.equal( 'string' );
+    expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 0 } );
+    // test no input to `predict()`
+    expect( rt.predict.bind() ).to.throw( 'winkRT: input must be an object, instead found:' );
+  } );
+} );
+
 describe( 'Import of incorrect JSON must fail', function () {
   it( 'if the input is a null json', function () {
     var rt = wrt();
