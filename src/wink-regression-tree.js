@@ -454,7 +454,7 @@ var regressionTree = function () {
    *
    * @param {object[]} inputDataCols — each object in this array defines a column of input
    * data in the same sequence in which data will be supplied to `ingest().` It is
-   * defined in terms of column's `name,` `dataType (default = 'categorical'),`
+   * defined in terms of column's `name,` it's data type `categorical` (true or false),
    * `exclude (default = false),` and `target (default = false).`
    * @param {object} tree — contains key value pairs of the following regression
    * tree's parameters:
