@@ -661,8 +661,9 @@ var regressionTree = function () {
   // ### navigateRules4Stats
   /**
    *
-   * Recursively navigaes the rule tree to arrive at a prediction i.e. a leaf node
-   * of the rule tree.
+   * Recursively navigaes the rule tree to generate the summary by extracting the
+   * level wise column hierarchy, nodes that were split on this hierarchy, min &
+   * max variance reduction, etc.
    *
    * @param {object} subTree — the rules tree generated during `learn()`; on every
    * recursion a branch of tree is passed.
