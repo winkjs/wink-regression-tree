@@ -214,6 +214,15 @@ data ingestion, learning, and prediction etc.
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Load wink regression tree.</span>
+<span class="hljs-keyword">var</span> winkRT = <span class="hljs-built_in">require</span>( <span class="hljs-string">'wink-regression-tree'</span> );
+<span class="hljs-comment">// create your instance of regression tree.</span>
+<span class="hljs-keyword">var</span> myRT = winkRT();</pre>
+    
+  
 
   
 
@@ -383,9 +392,7 @@ with each child node containing fewer items.
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
-        always 
-<code>true</code>
-.
+        number of columns defined.
 
       
     
@@ -393,6 +400,33 @@ with each child node containing fewer items.
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Define each column.</span>
+<span class="hljs-keyword">var</span> columns = [
+ { <span class="hljs-attr">name</span>: <span class="hljs-string">'model'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
+ { <span class="hljs-attr">name</span>: <span class="hljs-string">'mpg'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">target</span>: <span class="hljs-literal">true</span> },
+ { <span class="hljs-attr">name</span>: <span class="hljs-string">'cylinders'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span> },
+ { <span class="hljs-attr">name</span>: <span class="hljs-string">'displacement'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
+ { <span class="hljs-attr">name</span>: <span class="hljs-string">'horsepower'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
+ { <span class="hljs-attr">name</span>: <span class="hljs-string">'weight'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
+ { <span class="hljs-attr">name</span>: <span class="hljs-string">'acceleration'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
+ { <span class="hljs-attr">name</span>: <span class="hljs-string">'year'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
+ { <span class="hljs-attr">name</span>: <span class="hljs-string">'origin'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span>  }
+];
+<span class="hljs-comment">// Define parameters to grow the tree.</span>
+<span class="hljs-keyword">var</span> treeParams = {
+ <span class="hljs-attr">minPercentVarianceReduction</span>: <span class="hljs-number">2.5</span>,
+ <span class="hljs-attr">minLeafNodeItems</span>: <span class="hljs-number">10</span>,
+ <span class="hljs-attr">minSplitCandidateItems</span>: <span class="hljs-number">30</span>,
+ <span class="hljs-attr">minAvgChildrenItems</span>: <span class="hljs-number">3</span>
+};
+<span class="hljs-comment">// Define the configuration using above 2 variables.</span>
+myRT.defineConfig( columns, treeParams );
+<span class="hljs-comment">// -&gt; 8</span></pre>
+    
   
 
   
@@ -682,7 +716,7 @@ deviations (SD).</li>
 <li><code>table</code> — array of objects, where each object defines <code>level</code>, <code>columnHierarchy</code>,
 <code>nodesSplit</code>, <code>minVR</code> and <code>maxVR</code>. A lower value of <code>level</code>
 indicates higher importance; similarly more nodes at a level split on a columnHierarchy
-is an indication of importance. It is sorted in ascending order of <code>level</code>
+is an indication of importance. Therefore, it is sorted in ascending order of <code>level</code>
 followed by in descending order of <code>nodesSplit</code>.</li>
 <li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
 and <code>minSD</code>.</li>

@@ -32,6 +32,11 @@ var helpers = require( 'wink-helpers' );
  *
  * @return {methods} object conatining set of API methods for tasks like configuration,
  * data ingestion, learning, and prediction etc.
+ * @example
+ * // Load wink regression tree.
+ * var winkRT = require( 'wink-regression-tree' );
+ * // create your instance of regression tree.
+ * var myRT = winkRT();
 */
 var regressionTree = function () {
   // Columns configuration supplied to the `defineConfig()` function.
@@ -466,7 +471,30 @@ var regressionTree = function () {
    * across children must be greater than this number, for a column to become a candidate
    * for split. A higher number will discourage splits that creates many branches
    * with each child node containing fewer items.
-   * @return {boolean} always `true`.
+   * @return {boolean} number of columns defined.
+   * @example
+   * // Define each column.
+   * var columns = [
+   *  { name: 'model', categorical: true, exclude: true },
+   *  { name: 'mpg', categorical: false, target: true },
+   *  { name: 'cylinders', categorical: true },
+   *  { name: 'displacement', categorical: true, exclude: false },
+   *  { name: 'horsepower', categorical: true, exclude: false },
+   *  { name: 'weight', categorical: true, exclude: false },
+   *  { name: 'acceleration', categorical: true, exclude: false },
+   *  { name: 'year', categorical: true, exclude: true },
+   *  { name: 'origin', categorical: true, exclude: false  }
+   * ];
+   * // Define parameters to grow the tree.
+   * var treeParams = {
+   *  minPercentVarianceReduction: 2.5,
+   *  minLeafNodeItems: 10,
+   *  minSplitCandidateItems: 30,
+   *  minAvgChildrenItems: 3
+   * };
+   * // Define the configuration using above 2 variables.
+   * myRT.defineConfig( columns, treeParams );
+   * // -> 8
   */
   var defineConfig = function ( inputDataCols, tree ) {
     config.maxDepth = tree.maxDepth || config.maxDepth;
@@ -476,6 +504,7 @@ var regressionTree = function () {
     config.minAvgChildrenItems = tree.minAvgChildrenItems || config.minAvgChildrenItems;
     columnsConfig = inputDataCols;
     columnsDefn = initColsDefn( columnsConfig );
+    return inputDataCols.length;
   }; // defineConfig();
 
   // ### ingest
