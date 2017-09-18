@@ -639,7 +639,7 @@ var regressionTree = function () {
    * recursion a branch of tree is passed.
    * @param {object} stats — summary of min/max means and their corresponding stdevs
    * along with the overall `minSD` — minimum stdev.
-   * @param {stats} colImp — contains depth wise column hierarchy, number of leaves
+   * @param {stats} colImp — contains depth wise column hierarchy, number of nodesSplit
    * and the min/max varaiance reduction at that level.
    * @param {number} depth — the current depth of the tree.
    * @param {string} ch — column's hierarchy in the unix file/folder naming style.
@@ -655,12 +655,12 @@ var regressionTree = function () {
       colImp[ depth ] = colImp[ depth ] || Object.create( null );
       if ( colImp[ depth ][ chVal ] === undefined ) {
         colImp[ depth ][ chVal ] = Object.create( null );
-        colImp[ depth ][ chVal ].leaves = 0;
+        colImp[ depth ][ chVal ].nodesSplit = 0;
         colImp[ depth ][ chVal ].minVR = Infinity;
         colImp[ depth ][ chVal ].maxVR = -Infinity;
       }
       // Update stats.
-      colImp[ depth ][ chVal ].leaves += 1;
+      colImp[ depth ][ chVal ].nodesSplit += 1;
       // Update min/max varaiance reductions.
       colImp[ depth ][ chVal ].minVR = Math.min( colImp[ depth ][ chVal ].minVR, +subTree.varianceReduction.toFixed( 4 ) );
       colImp[ depth ][ chVal ].maxVR = Math.max( colImp[ depth ][ chVal ].maxVR, +subTree.varianceReduction.toFixed( 4 ) );
@@ -694,9 +694,10 @@ var regressionTree = function () {
    *
    * @return {object} containing the following:<ol>
    * <li><code>table</code> — array of objects, where each object defines <code>level</code>, <code>columnHierarchy</code>,
-   * <code>leaves</code>, <code>minVR</code> and <code>maxVR</code>. A lower value of <code>level</code>
-   * indicates higher importance. It is sorted in ascending order of <code>level</code>
-   * followed by in descending order of <code>leaves</code>.</li>
+   * <code>nodesSplit</code>, <code>minVR</code> and <code>maxVR</code>. A lower value of <code>level</code>
+   * indicates higher importance; similarly more nodes at a level split on a columnHierarchy
+   * is an indication of importance. Therefore, it is sorted in ascending order of <code>level</code>
+   * followed by in descending order of <code>nodesSplit</code>.</li>
    * <li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
    * and <code>minSD</code>.</li>
   */
@@ -730,18 +731,18 @@ var regressionTree = function () {
         table.push( {
           level: +level,
           columnHierarchy: ch,
-          leaves: columnsImportance[ level ][ ch ].leaves,
+          nodesSplit: columnsImportance[ level ][ ch ].nodesSplit,
           minVR: columnsImportance[ level ][ ch ].minVR,
           maxVR: columnsImportance[ level ][ ch ].maxVR,
         } );
       }
     }
-    // Sort on level (asc) and then on leaves(dsc).
+    // Sort on level (asc) and then on nodesSplit(dsc).
     table.sort( function ( a, b ) {
       return (
         ( a.level > b.level ) ? 1 :
           ( a.level < b.level ) ? -1 :
-            ( a.leaves < b.leaves ) ? 1 : -1
+            ( a.nodesSplit < b.nodesSplit ) ? 1 : -1
       );
     } );
     // Return summary!

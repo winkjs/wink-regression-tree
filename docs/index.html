@@ -680,9 +680,10 @@ deviations (SD).</li>
         containing the following:
 <ol>
 <li><code>table</code> — array of objects, where each object defines <code>level</code>, <code>columnHierarchy</code>,
-<code>leaves</code>, <code>minVR</code> and <code>maxVR</code>. A lower value of <code>level</code>
-indicates higher importance. It is sorted in ascending order of <code>level</code>
-followed by in descending order of <code>leaves</code>.</li>
+<code>nodesSplit</code>, <code>minVR</code> and <code>maxVR</code>. A lower value of <code>level</code>
+indicates higher importance; similarly more nodes at a level split on a columnHierarchy
+is an indication of importance. It is sorted in ascending order of <code>level</code>
+followed by in descending order of <code>nodesSplit</code>.</li>
 <li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
 and <code>minSD</code>.</li>
 
