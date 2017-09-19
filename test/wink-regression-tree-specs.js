@@ -60,6 +60,10 @@ describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
       { name: 'year', categorical: true, exclude: true },
       { name: 'origin', categorical: true, exclude: false  }
     ];
+    var inp = { weight: 'high weight', displacement: 'large displacement', horsepower: 'high power', origin: 'US', acceleration: 'faster' };
+    var f = function ( size, mean, stdev, cols, missingCol ) {
+      return [ size, +mean.toFixed( 4 ), +stdev.toFixed( 4 ), cols.join( '/' ), missingCol ];
+    };
     rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 10, minSplitCandidateItems: 30, minAvgChildrenItems: 2 } );
     cars.forEach( function ( row ) {
       rt.ingest( row.split( ',' ) );
@@ -69,9 +73,17 @@ describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
       var r = row.split( ',' );
       rt.evaluate( { model: r[0], mpg: r[1], cylinders: r[2], displacement: r[3], horsepower: r[4], weight: r[5], acceleration: r[6], year: r[7], origin: r[8] } );
     } );
-    // console.log( rt.exportJSON() ); // eslint-disable-line no-console
+    // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
     expect( typeof rt.exportJSON() ).to.equal( 'string' );
     expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 75.6893 } );
+    // Test navigation to the deppest level of tree.
+    expect( +( rt.predict( inp ) ).toFixed( 4 ) ).to.equal( 19.4048 );
+    // Same test with a handller function.
+    expect( rt.predict( inp, f ) ).to.deep.equal( [ 21, 19.4048, 2.4036, 'weight/displacement/horsepower/origin/acceleration', undefined ] );
+    // Missing column value with handler - will give column name.
+    expect( rt.predict( { weight: 'high weight' }, f ) ).to.deep.equal( [ 99, 20.5131, 4.3304, 'weight', 'displacement' ] );
+    // Missing column value without the handler - will throw error.
+    expect( rt.predict.bind( null, { weight: 'high weight' } ) ).to.throw( 'winkRT: missing column value for the column: "displacement"' );
   } );
 } );
 
@@ -101,7 +113,7 @@ describe( 'Run basic edge cases', function () {
       var r = row.split( ',' );
       rt.evaluate( { model: r[0], mpg: r[1], cylinders: r[2], displacement: r[3], horsepower: r[4], weight: r[5], acceleration: r[6], year: r[7], origin: r[8] } );
     } );
-    console.log( rt.exportJSON() ); // eslint-disable-line no-console
+    // console.log( rt.exportJSON() ); // eslint-disable-line no-console
     expect( typeof rt.exportJSON() ).to.equal( 'string' );
     expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 0 } );
     // test no input to `predict()`
