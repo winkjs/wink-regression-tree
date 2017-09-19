@@ -674,21 +674,6 @@ var regressionTree = function () {
     // Continue navigation!
     colsUsed4Prediction.push( rules.colUsed4Split );
     return navigateRules( input, rules.branches[ reqdValue ], f, colsUsed4Prediction );
-
-    // ---
-    // if (
-    //       helpers.object.isObject( rules.branches ) &&
-    //       ( ( input[ rules.colUsed4Split ] !== undefined ) || ( input[ rules.colUsed4Split ] !== null ) ) &&
-    //       helpers.object.isObject( rules.branches[ input[ rules.colUsed4Split ] ] )
-    //    ) {
-    //   colsUsed4Prediction.push( rules.colUsed4Split );
-    //   return navigateRules( input, rules.branches[ input[ rules.colUsed4Split ] ], f, colsUsed4Prediction );
-    // }
-    // return (
-    //   ( typeof f === 'function' ) ?
-    //     f( rules.size, rules.mean, rules.stdev, colsUsed4Prediction ) :
-    //     rules.mean
-    // );
   }; // navigateRules()
 
   // ### predict
