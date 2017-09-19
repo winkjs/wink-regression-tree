@@ -1,0 +1,199 @@
+{
+  "rulesLearned": 16,
+  "version": "WRT 1.0.0",
+  "size": 394,
+  "mean": 23.472842639593907,
+  "stdev": 7.805051443209992,
+  "colUsed4Split": "weight",
+  "varianceReduction": 69.59522440250596,
+  "branches": {
+    "high weight": {
+      "size": 99,
+      "mean": 20.513131313131307,
+      "stdev": 4.330354334953943,
+      "colUsed4Split": "displacement",
+      "varianceReduction": 23.454434129424943,
+      "branches": {
+        "very large displacement": {
+          "size": 12,
+          "mean": 16.458333333333336,
+          "stdev": 2.2916680440767205
+        },
+        "medium displacement": {
+          "size": 18,
+          "mean": 24.088888888888892,
+          "stdev": 4.874530310874473
+        },
+        "large displacement": {
+          "size": 69,
+          "mean": 20.285507246376817,
+          "stdev": 3.7278078782513187,
+          "colUsed4Split": "horsepower",
+          "varianceReduction": 15.313084263879478,
+          "branches": {
+            "high power": {
+              "size": 42,
+              "mean": 19.56904761904762,
+              "stdev": 2.2550202092262013,
+              "colUsed4Split": "origin",
+              "varianceReduction": 8.470283636052397,
+              "branches": {
+                "US": {
+                  "size": 38,
+                  "mean": 19.486842105263158,
+                  "stdev": 2.1252880316885734,
+                  "colUsed4Split": "acceleration",
+                  "varianceReduction": 6.24987705997797,
+                  "branches": {
+                    "faster": {
+                      "size": 21,
+                      "mean": 19.404761904761905,
+                      "stdev": 2.403638115539898
+                    }
+                  }
+                }
+              }
+            },
+            "medium power": {
+              "size": 21,
+              "mean": 21.81904761904762,
+              "stdev": 4.6086461187228345
+            }
+          }
+        }
+      }
+    },
+    "very high weight": {
+      "size": 98,
+      "mean": 14.809183673469393,
+      "stdev": 2.6329038782104526,
+      "colUsed4Split": "horsepower",
+      "varianceReduction": 29.927309649723252,
+      "branches": {
+        "extremely high power": {
+          "size": 83,
+          "mean": 14.2,
+          "stdev": 2.0230380438413085,
+          "colUsed4Split": "acceleration",
+          "varianceReduction": 8.500303201388338,
+          "branches": {
+            "slow": {
+              "size": 60,
+              "mean": 14.299999999999995,
+              "stdev": 1.8920887928424512
+            },
+            "fast": {
+              "size": 19,
+              "mean": 14.242105263157894,
+              "stdev": 2.2995931498790743
+            }
+          }
+        },
+        "high power": {
+          "size": 15,
+          "mean": 18.18,
+          "stdev": 3.11200440690103
+        }
+      }
+    },
+    "medium weight": {
+      "size": 99,
+      "mean": 26.24747474747474,
+      "stdev": 4.626991428615171,
+      "colUsed4Split": "horsepower",
+      "varianceReduction": 16.57958451624061,
+      "branches": {
+        "high power": {
+          "size": 35,
+          "mean": 24.07428571428571,
+          "stdev": 3.3846837420375713,
+          "colUsed4Split": "displacement",
+          "varianceReduction": 9.959858518255533,
+          "branches": {
+            "medium displacement": {
+              "size": 22,
+              "mean": 24.87272727272727,
+              "stdev": 2.9890565191141625
+            }
+          }
+        },
+        "medium power": {
+          "size": 54,
+          "mean": 26.99259259259259,
+          "stdev": 4.244545972201595,
+          "colUsed4Split": "acceleration",
+          "varianceReduction": 17.192083881029788,
+          "branches": {
+            "fast": {
+              "size": 14,
+              "mean": 27.24285714285714,
+              "stdev": 4.896107446928442
+            },
+            "faster": {
+              "size": 21,
+              "mean": 26.542857142857137,
+              "stdev": 3.0518144485816032
+            },
+            "fastest": {
+              "size": 15,
+              "mean": 25.82,
+              "stdev": 4.42076270084053
+            }
+          }
+        }
+      }
+    },
+    "less weight": {
+      "size": 98,
+      "mean": 32.323469387755104,
+      "stdev": 5.247518824991569,
+      "colUsed4Split": "horsepower",
+      "varianceReduction": 14.002270613801645,
+      "branches": {
+        "medium power": {
+          "size": 27,
+          "mean": 29.15555555555556,
+          "stdev": 4.930933234602001
+        },
+        "low power": {
+          "size": 71,
+          "mean": 33.52816901408451,
+          "stdev": 4.876860321928194,
+          "colUsed4Split": "origin",
+          "varianceReduction": 8.136412881515662,
+          "branches": {
+            "US": {
+              "size": 14,
+              "mean": 32.78571428571428,
+              "stdev": 4.303997630621516
+            },
+            "Japan": {
+              "size": 35,
+              "mean": 34.888571428571424,
+              "stdev": 4.01554123731427,
+              "colUsed4Split": "acceleration",
+              "varianceReduction": 10.674385283208123,
+              "branches": {
+                "faster": {
+                  "size": 12,
+                  "mean": 33.96666666666667,
+                  "stdev": 3.1818614715669855
+                },
+                "fastest": {
+                  "size": 20,
+                  "mean": 34.839999999999996,
+                  "stdev": 4.116769300517605
+                }
+              }
+            },
+            "Europe": {
+              "size": 22,
+              "mean": 31.836363636363636,
+              "stdev": 5.937575700132605
+            }
+          }
+        }
+      }
+    }
+  }
+}

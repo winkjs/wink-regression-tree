@@ -433,13 +433,7 @@ var regressionTree = function () {
       for ( j = 0; j < cc.length; j += 1 ) {
         if ( cc[ j ] !== bs.col ) colsLeft.push( cc[ j ] );
       }
-      // No further columns to process?
-      if ( ( colsLeft.length === 0 ) ) {
-        // Yes, return immediately.
-        wrTree.rulesLearned += 1;
-        return;
-      }
-      // Still have columns for splitting, recurse!
+      // Recurse!
       child.colUsed4Split = columnsDefn[xc2cMap[bs.col]].name;
       child.varianceReduction = varianceReduction;
       growTree( colsLeft, cCols.columns[ bs.col ], bs.col, child, ( depth + 1 ) );
