@@ -528,7 +528,7 @@ var regressionTree = function () {
    * Learns from the ingested data and generates the rule tree that is used to
    * `predict()` the value of target variable from the input.
    *
-   * @return {boolean} always `true`.
+   * @return {number} number of rules learned from the input data.
   */
   var learn = function ( ) {
     // Candidate columns list
@@ -591,7 +591,7 @@ var regressionTree = function () {
     wrTree.varianceReduction = computePercentageVarianceReduction( rootsVarianceXn, wrTree.size, bestSplit.sum );
     // Call recursive function, `growTree()`.
     growTree( updatedCandidateCols, cndts.columns[ bestSplit.col ], bestSplit.col, wrTree, 1 );
-    return true;
+    return wrTree.rulesLearned;
   }; // learn()
 
   // ### navigateRules

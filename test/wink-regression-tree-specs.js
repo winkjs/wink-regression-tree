@@ -73,7 +73,8 @@ describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
     cars.forEach( function ( row ) {
       rt.ingest( row.split( ',' ) );
     } );
-    rt.learn();
+    // Test number of rules learned!
+    expect( rt.learn() ).to.equal( 16 );
     cars.forEach( function ( row ) {
       var r = row.split( ',' );
       rt.evaluate( { model: r[0], mpg: r[1], cylinders: r[2], displacement: r[3], horsepower: r[4], weight: r[5], acceleration: r[6], year: r[7], origin: r[8] } );
