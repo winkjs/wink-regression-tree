@@ -1,9 +1,5 @@
 toc:
-  - name: Creating an Instance
-    description: |
-      Load the **`wink-regression-tree`** module:
-
-      `var regressionTree = require( 'wink-regression-tree' );`
-
+  - name: Introduction
+    file: README.md
   - regressionTree
   - name: API Methods

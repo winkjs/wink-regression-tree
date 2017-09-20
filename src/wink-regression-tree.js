@@ -34,9 +34,9 @@ var helpers = require( 'wink-helpers' );
  * data ingestion, learning, and prediction etc.
  * @example
  * // Load wink regression tree.
- * var winkRT = require( 'wink-regression-tree' );
- * // create your instance of regression tree.
- * var myRT = winkRT();
+ * var regressionTree = require( 'wink-regression-tree' );
+ * // Create your instance of regression tree.
+ * var myRT = regressionTree();
 */
 var regressionTree = function () {
   // Columns configuration supplied to the `defineConfig()` function.
