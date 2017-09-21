@@ -681,19 +681,19 @@ var regressionTree = function () {
    *
    * @param {object} input — data containing column name/value pairs; the column
    * names must the same as defined via `defineConfig()`.
-   * @param {function} [fn=undefined] — is called once
+   * @param {function} [modifier=undefined] — is called once
    * a leaf node is reached during prediction with the following 5 parameters: **size,**
    * **mean** and **stdev** values at the node; an **array** of column names
    * navigated to reach the leaf and **column name** for which value is missing
    * in the input (`default=undefined`). The value returned from this function becomes  the prediction.
-  * @return {number} `mean` value or whatever is returned by the `fn` function, if defined.
+  * @return {number} `mean` value or whatever is returned by the `modifier` function, if defined.
   */
-  var predict = function ( input, fn ) {
+  var predict = function ( input, modifier ) {
     if ( !helpers.object.isObject( input ) ) {
       throw Error( 'winkRT: input must be an object, instead found: ' + ( typeof input ) );
     }
     var colsUsed4Prediction = [];
-    return navigateRules( input, wrTree, fn, colsUsed4Prediction );
+    return navigateRules( input, wrTree, modifier, colsUsed4Prediction );
   }; // predict()
 
   // ### navigateRules4Stats

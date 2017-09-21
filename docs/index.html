@@ -632,7 +632,7 @@ the prediction is missing, by defualt it throws an error. If the function
 to this function; and the function is expected to handle the same.</p>
 
 
-  <div class='pre p1 fill-light mt0'>predict(input: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, fn: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
+  <div class='pre p1 fill-light mt0'>predict(input: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, modifier: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
   
   
 
@@ -661,7 +661,7 @@ names must the same as defined via
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>fn</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>
+            <span class='code bold'>modifier</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function">function</a>
             = <code>undefined</code>)</code>
 	    — is called once
 a leaf node is reached during prediction with the following 5 parameters: 
@@ -696,7 +696,7 @@ in the input (
       <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
         <code>mean</code>
  value or whatever is returned by the 
-<code>fn</code>
+<code>modifier</code>
  function, if defined.
 
       
