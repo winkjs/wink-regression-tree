@@ -190,9 +190,9 @@
 <span class="hljs-keyword">var</span> cars = <span class="hljs-built_in">require</span>( <span class="hljs-string">'wink-regression-tree/sample-data/cars.json'</span> );
 
 <span class="hljs-comment">// Create a sample data to test prediction for</span>
-<span class="hljs-comment">// Ford Gran Torino, having "mpg of 14.5", and</span>
-<span class="hljs-comment">// very large displacement, extremely high power,</span>
-<span class="hljs-comment">// very high weight, slow, and with origin as US.</span>
+<span class="hljs-comment">// Ford Gran Torino, having "mpg of 14.5", very</span>
+<span class="hljs-comment">// large displacement, extremely high power, very</span>
+<span class="hljs-comment">// high weight, slow, and with origin as US.</span>
 <span class="hljs-keyword">var</span> input = {
   <span class="hljs-attr">weight</span>: <span class="hljs-string">'very high weight'</span>,
   <span class="hljs-attr">displacement</span>: <span class="hljs-string">'very large displacement'</span>,
@@ -242,6 +242,8 @@ cars.forEach( <span class="hljs-function"><span class="hljs-keyword">function</s
 <span class="hljs-comment">// during prediction. Note `size`, `mean`, and `stdev`</span>
 <span class="hljs-comment">// values, passed to this function, can be used</span>
 <span class="hljs-comment">// for computing the range or the upper limit.</span></pre>
+<p>Try the above example on <a href="https://npm.runkit.com/wink-regression-tree">Runkit</a> in
+the browser.</p>
 <h3>Documentation</h3>
 <p>For detailed API docs, check out <a href="https://winkjs.github.io/wink-regression-tree/">https://winkjs.github.io/wink-regression-tree/</a> URL!</p>
 <h3>Need Help?</h3>

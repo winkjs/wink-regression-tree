@@ -82,6 +82,9 @@ console.log( +mean.toFixed( 1 ) );
 // for computing the range or the upper limit.
 ```
 
+Try [experimenting with this example on Runkit](https://npm.runkit.com/wink-regression-tree) in
+the browser.
+
 ### Documentation
 For detailed API docs, check out https://winkjs.github.io/wink-regression-tree/ URL!
 
