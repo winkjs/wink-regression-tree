@@ -400,17 +400,67 @@ the regression tree.</p>
 data in the same sequence in which data will be supplied to 
 <code>ingest().</code>
  It is
-defined in terms of column's 
-<code>name,</code>
- it's data type 
-<code>categorical</code>
- (true or false),
-
-<code>exclude (default = false),</code>
- and 
-<code>target (default = false).</code>
+defined in terms of the following details:
 
           </div>
+          
+          <table class='mt1 mb2 fixed-table h5 col-12'>
+            <colgroup>
+              <col width='30%' />
+              <col width='70%' />
+            </colgroup>
+            <thead>
+              <tr class='bold fill-light'>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody class='mt1'>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>inputDataCols[].name</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
+                  </td>
+                  <td class='break-word'><span>of the column.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>inputDataCols[].categorical</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+                  </td>
+                  <td class='break-word'><span>defines column's data type — 
+<code>true</code>
+ indicating categorical
+
+<strong>or</strong>
+ 
+<code>false</code>
+ indicating numeric; currently numeric data type is not supported.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>inputDataCols[].exclude</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+                  
+                    (default <code>false</code>)
+                  </td>
+                  <td class='break-word'><span>used to exclude a column during tree building.
+</span></td>
+                </tr>
+              
+                <tr>
+                  <td class='break-word'><span class='code bold'>inputDataCols[].target</span> <code class='quiet'><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
+                  
+                    (default <code>false</code>)
+                  </td>
+                  <td class='break-word'><span>is set to 
+<code>true</code>
+ only for the target column, whose
+value needs to be predicted. Note this column must be a numeric column.
+</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
           
         </div>
       

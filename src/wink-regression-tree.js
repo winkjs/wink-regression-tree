@@ -448,8 +448,13 @@ var regressionTree = function () {
    *
    * @param {object[]} inputDataCols — each object in this array defines a column of input
    * data in the same sequence in which data will be supplied to `ingest().` It is
-   * defined in terms of column's `name,` it's data type `categorical` (true or false),
-   * `exclude (default = false),` and `target (default = false).`
+   * defined in terms of the following details:
+   * @param {string} inputDataCols[].name of the column.
+   * @param {boolean} inputDataCols[].categorical defines column's data type — `true` indicating categorical
+   * **or** `false` indicating numeric; currently numeric data type is not supported.
+   * @param {boolean} [inputDataCols[].exclude=false] used to exclude a column during tree building.
+   * @param {boolean} [inputDataCols[].target=false] is set to `true` only for the target column, whose
+   * value needs to be predicted. Note this column must be a numeric column.
    * @param {object} tree — contains key value pairs of the following regression
    * tree's parameters:
    * @param {number} [tree.maxDepth=20] is the maximum depth of the tree after which
