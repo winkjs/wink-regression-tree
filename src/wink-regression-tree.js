@@ -522,7 +522,7 @@ var regressionTree = function () {
     if ( row.length === columnsConfig.length ) {
       xdata.push( transformRow( row, columnsDefn ) );
     } else {
-      throw Error( 'winkRT: expecting ' + columnsConfig.length + ' elements instead found: ' + row.length );
+      throw Error( 'winkRT: ingest is expecting ' + columnsConfig.length + ' elements instead found: ' + row.length );
     }
     return true;
   }; // ingest()
@@ -531,11 +531,15 @@ var regressionTree = function () {
   /**
    *
    * Learns from the ingested data and generates the rule tree that is used to
-   * `predict()` the value of target variable from the input.
+   * `predict()` the value of target variable from the input. It requires at least
+   * 60 data rows to initiate meaningful learning.
    *
    * @return {number} number of rules learned from the input data.
   */
   var learn = function ( ) {
+    if ( xdata.length < 60 ) {
+      throw Error( 'winkRT: learn is expecting at least 60 rows of data, instead found: ' + xdata.length );
+    }
     // Candidate columns list
     var candidateCols = [];
     // Candidate columns created using above list.
@@ -657,7 +661,7 @@ var regressionTree = function () {
       // Input does not have the value for column.
       if ( typeof f !== 'function' ) {
         // No `f` defined, throw error.
-        throw Error( 'winkRT: missing column value for the column: ' + JSON.stringify( column ) );
+        throw Error( 'winkRT: missing column value for the column found during prediction: ' + JSON.stringify( column ) );
       }
       // The `f` is defined, let it handle.
       return f( rules.size, rules.mean, rules.stdev, colsUsed4Prediction, column );
@@ -695,7 +699,7 @@ var regressionTree = function () {
   */
   var predict = function ( input, modifier ) {
     if ( !helpers.object.isObject( input ) ) {
-      throw Error( 'winkRT: input must be an object, instead found: ' + ( typeof input ) );
+      throw Error( 'winkRT: input for prediction must be an object, instead found: ' + ( typeof input ) );
     }
     var colsUsed4Prediction = [];
     return navigateRules( input, wrTree, modifier, colsUsed4Prediction );

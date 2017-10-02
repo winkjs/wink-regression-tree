@@ -90,7 +90,7 @@ describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
     // Missing column value with handler - will give column name.
     expect( rt.predict( { weight: 'high weight' }, f ) ).to.deep.equal( [ 99, 20.5131, 4.3304, 'weight', 'displacement' ] );
     // Missing column value without the handler - will throw error.
-    expect( rt.predict.bind( null, { weight: 'high weight' } ) ).to.throw( 'winkRT: missing column value for the column: "displacement"' );
+    expect( rt.predict.bind( null, { weight: 'high weight' } ) ).to.throw( 'winkRT: missing column value for the column found during prediction: "displacement"' );
   } );
 } );
 
@@ -124,7 +124,7 @@ describe( 'Run basic edge cases', function () {
     expect( typeof rt.exportJSON() ).to.equal( 'string' );
     expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 0 } );
     // test no input to `predict()`
-    expect( rt.predict.bind() ).to.throw( 'winkRT: input must be an object, instead found:' );
+    expect( rt.predict.bind() ).to.throw( 'winkRT: input for prediction must be an object, instead found: undefined' );
   } );
 } );
 
@@ -183,8 +183,8 @@ describe( 'Incorrect input to ingestion must fail', function () {
     var rt = wrt();
     rt.defineConfig( columns, { } );
     // Send less data
-    expect( rt.ingest.bind( null, [ 'a', 'b' ] ) ).to.throw( 'winkRT: expecting 9 elements instead found: 2' );
-    expect( rt.ingest.bind( null, [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ] ) ).to.throw( 'winkRT: expecting 9 elements instead found: 10' );
+    expect( rt.ingest.bind( null, [ 'a', 'b' ] ) ).to.throw( 'winkRT: ingest is expecting 9 elements instead found: 2' );
+    expect( rt.ingest.bind( null, [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ] ) ).to.throw( 'winkRT: ingest is expecting 9 elements instead found: 10' );
   } );
 } );
 
@@ -315,5 +315,32 @@ describe( 'Very small splits to test 0 stdev', function () {
     // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
     expect( typeof rt.exportJSON() ).to.equal( 'string' );
     expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 74.3247 } );
+  } );
+} );
+
+describe( 'Trying to learn with less data', function () {
+  it( 'should throw if rows < 60', function () {
+    var rt = wrt();
+    // var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
+    // cars.pop();
+    var columns = [
+      { name: 'model', categorical: true, exclude: true },
+      { name: 'mpg', categorical: false, target: true },
+      { name: 'cylinders', categorical: true, exclude: true },
+      { name: 'displacement', categorical: true, exclude: false },
+      { name: 'horsepower', categorical: true, exclude: false },
+      { name: 'weight', categorical: true, exclude: true },
+      { name: 'acceleration', categorical: true, exclude: true },
+      { name: 'year', categorical: true, exclude: true },
+      { name: 'origin', categorical: true, exclude: true  }
+    ];
+
+    rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 1, minSplitCandidateItems: 3, minAvgChildrenItems: 2 } );
+    for ( var i = 0; i < 30; i += 1 ) {
+      rt.ingest( cars[ i ].split( ',' ) );
+    }
+    // rt.learn();
+    // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
+    expect( rt.learn.bind( null ) ).to.throw( 'winkRT: learn is expecting at least 60 rows of data, instead found: 30' );
   } );
 } );
