@@ -568,22 +568,22 @@ with each child node containing fewer items.
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Define each column.</span>
 <span class="hljs-keyword">var</span> columns = [
- { <span class="hljs-attr">name</span>: <span class="hljs-string">'model'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
- { <span class="hljs-attr">name</span>: <span class="hljs-string">'mpg'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">target</span>: <span class="hljs-literal">true</span> },
- { <span class="hljs-attr">name</span>: <span class="hljs-string">'cylinders'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span> },
- { <span class="hljs-attr">name</span>: <span class="hljs-string">'displacement'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
- { <span class="hljs-attr">name</span>: <span class="hljs-string">'horsepower'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
- { <span class="hljs-attr">name</span>: <span class="hljs-string">'weight'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
- { <span class="hljs-attr">name</span>: <span class="hljs-string">'acceleration'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
- { <span class="hljs-attr">name</span>: <span class="hljs-string">'year'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
- { <span class="hljs-attr">name</span>: <span class="hljs-string">'origin'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span>  }
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">'model'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">'mpg'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">target</span>: <span class="hljs-literal">true</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">'cylinders'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">'displacement'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">'horsepower'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">'weight'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">'acceleration'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">'year'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
+  { <span class="hljs-attr">name</span>: <span class="hljs-string">'origin'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span>  }
 ];
 <span class="hljs-comment">// Define parameters to grow the tree.</span>
 <span class="hljs-keyword">var</span> treeParams = {
- <span class="hljs-attr">minPercentVarianceReduction</span>: <span class="hljs-number">2.5</span>,
- <span class="hljs-attr">minLeafNodeItems</span>: <span class="hljs-number">10</span>,
- <span class="hljs-attr">minSplitCandidateItems</span>: <span class="hljs-number">30</span>,
- <span class="hljs-attr">minAvgChildrenItems</span>: <span class="hljs-number">3</span>
+  <span class="hljs-attr">minPercentVarianceReduction</span>: <span class="hljs-number">2.5</span>,
+  <span class="hljs-attr">minLeafNodeItems</span>: <span class="hljs-number">10</span>,
+  <span class="hljs-attr">minSplitCandidateItems</span>: <span class="hljs-number">30</span>,
+  <span class="hljs-attr">minAvgChildrenItems</span>: <span class="hljs-number">3</span>
 };
 <span class="hljs-comment">// Define the configuration using above 2 variables.</span>
 myRT.defineConfig( columns, treeParams );
@@ -665,7 +665,29 @@ via
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Throws</div>
+    <ul>
+      
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if number of elements in 
+<code>row</code>
+ don't match with the
+number of columns defined.
+</li>
+      
+    </ul>
+  
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Load cars training data set.</span>
+<span class="hljs-keyword">var</span> cars = <span class="hljs-built_in">require</span>( <span class="hljs-string">'wink-regression-tree/sample-data/cars.json'</span> );
+<span class="hljs-comment">// Ingest the data.</span>
+cars.forEach( <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"> row </span>) </span>{
+  myRT.ingest( row );
+} );</pre>
+    
   
 
   
@@ -722,7 +744,22 @@ via
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Throws</div>
+    <ul>
+      
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if number of rows in the ingested data are &#x3C;60.
+</li>
+      
+    </ul>
+  
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>myRT.learn();
+<span class="hljs-comment">// -&gt; Number of rules learned</span></pre>
+    
   
 
   
@@ -827,7 +864,42 @@ in the input (
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Throws</div>
+    <ul>
+      
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if the 
+<code>input</code>
+ is not a javascript object.
+</li>
+      
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if a value of a column required for prediction is missing in 
+<code>input</code>
+,
+provided 
+<code>modifier</code>
+ has not been defined.
+</li>
+      
+    </ul>
+  
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Populate sample input</span>
+<span class="hljs-keyword">var</span> input = {
+  <span class="hljs-attr">model</span>: <span class="hljs-string">'Ford Gran Torino'</span>,
+  <span class="hljs-attr">weight</span>: <span class="hljs-string">'very high weight'</span>,
+  <span class="hljs-attr">displacement</span>: <span class="hljs-string">'very large displacement'</span>,
+  <span class="hljs-attr">horsepower</span>: <span class="hljs-string">'extremely high power'</span>,
+  <span class="hljs-attr">origin</span>: <span class="hljs-string">'US'</span>,
+  <span class="hljs-attr">acceleration</span>: <span class="hljs-string">'slow'</span>
+};
+<span class="hljs-comment">// Attempt prediction.</span>
+myRT.predict( input );
+<span class="hljs-comment">// -&gt; 14.3</span></pre>
+    
   
 
   
@@ -888,7 +960,7 @@ indicates higher importance; similarly more nodes at a level split on a columnHi
 is an indication of importance. Therefore, it is sorted in ascending order of <code>level</code>
 followed by in descending order of <code>nodesSplit</code>.</li>
 <li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
-and <code>minSD</code>.</li>
+and <code>minSD</code>.</li></ol>
 
       
     
@@ -896,6 +968,13 @@ and <code>minSD</code>.</li>
 
   
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>myRT.summary();
+<span class="hljs-comment">// -&gt; returns the summary object.</span></pre>
+    
   
 
   
@@ -969,6 +1048,12 @@ name/value pair as well, which is used in evaluating the variance reduction.
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>myRT.evaluate( input );</pre>
+    
+  
 
   
 
@@ -1029,6 +1114,13 @@ name/value pair as well, which is used in evaluating the variance reduction.
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'>myRT.metrics();
+<span class="hljs-comment">// -&gt; object containing varianceReduction and data size.</span></pre>
+    
+  
 
   
 
@@ -1085,6 +1177,12 @@ saved in a file for later predictions.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> rules = myRT.exportJSON();</pre>
+    
+  
 
   
 
@@ -1109,7 +1207,9 @@ saved in a file for later predictions.</p>
   </div>
   
 
-  <p>Imports the rule tree from the input <code>rulesTree</code> for subsequent use by <code>predict()</code>.</p>
+  <p>Imports the rule tree from the input <code>rulesTree</code> for subsequent use by <code>predict()</code>.
+Note after a successful import, this can be used ONLY for prediction purpose
+and not for further ingestion and/or learning.</p>
 
 
   <div class='pre p1 fill-light mt0'>importJSON(rulesTree: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON">json</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
@@ -1154,7 +1254,37 @@ saved in a file for later predictions.</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Throws</div>
+    <ul>
+      
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if 
+<code>rulesTree</code>
+ is 
+<code>null</code>
+.
+</li>
+      
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if 
+<code>rulesTree</code>
+ can not be parsed as a valid JSON.
+</li>
+      
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if 
+<code>rulesTree</code>
+ is of incorrect version or incorrect format.
+</li>
+      
+    </ul>
+  
 
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> anRT = regressionTree();
+<span class="hljs-comment">// Assuming that json has a valid rule tree.</span>
+anRT.importJSON( rules );</pre>
+    
   
 
   

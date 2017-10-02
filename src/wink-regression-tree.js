@@ -474,22 +474,22 @@ var regressionTree = function () {
    * @example
    * // Define each column.
    * var columns = [
-   *  { name: 'model', categorical: true, exclude: true },
-   *  { name: 'mpg', categorical: false, target: true },
-   *  { name: 'cylinders', categorical: true },
-   *  { name: 'displacement', categorical: true, exclude: false },
-   *  { name: 'horsepower', categorical: true, exclude: false },
-   *  { name: 'weight', categorical: true, exclude: false },
-   *  { name: 'acceleration', categorical: true, exclude: false },
-   *  { name: 'year', categorical: true, exclude: true },
-   *  { name: 'origin', categorical: true, exclude: false  }
+   *   { name: 'model', categorical: true, exclude: true },
+   *   { name: 'mpg', categorical: false, target: true },
+   *   { name: 'cylinders', categorical: true },
+   *   { name: 'displacement', categorical: true, exclude: false },
+   *   { name: 'horsepower', categorical: true, exclude: false },
+   *   { name: 'weight', categorical: true, exclude: false },
+   *   { name: 'acceleration', categorical: true, exclude: false },
+   *   { name: 'year', categorical: true, exclude: true },
+   *   { name: 'origin', categorical: true, exclude: false  }
    * ];
    * // Define parameters to grow the tree.
    * var treeParams = {
-   *  minPercentVarianceReduction: 2.5,
-   *  minLeafNodeItems: 10,
-   *  minSplitCandidateItems: 30,
-   *  minAvgChildrenItems: 3
+   *   minPercentVarianceReduction: 2.5,
+   *   minLeafNodeItems: 10,
+   *   minSplitCandidateItems: 30,
+   *   minAvgChildrenItems: 3
    * };
    * // Define the configuration using above 2 variables.
    * myRT.defineConfig( columns, treeParams );
@@ -517,6 +517,15 @@ var regressionTree = function () {
    * should be in the same sequence in which they are defined in data configuration
    * via `defineConfig()`.
    * @return {boolean} always `true`.
+   * @throws {error} if number of elements in `row` don't match with the
+   * number of columns defined.
+   * @example
+   * // Load cars training data set.
+   * var cars = require( 'wink-regression-tree/sample-data/cars.json' );
+   * // Ingest the data.
+   * cars.forEach( function ( row ) {
+   *   myRT.ingest( row );
+   * } );
   */
   var ingest = function ( row ) {
     if ( row.length === columnsConfig.length ) {
@@ -535,6 +544,10 @@ var regressionTree = function () {
    * 60 data rows to initiate meaningful learning.
    *
    * @return {number} number of rules learned from the input data.
+   * @throws {error} if number of rows in the ingested data are <60.
+   * @example
+   * myRT.learn();
+   * // -> Number of rules learned
   */
   var learn = function ( ) {
     if ( xdata.length < 60 ) {
@@ -695,7 +708,23 @@ var regressionTree = function () {
    * **mean** and **stdev** values at the node; an **array** of column names
    * navigated to reach the leaf and **column name** for which value is missing
    * in the input (`default=undefined`). The value returned from this function becomes  the prediction.
-  * @return {number} `mean` value or whatever is returned by the `modifier` function, if defined.
+   * @return {number} `mean` value or whatever is returned by the `modifier` function, if defined.
+   * @throws {error} if the `input` is not a javascript object.
+   * @throws {error} if a value of a column required for prediction is missing in `input`,
+   * provided `modifier` has not been defined.
+   * @example
+   * // Populate sample input
+   * var input = {
+   *   model: 'Ford Gran Torino',
+   *   weight: 'very high weight',
+   *   displacement: 'very large displacement',
+   *   horsepower: 'extremely high power',
+   *   origin: 'US',
+   *   acceleration: 'slow'
+   * };
+   * // Attempt prediction.
+   * myRT.predict( input );
+   * // -> 14.3
   */
   var predict = function ( input, modifier ) {
     if ( !helpers.object.isObject( input ) ) {
@@ -776,7 +805,10 @@ var regressionTree = function () {
    * is an indication of importance. Therefore, it is sorted in ascending order of <code>level</code>
    * followed by in descending order of <code>nodesSplit</code>.</li>
    * <li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
-   * and <code>minSD</code>.</li>
+   * and <code>minSD</code>.</li></ol>
+   * @example
+   * myRT.summary();
+   * // -> returns the summary object.
   */
   var summary = function () {
     // Column imporatnce is captured first in an object to ease hashing and later
@@ -834,6 +866,8 @@ var regressionTree = function () {
    * @param {object} rowObject — contains column name/value pairs including the target column
    * name/value pair as well, which is used in evaluating the variance reduction.
    * @return {boolean} always `true`.
+   * @example
+   * myRT.evaluate( input );
   */
   var evaluate = function ( rowObject ) {
     var pv = predict( rowObject );
@@ -852,6 +886,9 @@ var regressionTree = function () {
    * `evaluate()`.
    *
    * @return {object} containing the `varianceReduction` in percentage and data `size`.
+   * @example
+   * myRT.metrics();
+   * // -> object containing varianceReduction and data size.
   */
   var metrics = function ( ) {
     return (
@@ -869,6 +906,8 @@ var regressionTree = function () {
    * saved in a file for later predictions.
    *
    * @return {json} of the rule tree.
+   * @example
+   * var rules = myRT.exportJSON();
   */
   var exportJSON = function () {
     return JSON.stringify( wrTree );
@@ -878,8 +917,17 @@ var regressionTree = function () {
   /**
    *
    * Imports the rule tree from the input `rulesTree` for subsequent use by `predict()`.
+   * Note after a successful import, this can be used ONLY for prediction purpose
+   * and not for further ingestion and/or learning.
    * @param {json} rulesTree — containg an earlier exported rule tree in JSON format.
    * @return {boolean} always `true`.
+   * @throws {error} if `rulesTree` is `null`.
+   * @throws {error} if `rulesTree` can not be parsed as a valid JSON.
+   * @throws {error} if `rulesTree` is of incorrect version or incorrect format.
+   * @example
+   * var anRT = regressionTree();
+   * // Assuming that json has a valid rule tree.
+   * anRT.importJSON( rules );
   */
   var importJSON = function ( rulesTree ) {
     if ( !rulesTree ) {
