@@ -24,6 +24,7 @@
 /* eslint no-continue: 0 */
 
 var helpers = require( 'wink-helpers' );
+var stdevEPSILON = Math.pow( 2, -48 );
 
 // ### regressionTree
 /**
@@ -405,7 +406,7 @@ var regressionTree = function () {
       cCols = createCandidates( cc );
       index = splitData[ uniqVal ].index;
       // Does it have enough items to proceed with split?
-      if ( index.length <= config.minSplitCandidateItems ) {
+      if ( index.length <= config.minSplitCandidateItems || child.stdev < stdevEPSILON ) {
         // No! continue with the iteration with the next `uniqVal`.
         wrTree.rulesLearned += 1;
         continue;
@@ -598,21 +599,24 @@ var regressionTree = function () {
     wrTree.size = xdata.length;
     wrTree.mean = rootsMean;
     wrTree.stdev = computeStdev( rootsVarianceXn, wrTree.size );
-    bestSplit = selectBestSplit( cndts );
-    if ( bestSplit === undefined ) {
-      // Opps, no worthy column available - return the root!
-      wrTree.rulesLearned += 1;
-      return true;
+    // Attempt to grow tree if standard deviation is large enough!
+    if ( wrTree.stdev > stdevEPSILON ) {
+      bestSplit = selectBestSplit( cndts );
+      if ( bestSplit === undefined ) {
+        // Opps, no worthy column available - return the root!
+        wrTree.rulesLearned += 1;
+        return true;
+      }
+      // Find the updated list of candidate columsn after the split.
+      for ( i = 0; i < candidateCols.length; i += 1 ) {
+        if ( candidateCols[ i ] !== bestSplit.col ) updatedCandidateCols.push( candidateCols[ i ] );
+      }
+      // Define the balance stuff as a split has been found!
+      wrTree.colUsed4Split = columnsDefn[xc2cMap[bestSplit.col]].name;
+      wrTree.varianceReduction = computePercentageVarianceReduction( rootsVarianceXn, wrTree.size, bestSplit.sum );
+      // Call recursive function, `growTree()`.
+      growTree( updatedCandidateCols, cndts.columns[ bestSplit.col ], bestSplit.col, wrTree, 1 );
     }
-    // Find the updated list of candidate columsn after the split.
-    for ( i = 0; i < candidateCols.length; i += 1 ) {
-      if ( candidateCols[ i ] !== bestSplit.col ) updatedCandidateCols.push( candidateCols[ i ] );
-    }
-    // Define the balance stuff as a split has been found!
-    wrTree.colUsed4Split = columnsDefn[xc2cMap[bestSplit.col]].name;
-    wrTree.varianceReduction = computePercentageVarianceReduction( rootsVarianceXn, wrTree.size, bestSplit.sum );
-    // Call recursive function, `growTree()`.
-    growTree( updatedCandidateCols, cndts.columns[ bestSplit.col ], bestSplit.col, wrTree, 1 );
     return wrTree.rulesLearned;
   }; // learn()
 

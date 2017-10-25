@@ -344,3 +344,73 @@ describe( 'Trying to learn with less data', function () {
     expect( rt.learn.bind( null ) ).to.throw( 'winkRT: learn is expecting at least 60 rows of data, instead found: 30' );
   } );
 } );
+
+describe( 'Trying to learn with constant Y', function () {
+  it( 'should generate only 1 rule i.e. the root', function () {
+    var rt = wrt();
+    // var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
+    // cars.pop();
+    var columns = [
+      { name: 'model', categorical: true, exclude: true },
+      { name: 'mpg', categorical: false, target: true },
+      { name: 'cylinders', categorical: true },
+      { name: 'displacement', categorical: true, exclude: false },
+      { name: 'horsepower', categorical: true, exclude: false },
+      { name: 'weight', categorical: true, exclude: false },
+      { name: 'acceleration', categorical: true, exclude: false },
+      { name: 'year', categorical: true, exclude: true },
+      { name: 'origin', categorical: true, exclude: false }
+    ];
+
+    var expectedRules = {
+          rulesLearned: 0,
+          version: 'WRT 1.0.0',
+          size: 394,
+          mean: 18,
+          stdev: 0
+        };
+
+    rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 10, minSplitCandidateItems: 30, minAvgChildrenItems: 2 } );
+    cars.forEach( function ( row ) {
+      var rowData = row.split( ',' );
+      // Force constant mpg value i.e. constant Y case!
+      rowData[ 1 ] = 18;
+      rt.ingest( rowData );
+    } );
+    rt.learn();
+    // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
+    expect( JSON.parse( rt.exportJSON() ) ).to.deep.equal( expectedRules );
+  } );
+} );
+
+
+describe( 'Trying to learn with constant Y under a node', function () {
+  it( '*high weight* node should have stdev as 0 and no further branches', function () {
+    var rt = wrt();
+    // var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
+    // cars.pop();
+    var columns = [
+      { name: 'model', categorical: true, exclude: true },
+      { name: 'mpg', categorical: false, target: true },
+      { name: 'cylinders', categorical: true },
+      { name: 'displacement', categorical: true, exclude: false },
+      { name: 'horsepower', categorical: true, exclude: false },
+      { name: 'weight', categorical: true, exclude: false },
+      { name: 'acceleration', categorical: true, exclude: false },
+      { name: 'year', categorical: true, exclude: true },
+      { name: 'origin', categorical: true, exclude: false }
+    ];
+
+    rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 10, minSplitCandidateItems: 30, minAvgChildrenItems: 2 } );
+    cars.forEach( function ( row ) {
+      var rowData = row.split( ',' );
+      // Force constant mpg value under *high weight* node!
+      if ( rowData[ 5 ] === 'high weight' ) rowData[ 1 ] = 9;
+      rt.ingest( rowData );
+    } );
+    rt.learn();
+    // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
+    expect( JSON.parse( rt.exportJSON() ).branches[ 'high weight' ].stdev ).to.equal( 0 );
+    expect( JSON.parse( rt.exportJSON() ).branches[ 'high weight' ].branches ).to.equal( undefined );
+  } );
+} );
