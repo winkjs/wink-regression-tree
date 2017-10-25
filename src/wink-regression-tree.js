@@ -377,8 +377,7 @@ var regressionTree = function () {
   var growTree = function ( cc, splitData, colUsed4Split, node, depth ) {
     // Maximum defined depth reached?
     if ( depth > config.maxDepth ) {
-      // Yes, Incrment rules learned & return.
-      wrTree.rulesLearned += 1;
+      // Yes, return.
       return;
     }
 
@@ -393,7 +392,7 @@ var regressionTree = function () {
     for ( uniqVal in splitData ) {
       // Node contains enough items to be retained in the tree?
       if ( splitData[ uniqVal ].size < config.minLeafNodeItems ) {
-        // Don't increment rules learned as you are pruning tree; just skip this iteration.
+        // Just skip this iteration.
         continue;
       }
       // Node has enough items! Setup the child node.
@@ -408,7 +407,6 @@ var regressionTree = function () {
       // Does it have enough items to proceed with split?
       if ( index.length <= config.minSplitCandidateItems || child.stdev < stdevEPSILON ) {
         // No! continue with the iteration with the next `uniqVal`.
-        wrTree.rulesLearned += 1;
         continue;
       }
       // Attempt split.
@@ -418,14 +416,12 @@ var regressionTree = function () {
       bs = selectBestSplit( cCols );
       if ( bs === undefined ) {
         // No best column found, coninue with the next one!
-        wrTree.rulesLearned += 1;
         continue;
       }
       varianceReduction = computePercentageVarianceReduction( splitData[ uniqVal ].varianceXn, splitData[ uniqVal ].size, bs.sum );
       // Reasonable variance reduction?
       if ( varianceReduction < config.minPercentVarianceReduction ) {
         // No! continue with the iteration with the next `uniqVal`.
-        wrTree.rulesLearned += 1;
         continue;
       }
       // Yes, split possible! Make a list of left columns by removing the columns
@@ -440,6 +436,25 @@ var regressionTree = function () {
       growTree( colsLeft, cCols.columns[ bs.col ], bs.col, child, ( depth + 1 ) );
     }
   }; // growTree()
+
+  // ### countRules
+  /**
+   *
+   * Counts the number of rules generated from a rules tree and updates the final
+   * number in the root node of the tree.
+   *
+   * @param {object} tree — the rules tree.
+   * @return {undefined} or void!
+   * @private
+  */
+  var countRules = function ( tree ) {
+    var subTree = tree.branches;
+    for ( var node in subTree ) {
+      if ( subTree[ node ].branches !== undefined && Object.keys( subTree[ node ].branches ).length > 0 ) {
+        countRules( subTree[ node ] );
+      } else wrTree.rulesLearned += 1;
+    }
+  }; // countRules()
 
   // ### defineConfig
   /**
@@ -604,7 +619,6 @@ var regressionTree = function () {
       bestSplit = selectBestSplit( cndts );
       if ( bestSplit === undefined ) {
         // Opps, no worthy column available - return the root!
-        wrTree.rulesLearned += 1;
         return true;
       }
       // Find the updated list of candidate columsn after the split.
@@ -617,6 +631,8 @@ var regressionTree = function () {
       // Call recursive function, `growTree()`.
       growTree( updatedCandidateCols, cndts.columns[ bestSplit.col ], bestSplit.col, wrTree, 1 );
     }
+    wrTree.rulesLearned = 0;
+    countRules( wrTree );
     return wrTree.rulesLearned;
   }; // learn()
 
