@@ -6,7 +6,7 @@ Decision Tree to predict the value of a continuous target variable
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
-Predict the value of a continuous variable such as price, turn around time, or mileage using **`wink-regression-tree`**. It is a part of _[wink](https://www.npmjs.com/~sanjaya)_ — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
+Predict the value of a continuous variable such as price, turn around time, or mileage using **`wink-regression-tree`**. It is a part of _[wink](http://wink.org.in/)_ — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
 
 
 ### Installation
@@ -93,7 +93,7 @@ Try [experimenting with this example on Runkit](https://npm.runkit.com/wink-regr
 the browser.
 
 ### Documentation
-For detailed API docs, check out https://winkjs.github.io/wink-regression-tree/ URL!
+For detailed API docs, check out http://wink.org.in/wink-regression-tree/ URL!
 
 ### Need Help?
 
@@ -101,7 +101,7 @@ If you spot a bug and the same has not yet been reported, raise a new [issue](ht
 
 ### Copyright & License
 
-**wink-regression-tree** is copyright 2017 GRAYPE Systems Private Limited.
+**wink-regression-tree** is copyright 2017 [GRAYPE Systems Private Limited](http://graype.in/).
 
 It is licensed under the under the terms of the GNU Affero General Public License as published by the Free
 Software Foundation, version 3 of the License.
