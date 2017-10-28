@@ -6,7 +6,7 @@ Decision Tree to predict the value of a continuous target variable
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
-Predict the value of a continuous variable such as price, turn around time, or mileage using **`wink-regression-tree`**. It is a part of _[wink](http://wink.org.in/)_ — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
+Predict the value of a continuous variable such as price, turn around time, or mileage using **`wink-regression-tree`**. It is a part of _[wink](http://winkjs.org/)_ — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
 
 
 ### Installation
@@ -16,7 +16,13 @@ Use [npm](https://www.npmjs.com/package/wink-regression-tree) to install:
     npm install wink-regression-tree --save
 
 ### Getting Started
-Here is an example of predicting car’s mileage (miles per gallon - mpg) from attributes like displacement, horsepower, acceleration, country of origin, and few more. The data set used in this example has been quantized for a quick start.
+Here is an example of predicting car’s mileage (miles per gallon - mpg) from attributes like displacement, horsepower, acceleration, country of origin, and few more. A sample data row is given for quick reference:
+
+| Model          | MPG | Cylinders | Displacement | Power | Weight | Acceleration | Year | Origin |
+|--------------|-----|----------|------------------|----------|-----------|----|---|-----|
+|Toyota Mark II|20|6|large displacement|high power|high weight|slow|73|Japan|
+
+The code below provides a potential configuration to predict the value of miles per gallon:
 
 ```javascript
 // Load wink-regression-tree.
@@ -93,7 +99,7 @@ Try [experimenting with this example on Runkit](https://npm.runkit.com/wink-regr
 the browser.
 
 ### Documentation
-For detailed API docs, check out http://wink.org.in/wink-regression-tree/ URL!
+For detailed API docs, check out http://winkjs.org/wink-regression-tree/ URL!
 
 ### Need Help?
 
