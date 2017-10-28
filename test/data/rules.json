@@ -1,5 +1,5 @@
 {
-  "rulesLearned": 16,
+  "rulesLearned": 23,
   "version": "WRT 1.0.0",
   "size": 394,
   "mean": 23.472842639593907,
@@ -28,36 +28,39 @@
           "size": 69,
           "mean": 20.285507246376817,
           "stdev": 3.7278078782513187,
-          "colUsed4Split": "horsepower",
-          "varianceReduction": 15.313084263879478,
+          "colUsed4Split": "cylinders",
+          "varianceReduction": 7.74355795314152,
           "branches": {
-            "high power": {
-              "size": 42,
-              "mean": 19.56904761904762,
-              "stdev": 2.2550202092262013,
-              "colUsed4Split": "origin",
-              "varianceReduction": 8.470283636052397,
+            "6": {
+              "size": 60,
+              "mean": 19.886666666666667,
+              "stdev": 3.7140807045924555,
+              "colUsed4Split": "acceleration",
+              "varianceReduction": 3.038325562498182,
               "branches": {
-                "US": {
-                  "size": 38,
-                  "mean": 19.486842105263158,
-                  "stdev": 2.1252880316885734,
-                  "colUsed4Split": "acceleration",
-                  "varianceReduction": 6.24987705997797,
-                  "branches": {
-                    "faster": {
-                      "size": 21,
-                      "mean": 19.404761904761905,
-                      "stdev": 2.403638115539898
-                    }
-                  }
+                "faster": {
+                  "size": 30,
+                  "mean": 19.85333333333333,
+                  "stdev": 4.043959593690607
+                },
+                "fastest": {
+                  "size": 15,
+                  "mean": 19.01333333333334,
+                  "stdev": 2.514775385217382
+                },
+                "$$other_values": {
+                  "size": 15,
+                  "mean": 20.826666666666664,
+                  "stdev": 4.020921476951462,
+                  "collapsedNodes": 2
                 }
               }
             },
-            "medium power": {
-              "size": 21,
-              "mean": 21.81904761904762,
-              "stdev": 4.6086461187228345
+            "$$other_values": {
+              "size": 9,
+              "mean": 22.944444444444443,
+              "stdev": 2.690776426568691,
+              "collapsedNodes": 2
             }
           }
         }
@@ -75,7 +78,7 @@
           "mean": 14.2,
           "stdev": 2.0230380438413085,
           "colUsed4Split": "acceleration",
-          "varianceReduction": 8.500303201388338,
+          "varianceReduction": 3.63339815569903,
           "branches": {
             "slow": {
               "size": 60,
@@ -86,6 +89,12 @@
               "size": 19,
               "mean": 14.242105263157894,
               "stdev": 2.2995931498790743
+            },
+            "$$other_values": {
+              "size": 4,
+              "mean": 12.5,
+              "stdev": 2.380476142847616,
+              "collapsedNodes": 2
             }
           }
         },
@@ -101,19 +110,25 @@
       "mean": 26.24747474747474,
       "stdev": 4.626991428615171,
       "colUsed4Split": "horsepower",
-      "varianceReduction": 16.57958451624061,
+      "varianceReduction": 15.424622275507577,
       "branches": {
         "high power": {
           "size": 35,
           "mean": 24.07428571428571,
           "stdev": 3.3846837420375713,
           "colUsed4Split": "displacement",
-          "varianceReduction": 9.959858518255533,
+          "varianceReduction": 9.694346367385014,
           "branches": {
             "medium displacement": {
               "size": 22,
               "mean": 24.87272727272727,
               "stdev": 2.9890565191141625
+            },
+            "$$other_values": {
+              "size": 13,
+              "mean": 22.72307692307692,
+              "stdev": 3.6982324260277473,
+              "collapsedNodes": 2
             }
           }
         },
@@ -138,8 +153,20 @@
               "size": 15,
               "mean": 25.82,
               "stdev": 4.42076270084053
+            },
+            "$$other_values": {
+              "size": 4,
+              "mean": 32.875,
+              "stdev": 2.52899848424892,
+              "collapsedNodes": 1
             }
           }
+        },
+        "$$other_values": {
+          "size": 10,
+          "mean": 29.830000000000002,
+          "stdev": 6.912958845530617,
+          "collapsedNodes": 2
         }
       }
     },
@@ -172,7 +199,7 @@
               "mean": 34.888571428571424,
               "stdev": 4.01554123731427,
               "colUsed4Split": "acceleration",
-              "varianceReduction": 10.674385283208123,
+              "varianceReduction": 10.674385283208133,
               "branches": {
                 "faster": {
                   "size": 12,
@@ -183,6 +210,12 @@
                   "size": 20,
                   "mean": 34.839999999999996,
                   "stdev": 4.116769300517605
+                },
+                "$$other_values": {
+                  "size": 3,
+                  "mean": 38.9,
+                  "stdev": 5.30754180388624,
+                  "collapsedNodes": 1
                 }
               }
             },

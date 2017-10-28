@@ -359,6 +359,99 @@ var regressionTree = function () {
     return ( bestCol === -1 ) ? undefined : { col: +bestCol, sum: minSum };
   }; // selectBestSplit()
 
+  // ### reducer
+  /**
+   *
+   * Helper function for `JS array reduce`; used to merge two arrays.
+   *
+   * @param {object} acc — accumulator i.e. the array containing the merged values.
+   * @param {object} cv — current value i.e. one array element to be pushed.
+   * @return {object} collapsed column.
+   * @private
+  */
+  var reducer = function ( acc, cv ) {
+    acc.push( cv );
+    return ( acc );
+  }; // reducer();
+
+  // ### collapseNodesInCol
+  /**
+   *
+   * Iterates through every candidate column in `cc`. For each candidate column,
+   * it collapses all nodes with `size < config.minLeafNodeItems` into a single
+   * node referred to as `$$other_values`.
+   *
+   * @param {object} col — candidate columns that are iterated through for a
+   * possible collapse.
+   * @return {object} collapsed column.
+   * @private
+  */
+  var collapseNodesInCol = function ( col ) {
+    // Collapsed column
+    var collapsedCol = Object.create( null );
+    // All `nodes < config.minLeafNodeItems` will be collapsed into this.
+    var others = Object.create( null );
+    // Unique Value in `col`
+    var uv;
+    // Helpers!
+    var collapsedOccurred = false;
+    // Combined mean, temp object holder.
+    var meanc, obj;
+
+    others.size = 0;
+    others.mean = 0;
+    others.varianceXn = 0;
+    others.index = [];
+    others.collapsedNodes = 0;
+    // Iterate through every unique value in the `col` object.
+    for ( uv in col ) { // eslint-disable-line guard-for-in
+      obj = col[ uv ];
+      if ( obj.size < config.minLeafNodeItems ) {
+        collapsedOccurred = true;
+        others.collapsedNodes += 1;
+        // Combine means and remember it for a while before updating.
+        meanc = ( ( others.mean * others.size ) + ( obj.mean * obj.size ) ) / ( others.size + obj.size );
+        // Combine `variances * size` i.e. `varianceXn`.
+        others.varianceXn = others.varianceXn +
+                            obj.varianceXn +
+                            ( others.size * ( others.mean - meanc ) * ( others.mean - meanc ) ) +
+                            ( obj.size * ( obj.mean - meanc ) * ( obj.mean - meanc ) );
+        // Now update combined means!
+        others.mean = meanc;
+        // Update size.
+        others.size += obj.size;
+        // Finally merge both indexes.
+        others.index = obj.index.reduce( reducer, others.index );
+      } else {
+        collapsedCol[ uv ] = col[ uv ];
+      }
+    }
+    // If collapse has occurred then include `$$other_values` in `collapsedCol`.
+    if ( collapsedOccurred ) collapsedCol.$$other_values = others; // eslint-disable-line camelcase
+    return collapsedCol;
+  }; // collapseNodesInCol()
+
+  // ### collapseNodesInCC
+  /**
+   *
+   * Iterates through every candidate column in `cc`. For each candidate column,
+   * it collapses all nodes with `size < config.minLeafNodeItems` into a single
+   * node referred to as `$$other_values`.
+   *
+   * @param {object} cc — candidate columns that are iterated through for a
+   * possible collapse.
+   * @return {undefined} the void!
+   * @private
+  */
+  var collapseNodesInCC = function ( cc ) {
+    // Column Id in Candidate Columns (cc).
+    var cid;
+    for ( cid in cc ) { // eslint-disable-line guard-for-in
+      cc[ cid ] = collapseNodesInCol( cc[ cid ] );
+    }
+  }; // collapseNodesInCC()
+
+
   // ### growTree
   /**
    *
@@ -387,19 +480,18 @@ var regressionTree = function () {
     var varianceReduction;
     var child;
     // Helper variables
-    var index, j, k, kmax;
+    var actualValue, index, j, k, kmax;
     node.branches = Object.create( null );
-    for ( uniqVal in splitData ) {
-      // Node contains enough items to be retained in the tree?
-      if ( splitData[ uniqVal ].size < config.minLeafNodeItems ) {
-        // Just skip this iteration.
-        continue;
-      }
-      // Node has enough items! Setup the child node.
-      child = node.branches[ columnsDefn[ xc2cMap[ colUsed4Split ] ].invertedMap[ +uniqVal ] ] = Object.create( null );
+    for ( uniqVal in splitData ) { // eslint-disable-line guard-for-in
+      // Node always has enough items as collapse would have already occurred.
+      actualValue = ( uniqVal === '$$other_values' ) ? uniqVal : columnsDefn[ xc2cMap[ colUsed4Split ] ].invertedMap[ +uniqVal ];
+      child = node.branches[ actualValue ] = Object.create( null );
       child.size = splitData[ uniqVal ].size;
       child.mean = splitData[ uniqVal ].mean;
       child.stdev = computeStdev( splitData[ uniqVal ].varianceXn, splitData[ uniqVal ].size );
+      // Add collapsed node count, if collapsed had occurred: more for reference only.
+      // It has no predictionn value.
+      if ( splitData[ uniqVal ].collapsedNodes !== undefined ) child.collapsedNodes = splitData[ uniqVal ].collapsedNodes;
       // Create candidate colums for this node. These will be used to obtain bestCol
       // split as per the `config`.
       cCols = createCandidates( cc );
@@ -413,6 +505,8 @@ var regressionTree = function () {
       for ( k = 0, kmax = index.length; k < kmax; k += 1 ) {
         processRow( xdata[ index[ k ] ], index[ k ], cCols, updateVarianceXn );
       }
+      // Node that contain less than `config.minLeafNodeItems` are collapsed here.
+      collapseNodesInCC(cCols.columns);
       bs = selectBestSplit( cCols );
       if ( bs === undefined ) {
         // No best column found, coninue with the next one!
@@ -481,7 +575,8 @@ var regressionTree = function () {
    * at a node for it to be split further, even after the `minPercentVarianceReduction`
    * target has been achieved.
    * @param {number} [tree.minLeafNodeItems=10] is the minimum number of items that
-   * must be present at a leaf node to be retained as a part of rule tree.
+   * must be present at a leaf node to be retained as an independent node. Nodes with
+   * less than this value size are merged together.
    * @param {number} [tree.minAvgChildrenItems=2] the average number of items
    * across children must be greater than this number, for a column to become a candidate
    * for split. A higher number will discourage splits that creates many branches
@@ -609,6 +704,8 @@ var regressionTree = function () {
       rootsMean += computeMeanDelta( xdata[ i ][ indexOfTarget ], rootsMean, ( i + 1 ) );
       rootsVarianceXn += computeVarianceXnDelta( xdata[ i ][ indexOfTarget ], rootsMean, prevRootsMean );
     }
+    // Node that contain less than `config.minLeafNodeItems` are collapsed here.
+    collapseNodesInCC(cndts.columns);
     // Define minimal root node stuff here itself.
     wrTree.version = winkRulesTreeVersion;
     wrTree.size = xdata.length;
@@ -619,7 +716,9 @@ var regressionTree = function () {
       bestSplit = selectBestSplit( cndts );
       if ( bestSplit === undefined ) {
         // Opps, no worthy column available - return the root!
-        return true;
+        wrTree.rulesLearned = 0;
+        countRules( wrTree );
+        return wrTree.rulesLearned;
       }
       // Find the updated list of candidate columsn after the split.
       for ( i = 0; i < candidateCols.length; i += 1 ) {
@@ -688,8 +787,15 @@ var regressionTree = function () {
     if ( inputHasReqdValue ) {
       // Lookup `reqdValue` from the input.
       reqdValue = input[ column ];
-      // If there is no branch corresponding to the `reqdValue` then stop naigation.
-      stopNavigation = !helpers.object.isObject( rules.branches[ reqdValue ] );
+      // If there is no branch corresponding to the `reqdValue` then instead of stopping
+      // navigation and returning the parent's node stuff, also check if there exist
+      // `$$other_values`. If such a node exist, **assume** that this `reqdValue` belongs
+      // to the `$$other_values` set. The intuition is that typically other values are
+      // those that have very few instances (i.e. frequency of occurrance) and
+      // therefore this `reqdValue` will share characterstics with `$$other_values`.
+      // However, if there is no `$$other_values` set at this level then simply return
+      // parent's node stuff.
+      stopNavigation = !helpers.object.isObject( rules.branches[ reqdValue ] || rules.branches.$$other_values );
     } else {
       // Input does not have the value for column.
       if ( typeof f !== 'function' ) {
@@ -703,13 +809,13 @@ var regressionTree = function () {
     if ( stopNavigation ) {
       return (
         ( typeof f === 'function' ) ?
-          f( rules.size, rules.mean, rules.stdev, colsUsed4Prediction ) :
+          f( rules.size, rules.mean, rules.stdev, colsUsed4Prediction, column ) :
           rules.mean
       );
     }
     // Continue navigation!
     colsUsed4Prediction.push( rules.colUsed4Split );
-    return navigateRules( input, rules.branches[ reqdValue ], f, colsUsed4Prediction );
+    return navigateRules( input, rules.branches[ reqdValue ] || rules.branches.$$other_values, f, colsUsed4Prediction );
   }; // navigateRules()
 
   // ### predict

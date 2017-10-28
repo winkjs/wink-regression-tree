@@ -25,22 +25,22 @@
       "level": 3,
       "columnHierarchy": "/weight/horsepower/acceleration",
       "nodesSplit": 2,
-      "minVR": 8.5003,
+      "minVR": 3.6334,
       "maxVR": 17.1921
     },
     {
       "level": 3,
-      "columnHierarchy": "/weight/displacement/horsepower",
+      "columnHierarchy": "/weight/displacement/cylinders",
       "nodesSplit": 1,
-      "minVR": 15.3131,
-      "maxVR": 15.3131
+      "minVR": 7.7436,
+      "maxVR": 7.7436
     },
     {
       "level": 3,
       "columnHierarchy": "/weight/horsepower/displacement",
       "nodesSplit": 1,
-      "minVR": 9.9599,
-      "maxVR": 9.9599
+      "minVR": 9.6943,
+      "maxVR": 9.6943
     },
     {
       "level": 3,
@@ -51,10 +51,10 @@
     },
     {
       "level": 4,
-      "columnHierarchy": "/weight/displacement/horsepower/origin",
+      "columnHierarchy": "/weight/displacement/cylinders/acceleration",
       "nodesSplit": 1,
-      "minVR": 8.4703,
-      "maxVR": 8.4703
+      "minVR": 3.0383,
+      "maxVR": 3.0383
     },
     {
       "level": 4,
@@ -62,23 +62,16 @@
       "nodesSplit": 1,
       "minVR": 10.6744,
       "maxVR": 10.6744
-    },
-    {
-      "level": 5,
-      "columnHierarchy": "/weight/displacement/horsepower/origin/acceleration",
-      "nodesSplit": 1,
-      "minVR": 6.2499,
-      "maxVR": 6.2499
     }
   ],
   "stats": {
     "min": {
-      "mean": 14.2,
-      "itsSD": 2.0230380438413085
+      "mean": 12.5,
+      "itsSD": 2.380476142847616
     },
     "max": {
-      "mean": 34.888571428571424,
-      "itsSD": 4.01554123731427
+      "mean": 38.9,
+      "itsSD": 5.30754180388624
     },
     "minSD": 1.8920887928424512
   }

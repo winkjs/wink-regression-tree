@@ -36,8 +36,8 @@ var describe = mocha.describe;
 var it = mocha.it;
 
 // Sample input to test prediction to the maximum depth of the tree.
-var inp1 = { weight: 'high weight', displacement: 'large displacement', horsepower: 'high power', origin: 'US', acceleration: 'faster' };
-var inp2 = { weight: 'high weight', displacement: 'large displacement', horsepower: 'high power', origin: 'Japan', acceleration: 'faster' };
+var inp1 = { weight: 'high weight', displacement: 'large displacement', horsepower: 'high power', origin: 'US', acceleration: 'faster', cylinders: 6 };
+var inp2 = { weight: 'high weight', displacement: 'large displacement', horsepower: 'high power', origin: 'Japan', acceleration: 'faster', cylinders: 6 };
 // Load & prepare the training data.
 var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
 cars.pop();
@@ -50,7 +50,7 @@ describe( 'Instantiating Wink Regression Tree', function () {
 
 
 describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
-  it( 'should return JSON string & metrics with variance reduction of 75.6893%', function () {
+  it( 'should return JSON string & metrics with variance reduction of 77.2636%', function () {
     var rt = wrt();
     // var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
     // cars.pop();
@@ -74,21 +74,25 @@ describe( 'Run Basic Test Cycle with Quantized Car Data', function () {
       rt.ingest( row.split( ',' ) );
     } );
     // Test number of rules learned!
-    expect( rt.learn() ).to.equal( 16 );
+    expect( rt.learn() ).to.equal( 23 );
     cars.forEach( function ( row ) {
       var r = row.split( ',' );
       rt.evaluate( { model: r[0], mpg: r[1], cylinders: r[2], displacement: r[3], horsepower: r[4], weight: r[5], acceleration: r[6], year: r[7], origin: r[8] } );
     } );
     // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
     expect( typeof rt.exportJSON() ).to.equal( 'string' );
-    expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 75.6893 } );
+    expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 77.2636 } );
     // Test navigation to the deppest level of tree.
-    expect( +( rt.predict( inp1 ) ).toFixed( 4 ) ).to.equal( 19.4048 );
+    expect( +( rt.predict( inp1 ) ).toFixed( 4 ) ).to.equal( 19.8533 );
     // Same test with a handller function.
-    expect( rt.predict( inp1, f ) ).to.deep.equal( [ 21, 19.4048, 2.4036, 'weight/displacement/horsepower/origin/acceleration', undefined ] );
-    expect( rt.predict( inp2, f ) ).to.deep.equal( [ 42, 19.569, 2.255 , 'weight/displacement/horsepower', undefined ] );
+    expect( rt.predict( inp1, f ) ).to.deep.equal( [ 30, 19.8533, 4.044, 'weight/displacement/cylinders/acceleration', undefined ] );
+    expect( rt.predict( inp2, f ) ).to.deep.equal( [ 30, 19.8533, 4.044, 'weight/displacement/cylinders/acceleration', undefined ] );
+    // console.log( rt.predict( inp2, f ) ); // eslint-disable-line no-console
     // Missing column value with handler - will give column name.
     expect( rt.predict( { weight: 'high weight' }, f ) ).to.deep.equal( [ 99, 20.5131, 4.3304, 'weight', 'displacement' ] );
+    // Does not have $$other_values, return parent node's stuff.
+    expect( rt.predict( { weight: 'high weight', displacement: 'unk' }, f ) ).to.deep.equal( [ 99, 20.5131, 4.3304, 'weight', 'displacement' ] );
+    expect( +rt.predict( { weight: 'high weight', displacement: 'unk' } ).toFixed( 4 ) ).to.deep.equal( 20.5131 );
     // Missing column value without the handler - will throw error.
     expect( rt.predict.bind( null, { weight: 'high weight' } ) ).to.throw( 'winkRT: missing column value for the column found during prediction: "displacement"' );
   } );
@@ -135,7 +139,7 @@ describe( 'Baisc import JSON cycle', function () {
     expect( rt.importJSON( JSON.stringify( rules ) ) ).to.equal( true );
     // Confirm if it is being used correctly!
     expect( rt.summary() ).to.deep.equal( summary );
-    expect( +( rt.predict( inp1 ) ).toFixed( 4 ) ).to.equal( 19.4048 );
+    expect( +( rt.predict( inp1 ) ).toFixed( 4 ) ).to.equal( 19.8533 );
   } );
 } );
 
@@ -245,7 +249,7 @@ describe( 'Max Depth case during grow tree', function () {
     } );
     // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
     expect( typeof rt.exportJSON() ).to.equal( 'string' );
-    expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 74.614 } );
+    expect( rt.metrics() ).to.deep.equal( { size: 394, varianceReduction: 75.15 } );
     // Test with some real data.
     expect( +( rt.predict( inp1 ) ).toFixed( 4 ) ).to.equal( 20.2855 );
     // Note, since there are 2 levels - only 2 columns viz weight & displacement will be used.
@@ -412,5 +416,35 @@ describe( 'Trying to learn with constant Y under a node', function () {
     // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
     expect( JSON.parse( rt.exportJSON() ).branches[ 'high weight' ].stdev ).to.equal( 0 );
     expect( JSON.parse( rt.exportJSON() ).branches[ 'high weight' ].branches ).to.equal( undefined );
+  } );
+} );
+
+describe( 'Rules learned 0 case', function () {
+  it( 'should return JSON string & metrics with variance reduction of 77.2636%', function () {
+    var rt = wrt();
+    // var cars = fs.readFileSync( './test/data/cars-quantized-data.csv', 'utf-8' ).split( '\n' ); // eslint-disable-line no-sync
+    // cars.pop();
+    var columns = [
+      { name: 'model', categorical: true, exclude: true },
+      { name: 'mpg', categorical: false, target: true },
+      { name: 'cylinders', categorical: true },
+      { name: 'displacement', categorical: true, exclude: false },
+      { name: 'horsepower', categorical: true, exclude: false },
+      { name: 'weight', categorical: true, exclude: false },
+      { name: 'acceleration', categorical: true, exclude: false },
+      { name: 'year', categorical: true, exclude: true },
+      { name: 'origin', categorical: true, exclude: false  }
+    ];
+
+    // A value of 135 for `minAvgChildrenItems` ensures no best split candidate is found
+    // at root level leading to rules learned being equal to 0.
+    rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 10, minSplitCandidateItems: 30, minAvgChildrenItems: 135 } );
+    cars.forEach( function ( row ) {
+      rt.ingest( row.split( ',' ) );
+    } );
+
+    // Test number of rules learned!
+    expect( rt.learn() ).to.equal( 0 );
+    // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
   } );
 } );
