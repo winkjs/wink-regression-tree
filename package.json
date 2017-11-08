@@ -1,6 +1,6 @@
 {
   "name": "wink-regression-tree",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Decision Tree to predict the value of a continuous target variable",
   "keywords": [
     "Regression Tree",
