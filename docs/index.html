@@ -153,6 +153,16 @@
                 
                 </li>
               
+                
+                <li><a
+                  href='#reset'
+                  class="">
+                  reset
+                  
+                </a>
+                
+                </li>
+              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -1314,6 +1324,69 @@ and not for further ingestion and/or learning.</p>
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> anRT = regressionTree();
 <span class="hljs-comment">// Assuming that json has a valid rule tree.</span>
 anRT.importJSON( rules );</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='reset'>
+      reset
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>It completely resets the tree by re-initializing all the learning
+related variables, except it's configuration. It is useful during
+cross fold-validation.</p>
+
+
+  <div class='pre p1 fill-light mt0'>reset(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></code>:
+        nothing!
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> myRT.reset();</pre>
     
   
 

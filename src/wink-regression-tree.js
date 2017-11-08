@@ -1089,6 +1089,17 @@ var regressionTree = function () {
     return true;
   }; // importJSON()
 
+  // ### reset
+  /**
+   *
+   * It completely resets the tree by re-initializing all the learning
+   * related variables, except it's configuration. It is useful during
+   * cross fold-validation.
+   *
+   * @return {undefined} nothing!
+   * @example
+   * var myRT.reset();
+  */
   var reset = function () {
     // Do not reset variables pertaining to *configuration*:<br/>
     // 1. `columnsConfig`
