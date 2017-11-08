@@ -448,3 +448,44 @@ describe( 'Rules learned 0 case', function () {
     // console.log( JSON.stringify( JSON.parse( rt.exportJSON() ), null, 2 ) ); // eslint-disable-line no-console
   } );
 } );
+
+describe( 'Run Reset Test Cycle with Quantized Car Data', function () {
+  it( 'should return variance reduction of 70.6088%, 74.3369% & 71.8239%', function () {
+    var rt = wrt();
+    var columns = [
+      { name: 'model', categorical: true, exclude: true },
+      { name: 'mpg', categorical: false, target: true },
+      { name: 'cylinders', categorical: true },
+      { name: 'displacement', categorical: true, exclude: false },
+      { name: 'horsepower', categorical: true, exclude: false },
+      { name: 'weight', categorical: true, exclude: false },
+      { name: 'acceleration', categorical: true, exclude: false },
+      { name: 'year', categorical: true, exclude: true },
+      { name: 'origin', categorical: true, exclude: false  }
+    ];
+
+    rt.defineConfig( columns, { minPercentVarianceReduction: 0.5, minLeafNodeItems: 10, minSplitCandidateItems: 30, minAvgChildrenItems: 2 } );
+
+    var r;
+    // Variance Reductions for each fold.
+    var vrs = [ { size: 132, varianceReduction: 70.6088 }, { size: 131, varianceReduction: 74.3369 }, { size: 131, varianceReduction: 71.8239 } ];
+    for ( var folds = 3, k = 0; k < folds; k += 1 ) {
+      for ( var idx1 = 0; idx1 < cars.length; idx1 += 1 ) {
+        if ( idx1 % folds !== 0 ) rt.ingest( cars[ idx1 ].split( ',' ) );
+      }
+
+      rt.learn();
+
+      for ( var idx2 = 0; idx2 < cars.length; idx2 += 1 ) {
+        r = cars[ idx2 ].split( ',' );
+        if ( idx2 % folds === 0 ) rt.evaluate( { model: r[0], mpg: r[1], cylinders: r[2], displacement: r[3], horsepower: r[4], weight: r[5], acceleration: r[6], year: r[7], origin: r[8] } );
+      }
+      expect( rt.metrics() ).to.deep.equal( vrs[ k ] );
+
+      // This ensures that each learning/validation set is unique under each fold.
+      // Refer to the modulus operator in each for-loop.
+      cars = cars.slice( 1 );
+      rt.reset();
+    }
+  } );
+} );

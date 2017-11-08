@@ -63,6 +63,25 @@ var regressionTree = function () {
   // Current rules tree object version.
   var winkRulesTreeVersion = 'WRT 1.0.0';
 
+  // ### initEvalParams
+  /**
+   *
+   * Initializes all the properties of `evalParams`.
+   *
+   * @return {undefined} nothing!
+   * @private
+  */
+  var initEvalParams = function () {
+    // Setup evaluation parameters.
+    evalParams.size = 0;
+    evalParams.mean = 0;
+    evalParams.prevMean = 0;
+    // Grand Sum of Squared Deviations from the Mean, prior to prediction.
+    evalParams.gssdm = 0;
+    // Sum of Squared Deviations from the Mean, post prediction
+    evalParams.ssdm = 0;
+  }; // initEvalParams()
+
   // ### initColsDefn
   /**
    *
@@ -1070,6 +1089,27 @@ var regressionTree = function () {
     return true;
   }; // importJSON()
 
+  var reset = function () {
+    // Do not reset variables pertaining to *configuration*:<br/>
+    // 1. `columnsConfig`
+    // 2. `columnsDefn`
+    // 3. `config`
+    // 4. `target`
+
+    // All other variables are reset/re-initialized.
+
+    // Re-initialize the **w**ink **r**egression tree.
+    wrTree = Object.create( null );
+    // Re-initialize Xformed Column id to input column id map.
+    xc2cMap = [];
+    // Re-initialize Xformed data, where categorical variables are encoded by a numeric code. Useful
+    // in reduction of memory load.
+    xdata = [];
+    // Re-initialize parameters used for evaluation.
+    evalParams = Object.create( null );
+    initEvalParams();
+  }; // reset();
+
   // Set default configuration;
   config.maxDepth = 20;
   config.minPercentVarianceReduction = 10;
@@ -1080,14 +1120,8 @@ var regressionTree = function () {
   // Initialize the number of rules learned.
   wrTree.rulesLearned = 0;
 
-  // Setup evaluation parameters.
-  evalParams.size = 0;
-  evalParams.mean = 0;
-  evalParams.prevMean = 0;
-  // Grand Sum of Squared Deviations from the Mean, prior to prediction.
-  evalParams.gssdm = 0;
-  // Sum of Squared Deviations from the Mean, post prediction
-  evalParams.ssdm = 0;
+  // Initialize evaluation parameters.
+  initEvalParams();
 
   methods.defineConfig = defineConfig;
   methods.ingest = ingest;
@@ -1100,6 +1134,7 @@ var regressionTree = function () {
   methods.stats = methods.summary = summary;
   methods.exportJSON = exportJSON;
   methods.importJSON = importJSON;
+  methods.reset = reset;
 
   return methods;
 }; // regressionTree()
