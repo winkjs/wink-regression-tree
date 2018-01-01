@@ -2,11 +2,11 @@
 
 Decision Tree to predict the value of a continuous target variable
 
-### [![Build Status](https://api.travis-ci.org/winkjs/wink-regression-tree.svg?branch=master)](https://travis-ci.org/winkjs/wink-regression-tree) [![Coverage Status](https://coveralls.io/repos/github/winkjs/wink-regression-tree/badge.svg?branch=master)](https://coveralls.io/github/winkjs/wink-regression-tree?branch=master) [![Inline docs](http://inch-ci.org/github/winkjs/wink-regression-tree.svg?branch=master)](http://inch-ci.org/github/winkjs/wink-regression-tree) [![devDependencies Status](https://david-dm.org/winkjs/wink-regression-tree/dev-status.svg)](https://david-dm.org/winkjs/wink-regression-tree?type=dev)
+### [![Build Status](https://api.travis-ci.org/winkjs/wink-regression-tree.svg?branch=master)](https://travis-ci.org/winkjs/wink-regression-tree) [![Coverage Status](https://coveralls.io/repos/github/winkjs/wink-regression-tree/badge.svg?branch=master)](https://coveralls.io/github/winkjs/wink-regression-tree?branch=master) [![Inline docs](http://inch-ci.org/github/winkjs/wink-regression-tree.svg?branch=master)](http://inch-ci.org/github/winkjs/wink-regression-tree) [![dependencies Status](https://david-dm.org/winkjs/wink-regression-tree/status.svg)](https://david-dm.org/winkjs/wink-regression-tree) [![devDependencies Status](https://david-dm.org/winkjs/wink-regression-tree/dev-status.svg)](https://david-dm.org/winkjs/wink-regression-tree?type=dev)
 
 <img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
 
-Predict the value of a continuous variable such as price, turn around time, or mileage using **`wink-regression-tree`**. It is a part of _[wink](http://winkjs.org/)_ — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
+Predict the value of a continuous variable such as price, turn around time, or mileage using **`wink-regression-tree`**. It is a part of [wink](http://winkjs.org/) — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.
 
 
 ### Installation
@@ -95,8 +95,7 @@ console.log( +mean.toFixed( 1 ) );
 // for computing the range or the upper limit.
 ```
 
-Try [experimenting with this example on Runkit](https://npm.runkit.com/wink-regression-tree) in
-the browser.
+Try [experimenting with this example on Runkit](https://npm.runkit.com/wink-regression-tree) in the browser.
 
 ### Documentation
 For detailed API docs, check out http://winkjs.org/wink-regression-tree/ URL!
