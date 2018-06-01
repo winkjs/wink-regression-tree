@@ -916,7 +916,7 @@ var regressionTree = function () {
       colImp[ depth ][ chVal ].minVR = Math.min( colImp[ depth ][ chVal ].minVR, +subTree.varianceReduction.toFixed( 4 ) );
       colImp[ depth ][ chVal ].maxVR = Math.max( colImp[ depth ][ chVal ].maxVR, +subTree.varianceReduction.toFixed( 4 ) );
 
-      for ( var key in subTree.branches ) {
+      for ( var key in subTree.branches ) { // eslint-disable-line guard-for-in
         // Update summary!
         if ( stats.min.mean > subTree.branches[ key ].mean ) {
           stats.min.mean = subTree.branches[ key ].mean;
