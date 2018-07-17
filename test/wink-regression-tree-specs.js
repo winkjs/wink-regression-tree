@@ -2,7 +2,7 @@
 //     Decision Tree to predict the value of a continuous
 //     target variable
 //
-//     Copyright (C) 2017  GRAYPE Systems Private Limited
+//     Copyright (C) 2017-18  GRAYPE Systems Private Limited
 //
 //     This file is part of “wink-regression-tree”.
 //
