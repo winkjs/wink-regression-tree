@@ -1,196 +1,60 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset='utf-8' />
-  <title>wink-regression-tree 1.3.1 | Documentation</title>
-  <meta name='viewport' content='width=device-width,initial-scale=1'>
-  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
-  <link href='assets/style.css' type='text/css' rel='stylesheet' />
-  <link href='assets/github.css' type='text/css' rel='stylesheet' />
-  <link href='assets/split.css' type='text/css' rel='stylesheet' />
+    
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body class='documentation m0'>
-    <div class='flex'>
-      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
-        <div class='py1 px2'>
-          <h3 class='mb0 no-anchor'>wink-regression-tree</h3>
-          <div class='mb1'><code>1.3.1</code></div>
-          <input
-            placeholder='Filter'
-            id='filter-input'
-            class='col12 block input'
-            type='text' />
-          <div id='toc'>
-            <ul class='list-reset h5 py1-ul'>
-              
-                
-                <li><a
-                  href='#introduction'
-                  class="h5 bold black caps">
-                  Introduction
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#how-to-create-an-instance'
-                  class="h5 bold black caps">
-                  How to create an Instance
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#regressiontree'
-                  class="">
-                  regressionTree
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#api-methods'
-                  class="h5 bold black caps">
-                  API Methods
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#defineconfig'
-                  class="">
-                  defineConfig
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#ingest'
-                  class="">
-                  ingest
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#learn'
-                  class="">
-                  learn
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#predict'
-                  class="">
-                  predict
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#summary'
-                  class="">
-                  summary
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#evaluate'
-                  class="">
-                  evaluate
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#metrics'
-                  class="">
-                  metrics
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#exportjson'
-                  class="">
-                  exportJSON
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#importjson'
-                  class="">
-                  importJSON
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#reset'
-                  class="">
-                  reset
-                  
-                </a>
-                
-                </li>
-              
-            </ul>
-          </div>
-          <div class='mt1 h6 quiet'>
-            <a href='http://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
-          </div>
-        </div>
-      </div>
-      <div id='split-right' class='relative overflow-auto height-viewport-100'>
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+<body>
 
-  <h2 id='introduction' class='mt0'>
-    Introduction
-  </h2>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-  
-    <h1>wink-regression-tree</h1>
-<p>Decision Tree to predict the value of a continuous target variable</p>
-<h3><a href="https://travis-ci.org/winkjs/wink-regression-tree"><img src="https://api.travis-ci.org/winkjs/wink-regression-tree.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/winkjs/wink-regression-tree?branch=master"><img src="https://coveralls.io/repos/github/winkjs/wink-regression-tree/badge.svg?branch=master" alt="Coverage Status"></a> <a href="http://inch-ci.org/github/winkjs/wink-regression-tree"><img src="http://inch-ci.org/github/winkjs/wink-regression-tree.svg?branch=master" alt="Inline docs"></a> <a href="https://david-dm.org/winkjs/wink-regression-tree"><img src="https://david-dm.org/winkjs/wink-regression-tree/status.svg" alt="dependencies Status"></a> <a href="https://david-dm.org/winkjs/wink-regression-tree?type=dev"><img src="https://david-dm.org/winkjs/wink-regression-tree/dev-status.svg" alt="devDependencies Status"></a></h3>
-<img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" >
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="http://winkjs.org" target="_blank" >Wink JS</a></h2><h2><a href="https://github.com/winkjs/wink-statistics" target="_blank" >Github</a></h2><h3>Classes</h3><ul><li><a href="RegressionTree.html">RegressionTree</a><ul class='methods'><li data-type='method'><a href="RegressionTree.html#.defineConfig">defineConfig</a></li><li data-type='method'><a href="RegressionTree.html#.evaluate">evaluate</a></li><li data-type='method'><a href="RegressionTree.html#.exportJSON">exportJSON</a></li><li data-type='method'><a href="RegressionTree.html#.importJSON">importJSON</a></li><li data-type='method'><a href="RegressionTree.html#.ingest">ingest</a></li><li data-type='method'><a href="RegressionTree.html#.learn">learn</a></li><li data-type='method'><a href="RegressionTree.html#.metrics">metrics</a></li><li data-type='method'><a href="RegressionTree.html#.predict">predict</a></li><li data-type='method'><a href="RegressionTree.html#.reset">reset</a></li><li data-type='method'><a href="RegressionTree.html#.summary">summary</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#regressionTree">regressionTree</a></li></ul>
+</nav>
+
+<div id="main">
+    
+
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+    <section class="readme">
+        <article><h1>wink-regression-tree</h1><p>Decision Tree to predict the value of a continuous target variable</p>
+<h3><a href="https://travis-ci.org/winkjs/wink-regression-tree"><img src="https://api.travis-ci.org/winkjs/wink-regression-tree.svg?branch=master" alt="Build Status"></a> <a href="https://coveralls.io/github/winkjs/wink-regression-tree?branch=master"><img src="https://coveralls.io/repos/github/winkjs/wink-regression-tree/badge.svg?branch=master" alt="Coverage Status"></a> <a href="http://inch-ci.org/github/winkjs/wink-regression-tree"><img src="http://inch-ci.org/github/winkjs/wink-regression-tree.svg?branch=master" alt="Inline docs"></a> <a href="https://david-dm.org/winkjs/wink-regression-tree"><img src="https://david-dm.org/winkjs/wink-regression-tree/status.svg" alt="dependencies Status"></a> <a href="https://david-dm.org/winkjs/wink-regression-tree?type=dev"><img src="https://david-dm.org/winkjs/wink-regression-tree/dev-status.svg" alt="devDependencies Status"></a> <a href="https://gitter.im/winkjs/Lobby"><img src="https://img.shields.io/gitter/room/nwjs/nw.js.svg" alt="Gitter"></a></h3><p><img align="right" src="https://decisively.github.io/wink-logos/logo-title.png" width="100px" ></p>
 <p>Predict the value of a continuous variable such as price, turn around time, or mileage using <strong><code>wink-regression-tree</code></strong>. It is a part of <a href="http://winkjs.org/">wink</a> — a growing family of high quality packages for Statistical Analysis, Natural Language Processing and Machine Learning in NodeJS.</p>
-<h3>Installation</h3>
-<p>Use <a href="https://www.npmjs.com/package/wink-regression-tree">npm</a> to install:</p>
-<pre><code>npm install wink-regression-tree --save
-</code></pre>
-<h3>Getting Started</h3>
-<p>Here is an example of predicting car’s mileage (miles per gallon - mpg) from attributes like displacement, horsepower, acceleration, country of origin, and few more. A sample data row is given for quick reference:</p>
+<h3>Installation</h3><p>Use <a href="https://www.npmjs.com/package/wink-regression-tree">npm</a> to install:</p>
+<pre class="prettyprint source"><code>npm install wink-regression-tree --save</code></pre><h3>Getting Started</h3><p>Here is an example of predicting car’s mileage (miles per gallon - mpg) from attributes like displacement, horsepower, acceleration, country of origin, and few more. A sample data row is given for quick reference:</p>
 <table>
 <thead>
 <tr>
@@ -220,1206 +84,99 @@
 </tbody>
 </table>
 <p>The code below provides a potential configuration to predict the value of miles per gallon:</p>
-<pre class='hljs'><span class="hljs-comment">// Load wink-regression-tree.</span>
-<span class="hljs-keyword">var</span> regressionTree = <span class="hljs-built_in">require</span>( <span class="hljs-string">'wink-regression-tree'</span> );
+<pre class="prettyprint source lang-javascript"><code>// Load wink-regression-tree.
+var regressionTree = require( 'wink-regression-tree' );
 
-<span class="hljs-comment">// Load cars training data set.</span>
-<span class="hljs-comment">// In practice an async mechanism may be used to</span>
-<span class="hljs-comment">// read data asynchronously and call `ingest()` on</span>
-<span class="hljs-comment">// every row of data read.</span>
-<span class="hljs-keyword">var</span> cars = <span class="hljs-built_in">require</span>( <span class="hljs-string">'wink-regression-tree/sample-data/cars.json'</span> );
+// Load cars training data set.
+// In practice an async mechanism may be used to
+// read data asynchronously and call `ingest()` on
+// every row of data read.
+var cars = require( 'wink-regression-tree/sample-data/cars.json' );
 
-<span class="hljs-comment">// Create a sample data to test prediction for</span>
-<span class="hljs-comment">// Ford Gran Torino, having "mpg of 14.5", very</span>
-<span class="hljs-comment">// large displacement, extremely high power, very</span>
-<span class="hljs-comment">// high weight, slow, and with origin as US.</span>
-<span class="hljs-keyword">var</span> input = {
-  <span class="hljs-attr">model</span>: <span class="hljs-string">'Ford Gran Torino'</span>,
-  <span class="hljs-attr">weight</span>: <span class="hljs-string">'very high weight'</span>,
-  <span class="hljs-attr">displacement</span>: <span class="hljs-string">'very large displacement'</span>,
-  <span class="hljs-attr">horsepower</span>: <span class="hljs-string">'extremely high power'</span>,
-  <span class="hljs-attr">origin</span>: <span class="hljs-string">'US'</span>,
-  <span class="hljs-attr">acceleration</span>: <span class="hljs-string">'slow'</span>
+// Create a sample data to test prediction for
+// Ford Gran Torino, having &quot;mpg of 14.5&quot;, very
+// large displacement, extremely high power, very
+// high weight, slow, and with origin as US.
+var input = {
+  model: 'Ford Gran Torino',
+  weight: 'very high weight',
+  displacement: 'very large displacement',
+  horsepower: 'extremely high power',
+  origin: 'US',
+  acceleration: 'slow'
 };
-<span class="hljs-comment">// Above record is not the part of training data.</span>
+// Above record is not the part of training data.
 
-<span class="hljs-comment">// Create an instance of the regression  tree.</span>
-<span class="hljs-keyword">var</span> rt = regressionTree();
+// Create an instance of the regression  tree.
+var rt = regressionTree();
 
-<span class="hljs-comment">// Specify columns of the training data.</span>
-<span class="hljs-keyword">var</span> columns = [
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'model'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'mpg'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">target</span>: <span class="hljs-literal">true</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'cylinders'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'displacement'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'horsepower'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'weight'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'acceleration'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'year'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'origin'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span>  }
+// Specify columns of the training data.
+var columns = [
+  { name: 'model', categorical: true, exclude: true },
+  { name: 'mpg', categorical: false, target: true },
+  { name: 'cylinders', categorical: true, exclude: false },
+  { name: 'displacement', categorical: true, exclude: false },
+  { name: 'horsepower', categorical: true, exclude: false },
+  { name: 'weight', categorical: true, exclude: false },
+  { name: 'acceleration', categorical: true, exclude: false },
+  { name: 'year', categorical: true, exclude: true },
+  { name: 'origin', categorical: true, exclude: false  }
 ];
-<span class="hljs-comment">// Specify configuration for learning.</span>
-<span class="hljs-keyword">var</span> treeParams = {
-  <span class="hljs-attr">minPercentVarianceReduction</span>: <span class="hljs-number">0.5</span>,
-  <span class="hljs-attr">minLeafNodeItems</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-attr">minSplitCandidateItems</span>: <span class="hljs-number">30</span>,
-  <span class="hljs-attr">minAvgChildrenItems</span>: <span class="hljs-number">2</span>
+// Specify configuration for learning.
+var treeParams = {
+  minPercentVarianceReduction: 0.5,
+  minLeafNodeItems: 10,
+  minSplitCandidateItems: 30,
+  minAvgChildrenItems: 2
 };
-<span class="hljs-comment">// Define the regression tree configuration using</span>
-<span class="hljs-comment">// `columns` and `treeParams`.</span>
+// Define the regression tree configuration using
+// `columns` and `treeParams`.
 rt.defineConfig( columns, treeParams );
 
-<span class="hljs-comment">// Ingest the data.</span>
-cars.forEach( <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"> row </span>) </span>{
+// Ingest the data.
+cars.forEach( function ( row ) {
   rt.ingest( row );
 } );
 
-<span class="hljs-comment">// Data ingested! Now time to learn from data!!</span>
-<span class="hljs-built_in">console</span>.log( rt.learn() );
-<span class="hljs-comment">// -&gt; 16 (Number of Rules Learned)</span>
+// Data ingested! Now time to learn from data!!
+console.log( rt.learn() );
+// -> 16 (Number of Rules Learned)
 
-<span class="hljs-comment">// Predict the **mean** value.</span>
-<span class="hljs-keyword">var</span> mean = rt.predict( input );
-<span class="hljs-built_in">console</span>.log( +mean.toFixed( <span class="hljs-number">1</span> ) );
-<span class="hljs-comment">// -&gt; 14.3 ( compare with actual mpg of 14.5 )</span>
+// Predict the **mean** value.
+var mean = rt.predict( input );
+console.log( +mean.toFixed( 1 ) );
+// -> 14.3 ( compare with actual mpg of 14.5 )
 
-<span class="hljs-comment">// In practice one may like to compute a range</span>
-<span class="hljs-comment">// or upper limit using the `modifier` function</span>
-<span class="hljs-comment">// during prediction. Note `size`, `mean`, and `stdev`</span>
-<span class="hljs-comment">// values, passed to this function, can be used</span>
-<span class="hljs-comment">// for computing the range or the upper limit.</span></pre>
-<p>Try <a href="https://npm.runkit.com/wink-regression-tree">experimenting with this example on Runkit</a> in the browser.</p>
-<h3>Documentation</h3>
-<p>For detailed API docs, check out <a href="http://winkjs.org/wink-regression-tree/">http://winkjs.org/wink-regression-tree/</a> URL!</p>
-<h3>Need Help?</h3>
-<p>If you spot a bug and the same has not yet been reported, raise a new <a href="https://github.com/winkjs/wink-regression-tree/issues">issue</a> or consider fixing it and sending a pull request.</p>
-<h3>Copyright &#x26; License</h3>
-<p><strong>wink-regression-tree</strong> is copyright 2017-18 <a href="http://graype.in/">GRAYPE Systems Private Limited</a>.</p>
+// In practice one may like to compute a range
+// or upper limit using the `modifier` function
+// during prediction. Note `size`, `mean`, and `stdev`
+// values, passed to this function, can be used
+// for computing the range or the upper limit.</code></pre><p>Try <a href="https://npm.runkit.com/wink-regression-tree">experimenting with this example on Runkit</a> in the browser.</p>
+<h3>Documentation</h3><p>For detailed API docs, check out http://winkjs.org/wink-regression-tree/ URL!</p>
+<h3>Need Help?</h3><p>If you spot a bug and the same has not yet been reported, raise a new <a href="https://github.com/winkjs/wink-regression-tree/issues">issue</a> or consider fixing it and sending a pull request.</p>
+<h3>Copyright &amp; License</h3><p><strong>wink-regression-tree</strong> is copyright 2017-18 <a href="http://graype.in/">GRAYPE Systems Private Limited</a>.</p>
 <p>It is licensed under the under the terms of the GNU Affero General Public License as published by the Free
-Software Foundation, version 3 of the License.</p>
+Software Foundation, version 3 of the License.</p></article>
+    </section>
 
-  
-</section>
+
+
+
+
+
+    
+    
 </div>
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='how-to-create-an-instance' class='mt0'>
-    How to create an Instance
-  </h2>
+<br class="clear">
 
-  
-    
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 08 2018 15:57:05 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
 
-  
-</section>
-</div>
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
 
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='regressiontree'>
-      regressionTree
-    </h3>
-    
-    
-  </div>
-  
 
-  <p>Creates an instance of <strong><code>wink-regression-tree</code></strong>.</p>
-
-
-  <div class='pre p1 fill-light mt0'>regressionTree(): methods</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code>methods</code>:
-        object conatining set of API methods for tasks like configuration,
-data ingestion, learning, and prediction etc.
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Load wink regression tree.</span>
-<span class="hljs-keyword">var</span> regressionTree = <span class="hljs-built_in">require</span>( <span class="hljs-string">'wink-regression-tree'</span> );
-<span class="hljs-comment">// Create your instance of regression tree.</span>
-<span class="hljs-keyword">var</span> myRT = regressionTree();</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='api-methods' class='mt0'>
-    API Methods
-  </h2>
-
-  
-    
-
-  
-</section>
-</div>
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='defineconfig'>
-      defineConfig
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Defines the configuration required to read the input data and to generates
-the regression tree.</p>
-
-
-  <div class='pre p1 fill-light mt0'>defineConfig(inputDataCols: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>, tree: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>inputDataCols</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>>)</code>
-	    — each object in this array defines a column of input
-data in the same sequence in which data will be supplied to 
-<code>ingest().</code>
- It is
-defined in terms of the following details:
-
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>inputDataCols[].name</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></code>
-  </td>
-  <td class='break-word'><span>of the column.
-</span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>inputDataCols[].categorical</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
-  </td>
-  <td class='break-word'><span>defines column's data type — 
-<code>true</code>
- indicating categorical
-
-<strong>or</strong>
- 
-<code>false</code>
- indicating numeric; currently numeric data type is not supported.
-</span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>inputDataCols[].exclude</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
-  
-    (default <code>false</code>)
-  </td>
-  <td class='break-word'><span>used to exclude a column during tree building.
-</span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>inputDataCols[].target</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>
-  
-    (default <code>false</code>)
-  </td>
-  <td class='break-word'><span>is set to 
-<code>true</code>
- only for the target column, whose
-value needs to be predicted. Note this column must be a numeric column.
-</span></td>
-</tr>
-
-
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>tree</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    — contains key value pairs of the following regression
-tree's parameters:
-
-          </div>
-          
-          <table class='mt1 mb2 fixed-table h5 col-12'>
-            <colgroup>
-              <col width='30%' />
-              <col width='70%' />
-            </colgroup>
-            <thead>
-              <tr class='bold fill-light'>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody class='mt1'>
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>tree.maxDepth</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
-  
-    (default <code>20</code>)
-  </td>
-  <td class='break-word'><span>is the maximum depth of the tree after which
-learning stops.
-</span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>tree.minPercentVarianceReduction</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
-  
-    (default <code>10</code>)
-  </td>
-  <td class='break-word'><span>is the minmum variance reduction
-required for a split to occur.
-</span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>tree.minSplitCandidateItems</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
-  
-    (default <code>50</code>)
-  </td>
-  <td class='break-word'><span>the minimum items that must be present
-at a node for it to be split further, even after the 
-<code>minPercentVarianceReduction</code>
-
-target has been achieved.
-</span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>tree.minLeafNodeItems</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
-  
-    (default <code>10</code>)
-  </td>
-  <td class='break-word'><span>is the minimum number of items that
-must be present at a leaf node to be retained as an independent node. Nodes with
-less than this value size are merged together.
-</span></td>
-</tr>
-
-
-              
-                <tr>
-  <td class='break-word'><span class='code bold'>tree.minAvgChildrenItems</span> <code class='quiet'><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>
-  
-    (default <code>2</code>)
-  </td>
-  <td class='break-word'><span>the average number of items
-across children must be greater than this number, for a column to become a candidate
-for split. A higher number will discourage splits that creates many branches
-with each child node containing fewer items.
-</span></td>
-</tr>
-
-
-              
-            </tbody>
-          </table>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
-        number of columns defined.
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Define each column.</span>
-<span class="hljs-keyword">var</span> columns = [
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'model'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'mpg'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">false</span>, <span class="hljs-attr">target</span>: <span class="hljs-literal">true</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'cylinders'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'displacement'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'horsepower'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'weight'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'acceleration'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'year'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">true</span> },
-  { <span class="hljs-attr">name</span>: <span class="hljs-string">'origin'</span>, <span class="hljs-attr">categorical</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">exclude</span>: <span class="hljs-literal">false</span>  }
-];
-<span class="hljs-comment">// Define parameters to grow the tree.</span>
-<span class="hljs-keyword">var</span> treeParams = {
-  <span class="hljs-attr">minPercentVarianceReduction</span>: <span class="hljs-number">2.5</span>,
-  <span class="hljs-attr">minLeafNodeItems</span>: <span class="hljs-number">10</span>,
-  <span class="hljs-attr">minSplitCandidateItems</span>: <span class="hljs-number">30</span>,
-  <span class="hljs-attr">minAvgChildrenItems</span>: <span class="hljs-number">3</span>
-};
-<span class="hljs-comment">// Define the configuration using above 2 variables.</span>
-myRT.defineConfig( columns, treeParams );
-<span class="hljs-comment">// -&gt; 8</span></pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='ingest'>
-      ingest
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Ingests one row of the data at a time. It is specially useful for reading
-data in an asynchronus manner, where this may be used as a call back function
-on every row read event.</p>
-
-
-  <div class='pre p1 fill-light mt0'>ingest(row: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>row</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">array</a>)</code>
-	    — one row of the data to be ingested; column values
-should be in the same sequence in which they are defined in data configuration
-via 
-<code>defineConfig()</code>
-.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
-        always 
-<code>true</code>
-.
-
-      
-    
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Throws</div>
-    <ul>
-      
-        <li><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if number of elements in 
-<code>row</code>
- don't match with the
-number of columns defined.
-</li>
-      
-    </ul>
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Load cars training data set.</span>
-<span class="hljs-keyword">var</span> cars = <span class="hljs-built_in">require</span>( <span class="hljs-string">'wink-regression-tree/sample-data/cars.json'</span> );
-<span class="hljs-comment">// Ingest the data.</span>
-cars.forEach( <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"> row </span>) </span>{
-  myRT.ingest( row );
-} );</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='learn'>
-      learn
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Learns from the ingested data and generates the rule tree that is used to
-<code>predict()</code> the value of target variable from the input. It requires at least
-60 data rows to initiate meaningful learning.</p>
-
-
-  <div class='pre p1 fill-light mt0'>learn(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
-        number of rules learned from the input data.
-
-      
-    
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Throws</div>
-    <ul>
-      
-        <li><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if number of rows in the ingested data are &#x3C;60.
-</li>
-      
-    </ul>
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'>myRT.learn();
-<span class="hljs-comment">// -&gt; Number of rules learned</span></pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='predict'>
-      predict
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Predicts the value of target variable from the <code>input</code> using the rules tree generated by
-<code>learn()</code>. If the value of a columm in the input data, required for
-the prediction is missing, by defualt it throws an error. If the function
-<code>fn</code> is defined then no error is thrown, instead the name of missing column is passed
-to this function; and the function is expected to handle the same.</p>
-
-
-  <div class='pre p1 fill-light mt0'>predict(input: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>, modifier: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>input</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    — data containing column name/value pairs; the column
-names must the same as defined via 
-<code>defineConfig()</code>
-.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>modifier</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function">function</a>
-            = <code>undefined</code>)</code>
-	    — is called once
-a leaf node is reached during prediction with the following 5 parameters: 
-<strong>size,</strong>
-
-
-<strong>mean</strong>
- and 
-<strong>stdev</strong>
- values at the node; an 
-<strong>array</strong>
- of column names
-navigated to reach the leaf and 
-<strong>column name</strong>
- for which value is missing
-in the input (
-<code>default=undefined</code>
-). The value returned from this function becomes  the prediction.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></code>:
-        <code>mean</code>
- value or whatever is returned by the 
-<code>modifier</code>
- function, if defined.
-
-      
-    
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Throws</div>
-    <ul>
-      
-        <li><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if the 
-<code>input</code>
- is not a javascript object.
-</li>
-      
-        <li><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if a value of a column required for prediction is missing in 
-<code>input</code>
-,
-provided 
-<code>modifier</code>
- has not been defined.
-</li>
-      
-    </ul>
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-comment">// Populate sample input</span>
-<span class="hljs-keyword">var</span> input = {
-  <span class="hljs-attr">model</span>: <span class="hljs-string">'Ford Gran Torino'</span>,
-  <span class="hljs-attr">weight</span>: <span class="hljs-string">'very high weight'</span>,
-  <span class="hljs-attr">displacement</span>: <span class="hljs-string">'very large displacement'</span>,
-  <span class="hljs-attr">horsepower</span>: <span class="hljs-string">'extremely high power'</span>,
-  <span class="hljs-attr">origin</span>: <span class="hljs-string">'US'</span>,
-  <span class="hljs-attr">acceleration</span>: <span class="hljs-string">'slow'</span>
-};
-<span class="hljs-comment">// Attempt prediction.</span>
-myRT.predict( input );
-<span class="hljs-comment">// -&gt; 14.3</span></pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='summary'>
-      summary
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Generates summary of the learnings in terms of the following:<ol></p>
-<li>Relative importance of columns along with the corresponding min/max
-variance reductions (VR).</li>
-<li>The min/max mean values along with the corresponding standard
-deviations (SD).</li>
-<li>The minumum standard deviation (SD) discovered during the learning.</li></ol>
-
-
-  <div class='pre p1 fill-light mt0'>summary(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
-        containing the following:
-<ol>
-<li><code>table</code> — array of objects, where each object defines <code>level</code>, <code>columnHierarchy</code>,
-<code>nodesSplit</code>, <code>minVR</code> and <code>maxVR</code>. A lower value of <code>level</code>
-indicates higher importance; similarly more nodes at a level split on a columnHierarchy
-is an indication of importance. Therefore, it is sorted in ascending order of <code>level</code>
-followed by in descending order of <code>nodesSplit</code>.</li>
-<li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
-and <code>minSD</code>.</li></ol>
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'>myRT.summary();
-<span class="hljs-comment">// -&gt; returns the summary object.</span></pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='evaluate'>
-      evaluate
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Incrementally evalutes variance reduction for one data row at a time.</p>
-
-
-  <div class='pre p1 fill-light mt0'>evaluate(rowObject: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>rowObject</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a>)</code>
-	    — contains column name/value pairs including the target column
-name/value pair as well, which is used in evaluating the variance reduction.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
-        always 
-<code>true</code>
-.
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'>myRT.evaluate( input );</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='metrics'>
-      metrics
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Computes the variance reduction observed in the validation data passed to
-<code>evaluate()</code>.</p>
-
-
-  <div class='pre p1 fill-light mt0'>metrics(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></code>:
-        containing the 
-<code>varianceReduction</code>
- in percentage and data 
-<code>size</code>
-.
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'>myRT.metrics();
-<span class="hljs-comment">// -&gt; object containing varianceReduction and data size.</span></pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='exportjson'>
-      exportJSON
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Exports the JSON of the rule tree generated by <code>learn()</code>, which may be
-saved in a file for later predictions.</p>
-
-
-  <div class='pre p1 fill-light mt0'>exportJSON(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON">json</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON">json</a></code>:
-        of the rule tree.
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> rules = myRT.exportJSON();</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='importjson'>
-      importJSON
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Imports the rule tree from the input <code>rulesTree</code> for subsequent use by <code>predict()</code>.
-Note after a successful import, this can be used ONLY for prediction purpose
-and not for further ingestion and/or learning.</p>
-
-
-  <div class='pre p1 fill-light mt0'>importJSON(rulesTree: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON">json</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>rulesTree</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON">json</a>)</code>
-	    — containg an earlier exported rule tree in JSON format.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></code>:
-        always 
-<code>true</code>
-.
-
-      
-    
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Throws</div>
-    <ul>
-      
-        <li><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if 
-<code>rulesTree</code>
- is 
-<code>null</code>
-.
-</li>
-      
-        <li><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if 
-<code>rulesTree</code>
- can not be parsed as a valid JSON.
-</li>
-      
-        <li><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">error</a>: if 
-<code>rulesTree</code>
- is of incorrect version or incorrect format.
-</li>
-      
-    </ul>
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> anRT = regressionTree();
-<span class="hljs-comment">// Assuming that json has a valid rule tree.</span>
-anRT.importJSON( rules );</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-            <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='reset'>
-      reset
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>It completely resets the tree by re-initializing all the learning
-related variables, except it's configuration. It is useful during
-cross fold-validation.</p>
-
-
-  <div class='pre p1 fill-light mt0'>reset(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a></code>:
-        nothing!
-
-      
-    
-  
-
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Example</div>
-    
-      
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">var</span> myRT.reset();</pre>
-    
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-      </div>
-    </div>
-  <script src='assets/anchor.js'></script>
-  <script src='assets/split.js'></script>
-  <script src='assets/site.js'></script>
 </body>
 </html>

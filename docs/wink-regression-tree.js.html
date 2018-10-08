@@ -1,4 +1,47 @@
-//     wink-regression-tree
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>wink-regression-tree.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="http://winkjs.org" target="_blank" >Wink JS</a></h2><h2><a href="https://github.com/winkjs/wink-statistics" target="_blank" >Github</a></h2><h3>Classes</h3><ul><li><a href="RegressionTree.html">RegressionTree</a><ul class='methods'><li data-type='method'><a href="RegressionTree.html#.defineConfig">defineConfig</a></li><li data-type='method'><a href="RegressionTree.html#.evaluate">evaluate</a></li><li data-type='method'><a href="RegressionTree.html#.exportJSON">exportJSON</a></li><li data-type='method'><a href="RegressionTree.html#.importJSON">importJSON</a></li><li data-type='method'><a href="RegressionTree.html#.ingest">ingest</a></li><li data-type='method'><a href="RegressionTree.html#.learn">learn</a></li><li data-type='method'><a href="RegressionTree.html#.metrics">metrics</a></li><li data-type='method'><a href="RegressionTree.html#.predict">predict</a></li><li data-type='method'><a href="RegressionTree.html#.reset">reset</a></li><li data-type='method'><a href="RegressionTree.html#.summary">summary</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#regressionTree">regressionTree</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">wink-regression-tree.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>//     wink-regression-tree
 //     Decision Tree to predict the value of a continuous
 //     target variable
 //
@@ -19,7 +62,7 @@
 //
 //     You should have received a copy of the GNU Affero
 //     General Public License along with “wink-regression-tree”.
-//     If not, see <http://www.gnu.org/licenses/>.
+//     If not, see &lt;http://www.gnu.org/licenses/>.
 
 /* eslint no-continue: 0 */
 
@@ -29,7 +72,7 @@ var stdevEPSILON = Math.pow( 2, -48 );
 // ### regressionTree
 /**
  *
- * Creates an instance of a {@link RegressionTree}.
+ * Creates an instance of {@link RegressionTree}.
  *
  * @return {RegressionTree} object conatining set of API methods for tasks like configuration,
  * data ingestion, learning, and prediction etc.
@@ -108,8 +151,8 @@ var regressionTree = function () {
     var cc = JSON.parse( JSON.stringify( cols ) );
     // Intialize the included categorical columns with empty `map` object
     // and `nextCode` that will be assigned to the next unique value encountered.
-    for ( var i = 0, imax = cc.length; i < imax; i += 1 ) {
-      if ( cc[ i ].categorical && !cc[ i ].exclude ) {
+    for ( var i = 0, imax = cc.length; i &lt; imax; i += 1 ) {
+      if ( cc[ i ].categorical &amp;&amp; !cc[ i ].exclude ) {
         cc[ i ].nextCode = 0;
         cc[ i ].map = Object.create( null );
         cc[ i ].invertedMap = [];
@@ -119,7 +162,7 @@ var regressionTree = function () {
         target = cc[ i ].name;
       }
     }
-    // Return the cloned & initialized collumns — `cc`.
+    // Return the cloned &amp; initialized collumns — `cc`.
     return cc;
   }; // initColsDefn()
 
@@ -128,7 +171,7 @@ var regressionTree = function () {
    *
    * It transforms the **included categorical** column's data of `row` into coded
    * values using `colsDefn`. This encoding reduces the memory space requirements.
-   * If a new unique value is encountered, the `colsDefn.map` & `colsDefn.nextCode`
+   * If a new unique value is encountered, the `colsDefn.map` &amp; `colsDefn.nextCode`
    *  values are accordingly updated.
    *
    * @param {array} row — contains data i.e. column values for a single row.
@@ -141,14 +184,14 @@ var regressionTree = function () {
     var xRow = [ ];
     // Map, inverted Map and target value.
     var invertedMap, map, tv;
-    for ( var i = 0, imax = row.length; i < imax; i += 1 ) {
+    for ( var i = 0, imax = row.length; i &lt; imax; i += 1 ) {
       // Categorical and Included?
-      if ( colsDefn[ i ].categorical && !colsDefn[ i ].exclude ) {
+      if ( colsDefn[ i ].categorical &amp;&amp; !colsDefn[ i ].exclude ) {
         map = colsDefn[ i ].map;
         invertedMap = colsDefn[ i ].invertedMap;
         // Map defined for row's element in question?
         if ( map[ row[ i ] ] === undefined ) {
-          // Not! Update the `map` & the `invertedMap`.
+          // Not! Update the `map` &amp; the `invertedMap`.
           map[ row[ i ] ] = colsDefn[ i ].nextCode;
           invertedMap.push( row[ i ] );
           colsDefn[ i ].nextCode += 1;
@@ -187,7 +230,7 @@ var regressionTree = function () {
     candidates.columns = Object.create( null );
     // List of indexes of columns, to avoid calls to `Object.keys()` on candidate columns.
     candidates.list = [];
-    for ( var i = 0, imax = cols2p.length; i < imax; i += 1 ) {
+    for ( var i = 0, imax = cols2p.length; i &lt; imax; i += 1 ) {
       ci = cols2p[ i ];
       // Push this index in to the list.
       candidates.list.push( ci );
@@ -311,7 +354,7 @@ var regressionTree = function () {
   /**
    *
    * It requires a `row` of data, columns to be processed —`c2p`, the `colsDefn`,
-   * and a `node` that captures the column-wise varianceXn & mean for every unique
+   * and a `node` that captures the column-wise varianceXn &amp; mean for every unique
    * of the a column.
    *
    * @param {array} row — single row of transformed data that needs to be processed.
@@ -325,7 +368,7 @@ var regressionTree = function () {
     // Single column to process from the array `cols2p`.
     var c2p;
     var indexOfTarget = row.length - 1;
-    for ( var i = 0, imax = candidates.list.length; i < imax; i += 1 ) {
+    for ( var i = 0, imax = candidates.list.length; i &lt; imax; i += 1 ) {
       c2p = candidates.list[ i ];
       updateFn( candidates, c2p, row[ c2p ], rowsIndex, row[ indexOfTarget ] );
     }
@@ -359,7 +402,7 @@ var regressionTree = function () {
       // Initialize `sum` and `size` for this `col`.
       sum = 0;
       size = 0;
-      // And also counter & meanSize.
+      // And also counter &amp; meanSize.
       counter = 0;
       meanSize = 0;
       for ( uvs in candidates.columns[ col ] ) { // eslint-disable-line guard-for-in
@@ -374,7 +417,7 @@ var regressionTree = function () {
       // Normalize - this will yield weighted sum of variances.
       sum /= size;
       // Update minumum only if `meanSize` is above the defined threshold.
-      if ( ( sum < minSum ) && ( meanSize > config.minAvgChildrenItems ) ) {
+      if ( ( sum &lt; minSum ) &amp;&amp; ( meanSize > config.minAvgChildrenItems ) ) {
         minSum = sum;
         bestCol = col;
       }
@@ -402,7 +445,7 @@ var regressionTree = function () {
   /**
    *
    * Iterates through every candidate column in `cc`. For each candidate column,
-   * it collapses all nodes with `size < config.minLeafNodeItems` into a single
+   * it collapses all nodes with `size &lt; config.minLeafNodeItems` into a single
    * node referred to as `$$other_values`.
    *
    * @param {object} col — candidate columns that are iterated through for a
@@ -413,7 +456,7 @@ var regressionTree = function () {
   var collapseNodesInCol = function ( col ) {
     // Collapsed column
     var collapsedCol = Object.create( null );
-    // All `nodes < config.minLeafNodeItems` will be collapsed into this.
+    // All `nodes &lt; config.minLeafNodeItems` will be collapsed into this.
     var others = Object.create( null );
     // Unique Value in `col`
     var uv;
@@ -430,7 +473,7 @@ var regressionTree = function () {
     // Iterate through every unique value in the `col` object.
     for ( uv in col ) { // eslint-disable-line guard-for-in
       obj = col[ uv ];
-      if ( obj.size < config.minLeafNodeItems ) {
+      if ( obj.size &lt; config.minLeafNodeItems ) {
         collapsedOccurred = true;
         others.collapsedNodes += 1;
         // Combine means and remember it for a while before updating.
@@ -459,7 +502,7 @@ var regressionTree = function () {
   /**
    *
    * Iterates through every candidate column in `cc`. For each candidate column,
-   * it collapses all nodes with `size < config.minLeafNodeItems` into a single
+   * it collapses all nodes with `size &lt; config.minLeafNodeItems` into a single
    * node referred to as `$$other_values`.
    *
    * @param {object} cc — candidate columns that are iterated through for a
@@ -521,12 +564,12 @@ var regressionTree = function () {
       cCols = createCandidates( cc );
       index = splitData[ uniqVal ].index;
       // Does it have enough items to proceed with split?
-      if ( index.length <= config.minSplitCandidateItems || child.stdev < stdevEPSILON ) {
+      if ( index.length &lt;= config.minSplitCandidateItems || child.stdev &lt; stdevEPSILON ) {
         // No! continue with the iteration with the next `uniqVal`.
         continue;
       }
       // Attempt split.
-      for ( k = 0, kmax = index.length; k < kmax; k += 1 ) {
+      for ( k = 0, kmax = index.length; k &lt; kmax; k += 1 ) {
         processRow( xdata[ index[ k ] ], index[ k ], cCols, updateVarianceXn );
       }
       // Node that contain less than `config.minLeafNodeItems` are collapsed here.
@@ -538,14 +581,14 @@ var regressionTree = function () {
       }
       varianceReduction = computePercentageVarianceReduction( splitData[ uniqVal ].varianceXn, splitData[ uniqVal ].size, bs.sum );
       // Reasonable variance reduction?
-      if ( varianceReduction < config.minPercentVarianceReduction ) {
+      if ( varianceReduction &lt; config.minPercentVarianceReduction ) {
         // No! continue with the iteration with the next `uniqVal`.
         continue;
       }
       // Yes, split possible! Make a list of left columns by removing the columns
       // found for splitting.
       colsLeft = [];
-      for ( j = 0; j < cc.length; j += 1 ) {
+      for ( j = 0; j &lt; cc.length; j += 1 ) {
         if ( cc[ j ] !== bs.col ) colsLeft.push( cc[ j ] );
       }
       // Recurse!
@@ -568,7 +611,7 @@ var regressionTree = function () {
   var countRules = function ( tree ) {
     var subTree = tree.branches;
     for ( var node in subTree ) {
-      if ( subTree[ node ].branches !== undefined && Object.keys( subTree[ node ].branches ).length > 0 ) {
+      if ( subTree[ node ].branches !== undefined &amp;&amp; Object.keys( subTree[ node ].branches ).length > 0 ) {
         countRules( subTree[ node ] );
       } else wrTree.rulesLearned += 1;
     }
@@ -682,13 +725,13 @@ var regressionTree = function () {
    *
    * @method RegressionTree.learn
    * @return {number} number of rules learned from the input data.
-   * @throws {error} if number of rows in the ingested data are <60.
+   * @throws {error} if number of rows in the ingested data are &lt;60.
    * @example
    * myRT.learn();
    * // -> Number of rules learned
   */
   var learn = function ( ) {
-    if ( xdata.length < 60 ) {
+    if ( xdata.length &lt; 60 ) {
       throw Error( 'winkRT: learn is expecting at least 60 rows of data, instead found: ' + xdata.length );
     }
     // Candidate columns list
@@ -710,8 +753,8 @@ var regressionTree = function () {
     var i, imax;
     var k = 0;
 
-    // Create candidate columns list & `xc2cMap`.
-    for ( i = 0, imax = columnsConfig.length; i < imax; i += 1 ) {
+    // Create candidate columns list &amp; `xc2cMap`.
+    for ( i = 0, imax = columnsConfig.length; i &lt; imax; i += 1 ) {
       if ( !columnsConfig[ i ].exclude ) {
         if ( !columnsConfig[ i ].target ) {
           xc2cMap.push( i );
@@ -725,7 +768,7 @@ var regressionTree = function () {
 
     indexOfTarget = xdata[ 0 ].length - 1;
     // Process every row as this is the root level.
-    for ( i = 0; i < xdata.length; i += 1 ) {
+    for ( i = 0; i &lt; xdata.length; i += 1 ) {
       processRow( xdata[ i ], i, cndts, updateVarianceXn );
       prevRootsMean = rootsMean;
       rootsMean += computeMeanDelta( xdata[ i ][ indexOfTarget ], rootsMean, ( i + 1 ) );
@@ -748,7 +791,7 @@ var regressionTree = function () {
         return wrTree.rulesLearned;
       }
       // Find the updated list of candidate columsn after the split.
-      for ( i = 0; i < candidateCols.length; i += 1 ) {
+      for ( i = 0; i &lt; candidateCols.length; i += 1 ) {
         if ( candidateCols[ i ] !== bestSplit.col ) updatedCandidateCols.push( candidateCols[ i ] );
       }
       // Define the balance stuff as a split has been found!
@@ -788,7 +831,7 @@ var regressionTree = function () {
   */
   var navigateRules = function ( input, rules, f, colsUsed4Prediction ) {
     // Sub-tree is present if # of branches > 0.
-    var hasSubTree = helpers.object.isObject( rules.branches ) &&
+    var hasSubTree = helpers.object.isObject( rules.branches ) &amp;&amp;
                         ( ( Object.keys( rules.branches ) ).length > 0 );
 
 
@@ -808,7 +851,7 @@ var regressionTree = function () {
     // Sub-tree is present, check if the input has a value for `colUsed4Split`.
     column = rules.colUsed4Split;
 
-    inputHasReqdValue = ( ( input[ column ] !== undefined ) &&
+    inputHasReqdValue = ( ( input[ column ] !== undefined ) &amp;&amp;
       ( input[ column ] !== null ) );
 
     if ( inputHasReqdValue ) {
@@ -892,7 +935,7 @@ var regressionTree = function () {
   /**
    *
    * Recursively navigaes the rule tree to generate the summary by extracting the
-   * level wise column hierarchy, nodes that were split on this hierarchy, min &
+   * level wise column hierarchy, nodes that were split on this hierarchy, min &amp;
    * max variance reduction, etc.
    *
    * @param {object} subTree — the rules tree generated during `learn()`; on every
@@ -908,7 +951,7 @@ var regressionTree = function () {
   */
   var navigateRules4Stats = function ( subTree, stats, colImp, depth, ch ) {
     var chVal = ch;
-    if ( subTree.branches && ( Object.keys( subTree.branches ) ).length > 0 ) {
+    if ( subTree.branches &amp;&amp; ( Object.keys( subTree.branches ) ).length > 0 ) {
       // Update column's hierarchy in unix styled path names.
       chVal += '/' + subTree.colUsed4Split;
       // Initialize stats at the current `depth` and `ch` level.
@@ -931,7 +974,7 @@ var regressionTree = function () {
           stats.min.mean = subTree.branches[ key ].mean;
           stats.min.itsSD = subTree.branches[ key ].stdev;
         }
-        if ( stats.max.mean < subTree.branches[ key ].mean ) {
+        if ( stats.max.mean &lt; subTree.branches[ key ].mean ) {
           stats.max.mean = subTree.branches[ key ].mean;
           stats.max.itsSD = subTree.branches[ key ].stdev;
         }
@@ -945,22 +988,22 @@ var regressionTree = function () {
   // ### summary
   /**
    *
-   * Generates summary of the learnings in terms of the following:<ol>
-   * <li>Relative importance of columns along with the corresponding min/max
-   * variance reductions (VR).</li>
-   * <li>The min/max mean values along with the corresponding standard
-   * deviations (SD).</li>
-   * <li>The minumum standard deviation (SD) discovered during the learning.</li></ol>
+   * Generates summary of the learnings in terms of the following:&lt;ol>
+   * &lt;li>Relative importance of columns along with the corresponding min/max
+   * variance reductions (VR).&lt;/li>
+   * &lt;li>The min/max mean values along with the corresponding standard
+   * deviations (SD).&lt;/li>
+   * &lt;li>The minumum standard deviation (SD) discovered during the learning.&lt;/li>&lt;/ol>
    *
    * @method RegressionTree.summary
-   * @return {object} containing the following:<ol>
-   * <li><code>table</code> — array of objects, where each object defines <code>level</code>, <code>columnHierarchy</code>,
-   * <code>nodesSplit</code>, <code>minVR</code> and <code>maxVR</code>. A lower value of <code>level</code>
+   * @return {object} containing the following:&lt;ol>
+   * &lt;li>&lt;code>table&lt;/code> — array of objects, where each object defines &lt;code>level&lt;/code>, &lt;code>columnHierarchy&lt;/code>,
+   * &lt;code>nodesSplit&lt;/code>, &lt;code>minVR&lt;/code> and &lt;code>maxVR&lt;/code>. A lower value of &lt;code>level&lt;/code>
    * indicates higher importance; similarly more nodes at a level split on a columnHierarchy
-   * is an indication of importance. Therefore, it is sorted in ascending order of <code>level</code>
-   * followed by in descending order of <code>nodesSplit</code>.</li>
-   * <li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
-   * and <code>minSD</code>.</li></ol>
+   * is an indication of importance. Therefore, it is sorted in ascending order of &lt;code>level&lt;/code>
+   * followed by in descending order of &lt;code>nodesSplit&lt;/code>.&lt;/li>
+   * &lt;li>&lt;code>stats&lt;/code> — object containing &lt;code>min.mean&lt;/code>, &lt;code>min.itsSD&lt;/code>, &lt;code>max.mean&lt;/code>, &lt;code>max.itsSD&lt;/code>,
+   * and &lt;code>minSD&lt;/code>.&lt;/li>&lt;/ol>
    * @example
    * myRT.summary();
    * // -> returns the summary object.
@@ -1005,8 +1048,8 @@ var regressionTree = function () {
     table.sort( function ( a, b ) {
       return (
         ( a.level > b.level ) ? 1 :
-          ( a.level < b.level ) ? -1 :
-            ( a.nodesSplit < b.nodesSplit ) ? 1 : -1
+          ( a.level &lt; b.level ) ? -1 :
+            ( a.nodesSplit &lt; b.nodesSplit ) ? 1 : -1
       );
     } );
     // Return summary!
@@ -1117,7 +1160,7 @@ var regressionTree = function () {
    * var myRT.reset();
   */
   var reset = function () {
-    // Do not reset variables pertaining to *configuration*:<br/>
+    // Do not reset variables pertaining to *configuration*:&lt;br/>
     // 1. `columnsConfig`
     // 2. `columnsDefn`
     // 3. `config`
@@ -1168,3 +1211,26 @@ var regressionTree = function () {
 
 // Export
 module.exports = regressionTree;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 08 2018 15:57:05 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+
+</body>
+</html>
