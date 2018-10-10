@@ -26,7 +26,7 @@
 
 <nav>
     
-    <h2><a href="index.html">Home</a></h2><h2><a href="http://winkjs.org" target="_blank" >Wink JS</a></h2><h2><a href="https://github.com/winkjs/wink-statistics" target="_blank" >Github</a></h2><h3>Classes</h3><ul><li><a href="RegressionTree.html">RegressionTree</a><ul class='methods'><li data-type='method'><a href="RegressionTree.html#.defineConfig">defineConfig</a></li><li data-type='method'><a href="RegressionTree.html#.evaluate">evaluate</a></li><li data-type='method'><a href="RegressionTree.html#.exportJSON">exportJSON</a></li><li data-type='method'><a href="RegressionTree.html#.importJSON">importJSON</a></li><li data-type='method'><a href="RegressionTree.html#.ingest">ingest</a></li><li data-type='method'><a href="RegressionTree.html#.learn">learn</a></li><li data-type='method'><a href="RegressionTree.html#.metrics">metrics</a></li><li data-type='method'><a href="RegressionTree.html#.predict">predict</a></li><li data-type='method'><a href="RegressionTree.html#.reset">reset</a></li><li data-type='method'><a href="RegressionTree.html#.summary">summary</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#regressionTree">regressionTree</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h2><a href="http://winkjs.org" target="_blank" >Wink JS</a></h2><h2><a href="https://github.com/winkjs/wink-regression-tree" target="_blank" >Github</a></h2><h3>Classes</h3><ul><li><a href="RegressionTree.html">RegressionTree</a><ul class='methods'><li data-type='method'><a href="RegressionTree.html#defineConfig">defineConfig</a></li><li data-type='method'><a href="RegressionTree.html#evaluate">evaluate</a></li><li data-type='method'><a href="RegressionTree.html#exportJSON">exportJSON</a></li><li data-type='method'><a href="RegressionTree.html#importJSON">importJSON</a></li><li data-type='method'><a href="RegressionTree.html#ingest">ingest</a></li><li data-type='method'><a href="RegressionTree.html#learn">learn</a></li><li data-type='method'><a href="RegressionTree.html#metrics">metrics</a></li><li data-type='method'><a href="RegressionTree.html#predict">predict</a></li><li data-type='method'><a href="RegressionTree.html#reset">reset</a></li><li data-type='method'><a href="RegressionTree.html#summary">summary</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#regressionTree">regressionTree</a></li></ul>
 </nav>
 
 <div id="main">
@@ -72,7 +72,7 @@ var stdevEPSILON = Math.pow( 2, -48 );
 // ### regressionTree
 /**
  *
- * Creates an instance of {@link RegressionTree}.
+ * Creates an instance of a {@link RegressionTree}.
  *
  * @return {RegressionTree} object conatining set of API methods for tasks like configuration,
  * data ingestion, learning, and prediction etc.
@@ -623,7 +623,7 @@ var regressionTree = function () {
    * Defines the configuration required to read the input data and to generates
    * the regression tree.
    *
-   * @method RegressionTree.defineConfig
+   * @method RegressionTree#defineConfig
    * @param {object[]} inputDataCols each object in this array defines a column of input
    * data in the same sequence in which data will be supplied to `ingest().` It is
    * defined in terms of the following details:
@@ -692,7 +692,7 @@ var regressionTree = function () {
    * data in an asynchronus manner, where this may be used as a call back function
    * on every row read event.
    *
-   * @method RegressionTree.ingest
+   * @method RegressionTree#ingest
    * @param {array} row one row of the data to be ingested; column values
    * should be in the same sequence in which they are defined in data configuration
    * via `defineConfig()`.
@@ -723,7 +723,7 @@ var regressionTree = function () {
    * `predict()` the value of target variable from the input. It requires at least
    * 60 data rows to initiate meaningful learning.
    *
-   * @method RegressionTree.learn
+   * @method RegressionTree#learn
    * @return {number} number of rules learned from the input data.
    * @throws {error} if number of rows in the ingested data are &lt;60.
    * @example
@@ -897,7 +897,7 @@ var regressionTree = function () {
    * `fn` is defined then no error is thrown, instead the name of missing column is passed
    * to this function; and the function is expected to handle the same.
    *
-   * @method RegressionTree.predict
+   * @method RegressionTree#predict
    * @param {object} input data containing column name/value pairs; the column
    * names must the same as defined via `defineConfig()`.
    * @param {function} [modifier=undefined] is called once
@@ -995,7 +995,7 @@ var regressionTree = function () {
    * deviations (SD).&lt;/li>
    * &lt;li>The minumum standard deviation (SD) discovered during the learning.&lt;/li>&lt;/ol>
    *
-   * @method RegressionTree.summary
+   * @method RegressionTree#summary
    * @return {object} containing the following:&lt;ol>
    * &lt;li>&lt;code>table&lt;/code> — array of objects, where each object defines &lt;code>level&lt;/code>, &lt;code>columnHierarchy&lt;/code>,
    * &lt;code>nodesSplit&lt;/code>, &lt;code>minVR&lt;/code> and &lt;code>maxVR&lt;/code>. A lower value of &lt;code>level&lt;/code>
@@ -1061,7 +1061,7 @@ var regressionTree = function () {
    *
    * Incrementally evalutes variance reduction for one data row at a time.
    *
-   * @method RegressionTree.evaluate
+   * @method RegressionTree#evaluate
    * @param {object} rowObject contains column name/value pairs including the target column
    * name/value pair as well, which is used in evaluating the variance reduction.
    * @return {boolean} always `true`.
@@ -1084,7 +1084,7 @@ var regressionTree = function () {
    * Computes the variance reduction observed in the validation data passed to
    * `evaluate()`.
    *
-   * @method RegressionTree.metrics
+   * @method RegressionTree#metrics
    * @return {object} containing the `varianceReduction` in percentage and data `size`.
    * @example
    * myRT.metrics();
@@ -1105,7 +1105,7 @@ var regressionTree = function () {
    * Exports the JSON of the rule tree generated by `learn()`, which may be
    * saved in a file for later predictions.
    *
-   * @method RegressionTree.exportJSON
+   * @method RegressionTree#exportJSON
    * @return {json} of the rule tree.
    * @example
    * var rules = myRT.exportJSON();
@@ -1121,7 +1121,7 @@ var regressionTree = function () {
    * Note after a successful import, this can be used ONLY for prediction purpose
    * and not for further ingestion and/or learning.
    *
-   * @method RegressionTree.importJSON
+   * @method RegressionTree#importJSON
    * @param {json} rulesTree containg an earlier exported rule tree in JSON format.
    * @return {boolean} always `true`.
    * @throws {error} if `rulesTree` is `null`.
@@ -1154,7 +1154,7 @@ var regressionTree = function () {
    * related variables, except it's configuration. It is useful during
    * cross fold-validation.
    *
-   * @method RegressionTree.reset
+   * @method RegressionTree#reset
    * @return {undefined} nothing!
    * @example
    * var myRT.reset();
@@ -1225,7 +1225,7 @@ module.exports = regressionTree;
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Oct 08 2018 15:57:05 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Oct 10 2018 15:54:09 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
