@@ -34,6 +34,10 @@
   ((window.gitter = {}).chat = {}).options = {
     room: 'winkjs/Lobby'
   };
+  window.onload = function () {
+      document.querySelector('.gitter-open-chat-button').innerText = 'Need help?'
+      document.querySelector('.gitter-open-chat-button').style.display = 'block';
+  }
 </script>
 <script src="https://sidecar.gitter.im/dist/sidecar.v1.js" async defer></script>
 <script>try{Typekit.load({ async: true });}catch(e){}</script>
@@ -68,7 +72,13 @@ body {
 .navbar a {
   color: #fff;
   line-height: 60px;
+  margin-left: 0;
+}
+
+.navbar a.navbar-brand {
   margin-left: 20px;
+  display: block;
+  min-width: 40px;
 }
 
 .navbar-right {
@@ -87,10 +97,6 @@ body {
 }
 
 /* Override docdash */
-nav {
-  top: 80px;
-}
-
 #main {
   margin-top: 30px;
 }
@@ -98,6 +104,7 @@ nav {
 /* Gitter */
 .gitter-open-chat-button {
   background: #6C307D;
+  display: none;
 }
 
 .gitter-open-chat-button:hover {
@@ -118,6 +125,16 @@ window.addEventListener('DOMContentLoaded', function () {
       window.scrollTo( 0, (window.pageYOffset || document.documentElement.scrollTop) - 72);
     }, 0)
   }
+
+  document.getElementById('toc-button').addEventListener('click', function () {
+      if (document.getElementById('side-nav').className === '') {
+        document.getElementById('side-nav').className = 'is-open';
+        document.getElementById('toc-button-img').setAttribute('src','./close.svg');
+      } else {
+        document.getElementById('side-nav').className = '';
+        document.getElementById('toc-button-img').setAttribute('src','./menu.svg');
+      }
+  })
 });
 
 window.addEventListener( 'hashchange', function (e) {
@@ -139,38 +156,34 @@ function openMember() {
       <div class="navbar-header">
         <a href="https://winkjs.org/" title="wink" class="navbar-brand">
           <img src="https://winkjs.org/images/logo.svg">
-          wink
+          <span>wink</span>
         </a>
       </div>
-      <ul class="nav navbar-nav navbar-right collapse navbar-collapse" id="main-nav">
-        <li><a href="https://winkjs.org/packages.html" class="">Packages</a></li>
-        <li><a href="https://winkjs.org/blog.html" class="">Blog</a></li>
-        <li><a href="http://github.com/winkjs">Github</a></li>
-        <li><a href="https://twitter.com/winkjs_org">Twitter</a></li>
-        <li><a href="https://winkjs.org/about.html" class="">About</a></li>
-      </ul>
+      <div class="sausage-links">
+        <ul class="nav navbar-nav navbar-right collapse navbar-collapse" id="main-nav">
+          <li><a href="https://winkjs.org/packages.html" class="">Packages</a></li>
+          <li><a href="https://winkjs.org/showcase.html" class="">Showcase</a></li>
+          <li><a href="https://winkjs.org/blog.html" class="">Blog</a></li>
+          <li><a href="http://github.com/winkjs">Github</a></li>
+          <li><a href="https://winkjs.org/about.html" class="">About</a></li>
+        </div>
+      </nav>
     </div>
 </header>
 
+<div id="toc-button">
+  <img src="./menu.svg" alt="" id="toc-button-img">
+</div>
 
-<input type="checkbox" id="nav-trigger" class="nav-trigger" />
-<label for="nav-trigger" class="navicon-button x">
-  <div class="navicon"></div>
-</label>
 
-<label for="nav-trigger" class="overlay"></label>
+<div class="content-container">
+  <div class="main-container">
+    <div id="main">
+        
+        <h1 class="page-title">RegressionTree</h1>
+        
 
-<nav >
-    
-    <h2><a href="index.html">Summary</a></h2><h2><a href="https://github.com/winkjs/wink-regression-tree" target="_blank" >Github</a></h2><h3>Classes</h3><ul><li><a href="RegressionTree.html">RegressionTree</a><ul class='methods'><li data-type='method'><a href="RegressionTree.html#defineConfig">defineConfig</a></li><li data-type='method'><a href="RegressionTree.html#evaluate">evaluate</a></li><li data-type='method'><a href="RegressionTree.html#exportJSON">exportJSON</a></li><li data-type='method'><a href="RegressionTree.html#importJSON">importJSON</a></li><li data-type='method'><a href="RegressionTree.html#ingest">ingest</a></li><li data-type='method'><a href="RegressionTree.html#learn">learn</a></li><li data-type='method'><a href="RegressionTree.html#metrics">metrics</a></li><li data-type='method'><a href="RegressionTree.html#predict">predict</a></li><li data-type='method'><a href="RegressionTree.html#reset">reset</a></li><li data-type='method'><a href="RegressionTree.html#summary">summary</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#regressionTree">regressionTree</a></li></ul>
-</nav>
-
-<div id="main">
-    
-    <h1 class="page-title">RegressionTree</h1>
-    
-
-    
+        
 
 
 
@@ -179,9 +192,9 @@ function openMember() {
 
 <header>
     
-        <h2>
+        <!--<h2>
         RegressionTree
-        </h2>
+        </h2>-->
         
             <div class="class-description"><p>Regression tree class</p></div>
         
@@ -196,7 +209,7 @@ function openMember() {
     
 
     
-    
+
     
 
      
@@ -213,7 +226,10 @@ function openMember() {
 
     
 
-    <h4 class="name" id="defineConfig"><span class="type-signature"></span>defineConfig<span class="signature">(inputDataCols, tree)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id="defineConfig">
+      defineConfig
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>defineConfig<span class="signature">(inputDataCols, tree)</span><span class="type-signature"> &rarr; {number}</span></div
 
     
 
@@ -222,12 +238,12 @@ function openMember() {
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line581">line 581</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -305,7 +321,7 @@ myRT.defineConfig( columns, treeParams );
 
 
 
-    <h5>Parameters:</h5>
+    <h5>Parameters</h5>
     
 
 <table class="params">
@@ -330,13 +346,14 @@ myRT.defineConfig( columns, treeParams );
 
         <tr>
             
-                <td class="name"><code>inputDataCols</code></td>
+                <td class="name">inputDataCols</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">Array.&lt;object></span>
+
 
 
             
@@ -378,13 +395,14 @@ defined in terms of the following details:</p>
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name">name</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">string</span>
+
 
 
             
@@ -413,13 +431,14 @@ defined in terms of the following details:</p>
 
         <tr>
             
-                <td class="name"><code>categorical</code></td>
+                <td class="name">categorical</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">boolean</span>
+
 
 
             
@@ -449,13 +468,14 @@ defined in terms of the following details:</p>
 
         <tr>
             
-                <td class="name"><code>exclude</code></td>
+                <td class="name">exclude</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">boolean</span>
+
 
 
             
@@ -476,7 +496,7 @@ defined in terms of the following details:</p>
             
                 <td class="default">
                 
-                    <code>false</code>
+                    false
                 
                 </td>
             
@@ -488,13 +508,14 @@ defined in terms of the following details:</p>
 
         <tr>
             
-                <td class="name"><code>target</code></td>
+                <td class="name">target</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">boolean</span>
+
 
 
             
@@ -515,7 +536,7 @@ defined in terms of the following details:</p>
             
                 <td class="default">
                 
-                    <code>false</code>
+                    false
                 
                 </td>
             
@@ -535,13 +556,14 @@ value needs to be predicted. Note this column must be a numeric column.</p></td>
 
         <tr>
             
-                <td class="name"><code>tree</code></td>
+                <td class="name">tree</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">object</span>
+
 
 
             
@@ -582,13 +604,14 @@ tree's parameters:</p>
 
         <tr>
             
-                <td class="name"><code>maxDepth</code></td>
+                <td class="name">maxDepth</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -609,7 +632,7 @@ tree's parameters:</p>
             
                 <td class="default">
                 
-                    <code>20</code>
+                    20
                 
                 </td>
             
@@ -622,13 +645,14 @@ learning stops.</p></td>
 
         <tr>
             
-                <td class="name"><code>minPercentVarianceReduction</code></td>
+                <td class="name">minPercentVarianceReduction</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -649,7 +673,7 @@ learning stops.</p></td>
             
                 <td class="default">
                 
-                    <code>10</code>
+                    10
                 
                 </td>
             
@@ -662,13 +686,14 @@ required for a split to occur.</p></td>
 
         <tr>
             
-                <td class="name"><code>minSplitCandidateItems</code></td>
+                <td class="name">minSplitCandidateItems</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -689,7 +714,7 @@ required for a split to occur.</p></td>
             
                 <td class="default">
                 
-                    <code>50</code>
+                    50
                 
                 </td>
             
@@ -703,13 +728,14 @@ target has been achieved.</p></td>
 
         <tr>
             
-                <td class="name"><code>minLeafNodeItems</code></td>
+                <td class="name">minLeafNodeItems</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -730,7 +756,7 @@ target has been achieved.</p></td>
             
                 <td class="default">
                 
-                    <code>10</code>
+                    10
                 
                 </td>
             
@@ -744,13 +770,14 @@ less than this value size are merged together.</p></td>
 
         <tr>
             
-                <td class="name"><code>minAvgChildrenItems</code></td>
+                <td class="name">minAvgChildrenItems</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -771,7 +798,7 @@ less than this value size are merged together.</p></td>
             
                 <td class="default">
                 
-                    <code>2</code>
+                    2
                 
                 </td>
             
@@ -808,7 +835,7 @@ with each child node containing fewer items.</p></td>
 
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
@@ -826,6 +853,7 @@ with each child node containing fewer items.</p></td>
 <span class="param-type">number</span>
 
 
+
     </dd>
 </dl>
 
@@ -833,12 +861,17 @@ with each child node containing fewer items.</p></td>
 
 
 
+<hr>
+
         
             
 
     
 
-    <h4 class="name" id="evaluate"><span class="type-signature"></span>evaluate<span class="signature">(rowObject)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="evaluate">
+      evaluate
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>evaluate<span class="signature">(rowObject)</span><span class="type-signature"> &rarr; {boolean}</span></div
 
     
 
@@ -847,12 +880,12 @@ with each child node containing fewer items.</p></td>
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line1020">line 1020</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -908,7 +941,7 @@ with each child node containing fewer items.</p></td>
 
 
 
-    <h5>Parameters:</h5>
+    <h5>Parameters</h5>
     
 
 <table class="params">
@@ -933,13 +966,14 @@ with each child node containing fewer items.</p></td>
 
         <tr>
             
-                <td class="name"><code>rowObject</code></td>
+                <td class="name">rowObject</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">object</span>
+
 
 
             
@@ -972,7 +1006,7 @@ name/value pair as well, which is used in evaluating the variance reduction.</p>
 
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
@@ -990,6 +1024,7 @@ name/value pair as well, which is used in evaluating the variance reduction.</p>
 <span class="param-type">boolean</span>
 
 
+
     </dd>
 </dl>
 
@@ -997,12 +1032,17 @@ name/value pair as well, which is used in evaluating the variance reduction.</p>
 
 
 
+<hr>
+
         
             
 
     
 
-    <h4 class="name" id="exportJSON"><span class="type-signature"></span>exportJSON<span class="signature">()</span><span class="type-signature"> &rarr; {json}</span></h4>
+    <h4 class="name" id="exportJSON">
+      exportJSON
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>exportJSON<span class="signature">()</span><span class="type-signature"> &rarr; {json}</span></div
 
     
 
@@ -1011,12 +1051,12 @@ name/value pair as well, which is used in evaluating the variance reduction.</p>
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line1063">line 1063</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -1087,7 +1127,7 @@ saved in a file for later predictions.</p>
 
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
@@ -1105,6 +1145,7 @@ saved in a file for later predictions.</p>
 <span class="param-type">json</span>
 
 
+
     </dd>
 </dl>
 
@@ -1112,12 +1153,17 @@ saved in a file for later predictions.</p>
 
 
 
+<hr>
+
         
             
 
     
 
-    <h4 class="name" id="importJSON"><span class="type-signature"></span>importJSON<span class="signature">(rulesTree)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="importJSON">
+      importJSON
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>importJSON<span class="signature">(rulesTree)</span><span class="type-signature"> &rarr; {boolean}</span></div
 
     
 
@@ -1126,12 +1172,12 @@ saved in a file for later predictions.</p>
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line1078">line 1078</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -1191,7 +1237,7 @@ anRT.importJSON( rules );</code></pre>
 
 
 
-    <h5>Parameters:</h5>
+    <h5>Parameters</h5>
     
 
 <table class="params">
@@ -1216,13 +1262,14 @@ anRT.importJSON( rules );</code></pre>
 
         <tr>
             
-                <td class="name"><code>rulesTree</code></td>
+                <td class="name">rulesTree</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">json</span>
+
 
 
             
@@ -1252,7 +1299,7 @@ anRT.importJSON( rules );</code></pre>
 
 
 
-<h5>Throws:</h5>
+<h5>Throws</h5>
 <ul>
         <li>
 
@@ -1271,6 +1318,7 @@ anRT.importJSON( rules );</code></pre>
             <dd>
                 
 <span class="param-type">error</span>
+
 
 
             </dd>
@@ -1300,6 +1348,7 @@ anRT.importJSON( rules );</code></pre>
 <span class="param-type">error</span>
 
 
+
             </dd>
         </dl>
     </dt>
@@ -1327,6 +1376,7 @@ anRT.importJSON( rules );</code></pre>
 <span class="param-type">error</span>
 
 
+
             </dd>
         </dl>
     </dt>
@@ -1337,7 +1387,7 @@ anRT.importJSON( rules );</code></pre>
     </ul>
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
@@ -1355,6 +1405,7 @@ anRT.importJSON( rules );</code></pre>
 <span class="param-type">boolean</span>
 
 
+
     </dd>
 </dl>
 
@@ -1362,12 +1413,17 @@ anRT.importJSON( rules );</code></pre>
 
 
 
+<hr>
+
         
             
 
     
 
-    <h4 class="name" id="ingest"><span class="type-signature"></span>ingest<span class="signature">(row)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id="ingest">
+      ingest
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>ingest<span class="signature">(row)</span><span class="type-signature"> &rarr; {boolean}</span></div
 
     
 
@@ -1376,12 +1432,12 @@ anRT.importJSON( rules );</code></pre>
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line649">line 649</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -1444,7 +1500,7 @@ cars.forEach( function ( row ) {
 
 
 
-    <h5>Parameters:</h5>
+    <h5>Parameters</h5>
     
 
 <table class="params">
@@ -1469,13 +1525,14 @@ cars.forEach( function ( row ) {
 
         <tr>
             
-                <td class="name"><code>row</code></td>
+                <td class="name">row</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">array</span>
+
 
 
             
@@ -1507,7 +1564,7 @@ via <code>defineConfig()</code>.</p></td>
 
 
 
-<h5>Throws:</h5>
+<h5>Throws</h5>
 
         
 
@@ -1529,6 +1586,7 @@ number of columns defined.</p>
 <span class="param-type">error</span>
 
 
+
             </dd>
         </dl>
     </dt>
@@ -1539,7 +1597,7 @@ number of columns defined.</p>
     
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
@@ -1557,6 +1615,7 @@ number of columns defined.</p>
 <span class="param-type">boolean</span>
 
 
+
     </dd>
 </dl>
 
@@ -1564,12 +1623,17 @@ number of columns defined.</p>
 
 
 
+<hr>
+
         
             
 
     
 
-    <h4 class="name" id="learn"><span class="type-signature"></span>learn<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id="learn">
+      learn
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>learn<span class="signature">()</span><span class="type-signature"> &rarr; {number}</span></div
 
     
 
@@ -1578,12 +1642,12 @@ number of columns defined.</p>
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line680">line 680</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -1654,7 +1718,7 @@ number of columns defined.</p>
 
 
 
-<h5>Throws:</h5>
+<h5>Throws</h5>
 
         
 
@@ -1675,6 +1739,7 @@ number of columns defined.</p>
 <span class="param-type">error</span>
 
 
+
             </dd>
         </dl>
     </dt>
@@ -1685,7 +1750,7 @@ number of columns defined.</p>
     
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
@@ -1703,6 +1768,7 @@ number of columns defined.</p>
 <span class="param-type">number</span>
 
 
+
     </dd>
 </dl>
 
@@ -1710,12 +1776,17 @@ number of columns defined.</p>
 
 
 
+<hr>
+
         
             
 
     
 
-    <h4 class="name" id="metrics"><span class="type-signature"></span>metrics<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="metrics">
+      metrics
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>metrics<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></div
 
     
 
@@ -1724,12 +1795,12 @@ number of columns defined.</p>
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line1042">line 1042</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -1801,7 +1872,7 @@ number of columns defined.</p>
 
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
@@ -1819,6 +1890,7 @@ number of columns defined.</p>
 <span class="param-type">object</span>
 
 
+
     </dd>
 </dl>
 
@@ -1826,12 +1898,17 @@ number of columns defined.</p>
 
 
 
+<hr>
+
         
             
 
     
 
-    <h4 class="name" id="predict"><span class="type-signature"></span>predict<span class="signature">(input, modifier<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {number}</span></h4>
+    <h4 class="name" id="predict">
+      predict
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>predict<span class="signature">(input, modifier<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {number}</span></div
 
     
 
@@ -1840,12 +1917,12 @@ number of columns defined.</p>
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line852">line 852</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -1916,7 +1993,7 @@ myRT.predict( input );
 
 
 
-    <h5>Parameters:</h5>
+    <h5>Parameters</h5>
     
 
 <table class="params">
@@ -1943,13 +2020,14 @@ myRT.predict( input );
 
         <tr>
             
-                <td class="name"><code>input</code></td>
+                <td class="name">input</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">object</span>
+
 
 
             
@@ -1975,13 +2053,14 @@ names must the same as defined via <code>defineConfig()</code>.</p></td>
 
         <tr>
             
-                <td class="name"><code>modifier</code></td>
+                <td class="name">modifier</td>
             
 
             <td class="type">
             
                 
 <span class="param-type">function</span>
+
 
 
             
@@ -2025,7 +2104,7 @@ in the input (<code>default=undefined</code>). The value returned from this func
 
 
 
-<h5>Throws:</h5>
+<h5>Throws</h5>
 <ul>
         <li>
 
@@ -2044,6 +2123,7 @@ in the input (<code>default=undefined</code>). The value returned from this func
             <dd>
                 
 <span class="param-type">error</span>
+
 
 
             </dd>
@@ -2074,6 +2154,7 @@ provided <code>modifier</code> has not been defined.</p>
 <span class="param-type">error</span>
 
 
+
             </dd>
         </dl>
     </dt>
@@ -2084,7 +2165,7 @@ provided <code>modifier</code> has not been defined.</p>
     </ul>
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
@@ -2102,6 +2183,7 @@ provided <code>modifier</code> has not been defined.</p>
 <span class="param-type">number</span>
 
 
+
     </dd>
 </dl>
 
@@ -2109,12 +2191,17 @@ provided <code>modifier</code> has not been defined.</p>
 
 
 
+<hr>
+
         
             
 
     
 
-    <h4 class="name" id="reset"><span class="type-signature"></span>reset<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></h4>
+    <h4 class="name" id="reset">
+      reset
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>reset<span class="signature">()</span><span class="type-signature"> &rarr; {undefined}</span></div
 
     
 
@@ -2123,12 +2210,12 @@ provided <code>modifier</code> has not been defined.</p>
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line1111">line 1111</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -2200,7 +2287,7 @@ cross fold-validation.</p>
 
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
@@ -2218,6 +2305,7 @@ cross fold-validation.</p>
 <span class="param-type">undefined</span>
 
 
+
     </dd>
 </dl>
 
@@ -2225,12 +2313,17 @@ cross fold-validation.</p>
 
 
 
+<hr>
+
         
             
 
     
 
-    <h4 class="name" id="summary"><span class="type-signature"></span>summary<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="summary">
+      summary
+    </h4>
+    <div class="name-signature"><span class="type-signature"></span>summary<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></div
 
     
 
@@ -2239,12 +2332,12 @@ cross fold-validation.</p>
 
 <dl class="details">
 
-    
+    <!--
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="wink-regression-tree.js.html">wink-regression-tree.js</a>, <a href="wink-regression-tree.js.html#line949">line 949</a>
     </li></ul></dd>
-    
+    -->
 
     
 
@@ -2283,11 +2376,11 @@ cross fold-validation.</p>
 
 <div class="description">
     <p>Generates summary of the learnings in terms of the following:<ol></p>
-<p><li>Relative importance of columns along with the corresponding min/max
-variance reductions (VR).</li></p>
-<p><li>The min/max mean values along with the corresponding standard
-deviations (SD).</li></p>
-<p><li>The minumum standard deviation (SD) discovered during the learning.</li></ol></p>
+<li>Relative importance of columns along with the corresponding min/max
+variance reductions (VR).</li>
+<li>The min/max mean values along with the corresponding standard
+deviations (SD).</li>
+<li>The minumum standard deviation (SD) discovered during the learning.</li></ol>
 </div>
 
 
@@ -2320,18 +2413,18 @@ deviations (SD).</li></p>
 
 
 
-<h5>Returns:</h5>
+<h5>Returns</h5>
 
         
 <div class="param-desc">
     <p>containing the following:<ol></p>
-<p><li><code>table</code> — array of objects, where each object defines <code>level</code>, <code>columnHierarchy</code>,
+<li><code>table</code> — array of objects, where each object defines <code>level</code>, <code>columnHierarchy</code>,
 <code>nodesSplit</code>, <code>minVR</code> and <code>maxVR</code>. A lower value of <code>level</code>
 indicates higher importance; similarly more nodes at a level split on a columnHierarchy
 is an indication of importance. Therefore, it is sorted in ascending order of <code>level</code>
-followed by in descending order of <code>nodesSplit</code>.</li></p>
-<p><li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
-and <code>minSD</code>.</li></ol></p>
+followed by in descending order of <code>nodesSplit</code>.</li>
+<li><code>stats</code> — object containing <code>min.mean</code>, <code>min.itsSD</code>, <code>max.mean</code>, <code>max.itsSD</code>,
+and <code>minSD</code>.</li></ol>
 </div>
 
 
@@ -2345,12 +2438,15 @@ and <code>minSD</code>.</li></ol></p>
 <span class="param-type">object</span>
 
 
+
     </dd>
 </dl>
 
     
 
 
+
+<hr>
 
         
     
@@ -2366,18 +2462,40 @@ and <code>minSD</code>.</li></ol></p>
 
 
 
-    
+        
+    </div>
+  </div>
+
+  <nav  id="side-nav">
+      
+      <h2><a href="index.html">Summary</a></h2><h2><a href="https://github.com/winkjs/wink-regression-tree" target="_blank" >Github</a></h2><h3>Classes</h3><ul><li><a href="RegressionTree.html">RegressionTree</a><ul class='methods'><li data-type='method'><a href="RegressionTree.html#defineConfig">defineConfig</a></li><li data-type='method'><a href="RegressionTree.html#evaluate">evaluate</a></li><li data-type='method'><a href="RegressionTree.html#exportJSON">exportJSON</a></li><li data-type='method'><a href="RegressionTree.html#importJSON">importJSON</a></li><li data-type='method'><a href="RegressionTree.html#ingest">ingest</a></li><li data-type='method'><a href="RegressionTree.html#learn">learn</a></li><li data-type='method'><a href="RegressionTree.html#metrics">metrics</a></li><li data-type='method'><a href="RegressionTree.html#predict">predict</a></li><li data-type='method'><a href="RegressionTree.html#reset">reset</a></li><li data-type='method'><a href="RegressionTree.html#summary">summary</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#regressionTree">regressionTree</a></li></ul>
+  </nav>
 </div>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 21 2019 09:29:20 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Aug 12 2019 09:45:53 GMT+0530 (IST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
 <script src="scripts/linenumber.js"></script>
 
 
+
+<script src="https://embed.runkit.com"></script>
+<script type="text/javascript">
+  var els = document.getElementsByClassName("runkit");
+
+  Array.prototype.forEach.call(els, function(el) {
+    // Do stuff here
+    var source = el.innerHTML;
+    el.innerHTML = '';
+    var n = RunKit.createNotebook( {
+      element: el,
+      source: source
+    } );
+  });
+</script>
 </body>
 </html>
